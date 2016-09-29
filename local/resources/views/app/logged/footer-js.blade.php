@@ -1,0 +1,50 @@
+@include('app.logged.copyright', array(	"iduser"	=>$iduser,
+										"terms"		=>$terms
+))
+
+{{-- the AP_Asset function is located in the file 'local/app/helpers.php' --}}
+
+<script src="{!! AP_Asset('assets/libs/modernizr/modernizr.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery/jquery.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-browser-mobile/jquery.browser.mobile.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/bootstrap/js/bootstrap.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/nanoscroller/nanoscroller.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/magnific-popup/magnific-popup.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-placeholder/jquery.placeholder.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-datatables/media/js/jquery.dataTables.min.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-canvas/jquery.canvasjs.min.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-ui/js/jquery-ui-1.10.4.custom.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-appear/jquery.appear.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/bootstrap-multiselect/bootstrap-multiselect.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-easypiechart/jquery.easypiechart.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/flot/jquery.flot.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/flot-tooltip/jquery.flot.tooltip.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/flot/jquery.flot.pie.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/flot/jquery.flot.categories.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/flot/jquery.flot.resize.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jquery-sparkline/jquery.sparkline.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/raphael/raphael.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/morris/morris.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/gauge/gauge.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/snap-svg/snap.svg.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/liquid-meter/liquid.meter.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/jquery.vmap.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/data/jquery.vmap.sampledata.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/jquery.vmap.world.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.africa.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.asia.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.australia.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.europe.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.north-america.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/jqvmap/maps/continents/jquery.vmap.south-america.js') !!}"></script>
+<script src="{!! AP_Asset('assets/libs/ios7-switch/ios7-switch.js') !!}"></script>
+<script src="{!! AP_Asset('assets/js/theme/theme.js') !!}"></script>
+<script src="{!! AP_Asset('assets/js/theme/theme.custom.js') !!}"></script>
+<script src="{!! AP_Asset('assets/js/theme/theme.init.js') !!}"></script>
+<script src="{!! AP_Asset('assets/plugins/select2/select2.js') !!}"></script>
+<script src="{!! AP_Asset('assets/plugins/select2/select2_locale_'.__LNG__.'.js') !!}"></script>
+<script src="{!! AP_Asset('assets/plugins/alertify/alertify.js') !!}"></script>
+<script src="{!! AP_Asset('assets/plugins/summernote/build/summernote.min.js') !!}"></script>
+<script src="{!! AP_Asset('assets/js/admin-panel.js') !!}"></script>

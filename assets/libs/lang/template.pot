@@ -1,0 +1,34 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: components\Employees\controllers\add.js:15
+msgid "Add employee"
+msgstr ""
+
+#: components\Employees\views\form.html:27
+msgid "Cancel"
+msgstr ""
+
+#: components\Employees\controllers\edit.js:16
+msgid "Edit employee"
+msgstr ""
+
+#: components\Employees\views\list.html:1
+#: index.html:26
+msgid "Employees"
+msgstr ""
+
+#: components\Employees\views\form.html:10
+msgid "Last name"
+msgstr ""
+
+#: index.html:19
+msgid "Logout"
+msgstr ""
+
+#: components\Employees\views\form.html:6
+msgid "Name"
+msgstr ""

@@ -1,0 +1,18 @@
+texto personalizado cuando está accediendo a interfaces de creación, edición, y otras interfaces (modales)
+
+mensajes personalizados de respuesta desde el servidor
+
+corregir que cuando creo, actualizo data, la informacion guardada en las variables de sesion campo token, no se guarda
+
+corregir comportamientos feos del sistema de archivos
+
+peticiones code-to-id, id-to-code
+
+timeinterval checker de session activa/inactiva
+
+adjuntar signo de interrogacion a nombre de operacion en listado de operaciones de usuario durante sesion y que cuando coloque el cursor sobre el se despliegue unn bubble-title
+
+aplicar modificaciones sobre campos de objeto App cuando modifique preferencias de formato de vista y edicion de items
+
+ubicar controles de operaciones de punto anterior en donde tambien está el cambio de lenguaje de navegación
+

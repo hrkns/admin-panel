@@ -1,0 +1,16 @@
+{
+	"name" : "Admin-Panel",
+	"short_name" : "Admin-Panel",
+	"description" : "Multifunctional admin panel template",
+	"start_url" : "/",
+	"launch_path" : "/",
+	"icons" : {
+		"128" : "/admin-panel/assets/images/logos/default.jpeg"
+	},
+	"display" : "standalone",
+	"developer" : {
+		"name" : "José Rosendo",
+		"url" : "https://ve.linkedin.com/in/jrosendo"
+	},
+	"default_locale" : "es"
+}

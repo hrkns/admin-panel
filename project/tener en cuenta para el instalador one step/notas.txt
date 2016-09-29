@@ -1,0 +1,3 @@
+leer el max_execution_time desde php
+
+una estrategia para el script de instalacion es, teniendo en cuenta el max_execution_time, recargar el script cada cierto tiempo, y tener un registro del estado de la instalacion en un archivo de texto, json, php...

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app = "dictionary" ng-controller = "dict">
+	<head>
+		<title>{{offline_dict.offline_edition_dictionary_edition[SELECTED_LANGUAGE]}}</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	</head>
+	<body>
+		<div class = "row" style = "padding:1.5% 3% 0% 3%;">
+			<div class = "col-sm-6">
+				<select class = "form-control" ng-options = "o.name[SELECTED_LANGUAGE] for o in dictionary.languages" ng-model = "select_language" ng-change = "change_language()">
+				</select>
+			</div>
+			<div class = "col-sm-6">
+				<button class = "btn btn-danger pull-right" ng-click = "reset()">{{offline_dict.offline_edition_reset[SELECTED_LANGUAGE]}}</button>
+				<button class = "btn btn-primary pull-right" ng-click = "dump_terms()">{{offline_dict.offline_edition_dump[SELECTED_LANGUAGE]}}</button><br><br>
+			</div>
+		</div>
+		<div class = "row" ng-repeat = "terms in dictionary.terms" style = "padding:1.5% 3% 0% 3%;">
+			<div class = "col-sm-12">
+				<a href = "javascript:;" ng-click = "toggle_terms(terms)"><strong>{{terms.section_name[SELECTED_LANGUAGE]}}</strong></a>
+			</div>
+			<div class = "col-sm-12" ng-show = "terms.show_terms" style = "overflow:scroll;max-height:350px;">
+				<table class = "table table-responsive table-bordered table-hover">
+					<thead>
+						<th>
+							<div align = "center">
+								<strong>
+									{{offline_dict.offline_edition_code[SELECTED_LANGUAGE]}}
+								</strong>
+							</div>
+						</th>
+						<th>
+							<div align = "center">
+								<strong>
+									{{offline_dict.offline_edition_name[SELECTED_LANGUAGE]}}
+								</strong>
+							</div>
+						</th>
+						<th>
+							<div align = "center">
+								<strong>
+									{{offline_dict.offline_edition_description[SELECTED_LANGUAGE]}}
+								</strong>
+							</div>
+						</th>
+						<th>
+							<div align = "center">
+								<strong>
+									{{offline_dict.offline_edition_value[SELECTED_LANGUAGE]}}
+								</strong>
+							</div>
+						</th>
+						<th>
+							<div align = "center">
+								<strong>
+									{{offline_dict.offline_edition_remove[SELECTED_LANGUAGE]}}
+								</strong>
+							</div>
+						</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat = "term in terms.terms">
+							<td>
+								<input type="text" class = "form-control" ng-model="term.code" disabled>
+							</td>
+							<td>
+								<input type="text" class = "form-control" ng-model="term.name[SELECTED_LANGUAGE]">
+							</td>
+							<td>
+								<textarea type="text" class = "form-control" ng-value="term.description[SELECTED_LANGUAGE]"></textarea>
+							</td>
+							<td>
+								<input type="text" class = "form-control" ng-model="term.value[SELECTED_LANGUAGE]">
+							</td>
+							<td>
+								<input type="checkbox" ng-model="term.remove" class = "form-control">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class = "modal fade" id = "modal_dumped_dictionary" align = "center" style = "padding:5%;">
+				<div class = "modal-content">
+					<div class = "modal-header">
+						<h1>
+							{{offline_dict.offline_edition_dumped_edited_dictionary[SELECTED_LANGUAGE]}}
+						</h1>
+					</div>
+					<div class = "modal-body">
+						<textarea class = "form-control" id = "dumped_dictionary" style = "height:500px;" readonly>
+							
+						</textarea>
+					</div>
+					<div class = "modal-footer">
+						<button class = "btn btn-danger" data-dismiss = "modal">{{offline_dict.offline_edition_close[SELECTED_LANGUAGE]}}</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script type="text/javascript" src = "jquery.js"></script>
+		<script type="text/javascript" src = "bootstrap.js"></script>
+		<script type="text/javascript" src = "data.js"></script>
+		<script type="text/javascript" src = "angular.js"></script>
+		<script type="text/javascript" src = "algorithm.js"></script>
+	</body>
+</html>
