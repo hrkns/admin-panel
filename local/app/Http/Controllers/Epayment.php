@@ -9,8 +9,10 @@ use App\Models\MasterEpayment;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Epayment extends Controller{
-    public function create(Request $request){
+class Epayment extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $desc = $request->input("data.description");
         $lstatus = $request->input("data.status");
@@ -20,7 +22,7 @@ class Epayment extends Controller{
         $newitem->code = $request->input("data.code");
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -29,7 +31,7 @@ class Epayment extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -39,11 +41,8 @@ class Epayment extends Controller{
 
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_EPAYMENT"]
-        ]);
-
+        $this->writeConstants("MasterEpayment", "epayment_methods");
+        operation("CREATE_EPAYMENT");
         return \Response::json([
             'item' => array(
                 "id"            =>$newitem->id,
@@ -55,7 +54,8 @@ class Epayment extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterEpayment::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -63,7 +63,8 @@ class Epayment extends Controller{
         ], "READ_EPAYMENTS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterEpayment:: where("description", "LIKE", "%".$keywords_search."%")
                                     ->orWhere("name", "LIKE", "%".$keywords_search."%")
@@ -76,7 +77,8 @@ class Epayment extends Controller{
         ], "SEARCH_EPAYMENTS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterEpayment::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -85,10 +87,7 @@ class Epayment extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_EPAYMENT"]
-        ]);
-
+        operation("READ_EPAYMENT");
         return \Response::json([
             'item' => array(
                 "name"          =>translate($item->name),
@@ -100,7 +99,8 @@ class Epayment extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -109,7 +109,7 @@ class Epayment extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $request->input("data.code");
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -119,7 +119,7 @@ class Epayment extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -129,20 +129,17 @@ class Epayment extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_EPAYMENT"]
-        ]);
+        $this->writeConstants("MasterEpayment", "epayment_methods");
+        operation("UPDATE_EPAYMENT");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterEpayment::where("id", "=", $id)->get()[0];
         $item->__delete__();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_EPAYMENT"]
-        ]);
+        $this->writeConstants("MasterEpayment", "epayment_methods");
+        operation("DELETE_EPAYMENT");
         return \Response::json(array(), 200);
     }
 }

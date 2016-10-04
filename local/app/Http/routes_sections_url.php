@@ -3,7 +3,7 @@
   1 => 'my-profile',
   2 => 'users-management',
   3 => 'threads-management',
-  4 => 'cloud',
+  4 => 'file-manager',
   5 => 'events-management',
   6 => 'store',
   7 => 'store/products-and-services',

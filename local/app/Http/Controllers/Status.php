@@ -9,15 +9,20 @@ use App\Models\MasterStatus;
 use App\Models\UserPreferences;
 use App\Models\UserSession;
 
-class Status extends Controller{
-    public function create(Request $request){
+class Status extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $desc = $request->input("data.description");
         $code = $request->input("data.code");
-        $show_default = $request->input("data.show_default");;
-        $show_item = $request->input("data.show_item");;
+        $show_default = $request->input("data.show_default");
+        ;
+        $show_item = $request->input("data.show_item");
+        ;
         $lstatus = $request->input("data.status");
-        $for_delete = $request->input("data.for_delete");;
+        $for_delete = $request->input("data.for_delete");
+        ;
 
         $newitem = new MasterStatus;
         $newitem->name = generateMultilingual($name);
@@ -28,14 +33,15 @@ class Status extends Controller{
         $newitem->for_delete = $for_delete;
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array")
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
+        }
 
         $available_for_use = false;
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -45,10 +51,9 @@ class Status extends Controller{
 
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
-        $this->writeConstants();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_STATUS"]
-        ]);
+        $this->writeConstants("MasterStatus", "statuses");
+
+        operation("CREATE_STATUS");
 
         return \Response::json([
             'item' => array(
@@ -64,7 +69,8 @@ class Status extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterStatus::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -75,7 +81,8 @@ class Status extends Controller{
         ], "READ_STATUSES");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterStatus:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -91,7 +98,8 @@ class Status extends Controller{
         ], "SEARCH_STATUSES");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterStatus::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -100,9 +108,7 @@ class Status extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_STATUS"]
-        ]);
+        operation("READ_STATUS");
 
         return \Response::json([
             'item' => array(
@@ -118,7 +124,8 @@ class Status extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
@@ -134,7 +141,7 @@ class Status extends Controller{
         $item->show_default = $show_default;
         $item->show_item= $show_item;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -144,7 +151,7 @@ class Status extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -155,31 +162,21 @@ class Status extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-        $this->writeConstants();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_STATUS"]
-        ]);
+        $this->writeConstants("MasterStatus", "statuses");
+
+        operation("UPDATE_STATUS");
+
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterStatus::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        $this->writeConstants();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_STATUS"]
-        ]);
-        return \Response::json(array(), 200);
-    }
+        $this->writeConstants("MasterStatus", "statuses");
 
-    private function writeConstants(){
-        $items = MasterStatus::all();
-        $f = fopen(base_path()."/app/constants_statuses.php", "w");
-        fwrite($f, "<?php\n\t\$GLOBALS[\"__STATUS__\"] = [\n");
-        foreach ($items as $key => $value) {
-            fwrite($f, "\t\t'".$value->code."' => ".$value->id.",\n");
-        }
-        fwrite($f, "\t]\n?>");
-        fclose($f);
+        operation("DELETE_STATUS");
+
+        return \Response::json(array(), 200);
     }
 }

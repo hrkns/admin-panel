@@ -2,727 +2,727 @@
 $requests = array(
     /*requests for 'languages' section*/
         [
-            "type" => "put", 
-            "route" => "language-session", 
-            "controller" => "Language", 
-            "method" => "updateLanguageSession", 
+            "type" => "put",
+            "route" => "language-session",
+            "controller" => "Language",
+            "method" => "updateLanguageSession",
             "middlewares" => array(
                 "session_verification" => false
             ),
         ],[
-            "type" => "post", 
-            "route" => "language", 
-            "controller" => "Language", 
+            "type" => "post",
+            "route" => "language",
+            "controller" => "Language",
             "method" => "create",
         ],[
-            "type" => "get", 
-            "route" => "languages", 
-            "controller" => "Language", 
+            "type" => "get",
+            "route" => "languages",
+            "controller" => "Language",
             "method" => "index",
         ],[
-            "type" => "get", 
-            "route" => "language/{id}", 
-            "controller" => "Language", 
+            "type" => "get",
+            "route" => "language/{id}",
+            "controller" => "Language",
             "method" => "read",
         ],[
             "type" => "get",
-    		"route" => "languages-search",
-    		"controller" => "Language",
-    		"method" => "search",
-    	],[
+            "route" => "languages-search",
+            "controller" => "Language",
+            "method" => "search",
+        ],[
             "type" => "put",
-    		"route" => "language/{id}",
-    		"controller" => "Language",
-    		"method" => "update",
-    	],[
+            "route" => "language/{id}",
+            "controller" => "Language",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "language/{id}",
-    		"controller" => "Language",
-    		"method" => "delete",
-    	],
+            "route" => "language/{id}",
+            "controller" => "Language",
+            "method" => "delete",
+        ],
 
     /*requests for 'statuses' section*/
         [
             "type" => "post",
-    		"route" => "status",
-    		"controller" => "status",
-    		"method" => "create",
-    	],[
+            "route" => "status",
+            "controller" => "status",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "statuses",
-    		"controller" => "Status",
-    		"method" => "index",
-    	],[
+            "route" => "statuses",
+            "controller" => "Status",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "statuses-search",
-    		"controller" => "Status",
-    		"method" => "search",
-    	],[
+            "route" => "statuses-search",
+            "controller" => "Status",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "status/{id}",
-    		"controller" => "Status",
-    		"method" => "read",
-    	],[
+            "route" => "status/{id}",
+            "controller" => "Status",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "status/{id}",
-    		"controller" => "Status",
-    		"method" => "update",
-    	],[
+            "route" => "status/{id}",
+            "controller" => "Status",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "status/{id}",
-    		"controller" => "Status",
-    		"method" => "delete",
-    	],
+            "route" => "status/{id}",
+            "controller" => "Status",
+            "method" => "delete",
+        ],
 
     /*requests for 'roles' section*/
         [
             "type" => "post",
-    		"route" => "role",
-    		"controller" => "Role",
-    		"method" => "create",
-    	],[
+            "route" => "role",
+            "controller" => "Role",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "roles",
-    		"controller" => "Role",
-    		"method" => "index",
-    	],[
+            "route" => "roles",
+            "controller" => "Role",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "roles-search",
-    		"controller" => "Role",
-    		"method" => "search",
-    	],[
+            "route" => "roles-search",
+            "controller" => "Role",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "role/{id}",
-    		"controller" => "Role",
-    		"method" => "read",
-    	],[
+            "route" => "role/{id}",
+            "controller" => "Role",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "role/{id}",
-    		"controller" => "Role",
-    		"method" => "update",
-    	],[
+            "route" => "role/{id}",
+            "controller" => "Role",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "role/{id}",
-    		"controller" => "Role",
-    		"method" => "delete",
-    	],[
+            "route" => "role/{id}",
+            "controller" => "Role",
+            "method" => "delete",
+        ],[
             "type" => "get",
-    		"route" => "role/{id}/permises",
-    		"controller" => "Role",
-    		"method" => "permises",
-    	],[
+            "route" => "role/{id}/permises",
+            "controller" => "Role",
+            "method" => "permises",
+        ],[
             "type" => "put",
-    		"route" => "role/{id}/permises",
-    		"controller" => "Role",
-    		"method" => "updatePermises",
-    	],
+            "route" => "role/{id}/permises",
+            "controller" => "Role",
+            "method" => "updatePermises",
+        ],
 
     /*requests for 'actions' section*/
         [
             "type" => "post",
-    		"route" => "action",
-    		"controller" => "Action",
-    		"method" => "create",
-    	],[
+            "route" => "action",
+            "controller" => "Action",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "actions",
-    		"controller" => "Action",
-    		"method" => "index",
-    	],[
+            "route" => "actions",
+            "controller" => "Action",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "actions-search",
-    		"controller" => "Action",
-    		"method" => "search",
-    	],[
+            "route" => "actions-search",
+            "controller" => "Action",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "action/{id}",
-    		"controller" => "Action",
-    		"method" => "read",
-    	],[
+            "route" => "action/{id}",
+            "controller" => "Action",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "action/{id}",
-    		"controller" => "Action",
-    		"method" => "update",
-    	],[
+            "route" => "action/{id}",
+            "controller" => "Action",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "action/{id}",
-    		"controller" => "Action",
-    		"method" => "delete",
-    	],
+            "route" => "action/{id}",
+            "controller" => "Action",
+            "method" => "delete",
+        ],
 
     /*requests for 'sections and terms' section*/
         [
             "type" => "get",
-    		"route" => "section/{id}/terms",
-    		"controller" => "Section",
-    		"method" => "getTerms",
-    	],[
+            "route" => "section/{id}/terms",
+            "controller" => "Section",
+            "method" => "getTerms",
+        ],[
             "type" => "post",
-    		"route" => "term",
-    		"controller" => "Section",
-    		"method" => "createTerm",
-    	],[
+            "route" => "term",
+            "controller" => "Section",
+            "method" => "createTerm",
+        ],[
             "type" => "put",
-    		"route" => "term/{id}",
-    		"controller" => "Section",
-    		"method" => "setTerm",
-    	],[
+            "route" => "term/{id}",
+            "controller" => "Section",
+            "method" => "setTerm",
+        ],[
             "type" => "get",
-    		"route" => "term/{id}",
-    		"controller" => "Section",
-    		"method" => "getTerm",
-    	],[
+            "route" => "term/{id}",
+            "controller" => "Section",
+            "method" => "getTerm",
+        ],[
             "type" => "post",
-    		"route" => "section/{id}/terms-cloning",
-    		"controller" => "Section",
-    		"method" => "termsCloning",
-    	],[
+            "route" => "section/{id}/terms-cloning",
+            "controller" => "Section",
+            "method" => "termsCloning",
+        ],[
             "type" => "delete",
-    		"route" => "term/{id}",
-    		"controller" => "Section",
-    		"method" => "deleteTerm",
-    	],[
+            "route" => "term/{id}",
+            "controller" => "Section",
+            "method" => "deleteTerm",
+        ],[
             "type" => "get",
-    		"route" => "dictionary",
-    		"controller" => "Section",
-    		"method" => "downloadDictionary",
-    	],[
+            "route" => "dictionary",
+            "controller" => "Section",
+            "method" => "downloadDictionary",
+        ],[
             "type" => "get",
-    		"route" => "dictionary/{hash}",
-    		"controller" => "Section",
-    		"method" => "execDownloadDic",
-    	],[
+            "route" => "dictionary/{hash}",
+            "controller" => "Section",
+            "method" => "execDownloadDic",
+        ],[
             "type" => "post",
-    		"route" => "dictionary-importing",
-    		"controller" => "Section",
-    		"method" => "dicImporting",
-    	],[
+            "route" => "dictionary-importing",
+            "controller" => "Section",
+            "method" => "dicImporting",
+        ],[
             "type" => "get",
-    		"route" => "section/{id}",
-    		"controller" => "Section",
-    		"method" => "show",
-    	],[
+            "route" => "section/{id}",
+            "controller" => "Section",
+            "method" => "show",
+        ],[
             "type" => "put",
-    		"route" => "menu",
-    		"controller" => "Section",
-    		"method" => "update_menu",
-    	],
+            "route" => "menu",
+            "controller" => "Section",
+            "method" => "update_menu",
+        ],
 
     /*requests for 'bank' section*/
         [
             "type" => "post",
-    		"route" => "bank",
-    		"controller" => "Bank",
-    		"method" => "create",
-    	],[
+            "route" => "bank",
+            "controller" => "Bank",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "banks",
-    		"controller" => "Bank",
-    		"method" => "index",
-    	],[
+            "route" => "banks",
+            "controller" => "Bank",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "banks-search",
-    		"controller" => "Bank",
-    		"method" => "search",
-    	],[
+            "route" => "banks-search",
+            "controller" => "Bank",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "bank/{id}",
-    		"controller" => "Bank",
-    		"method" => "read",
-    	],[
+            "route" => "bank/{id}",
+            "controller" => "Bank",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "bank/{id}",
-    		"controller" => "Bank",
-    		"method" => "update",
-    	],[
+            "route" => "bank/{id}",
+            "controller" => "Bank",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "bank/{id}",
-    		"controller" => "Bank",
-    		"method" => "delete",
-    	],
+            "route" => "bank/{id}",
+            "controller" => "Bank",
+            "method" => "delete",
+        ],
 
     /*requests for 'e-payment' section*/
         [
             "type" => "post",
-    		"route" => "e-payment",
-    		"controller" => "Epayment",
-    		"method" => "create",
-    	],[
+            "route" => "e-payment",
+            "controller" => "Epayment",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "e-payment-methods",
-    		"controller" => "Epayment",
-    		"method" => "index",
-    	],[
+            "route" => "e-payment-methods",
+            "controller" => "Epayment",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "e-payment-methods-search",
-    		"controller" => "Epayment",
-    		"method" => "search",
-    	],[
+            "route" => "e-payment-methods-search",
+            "controller" => "Epayment",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "e-payment/{id}",
-    		"controller" => "Epayment",
-    		"method" => "read",
-    	],[
+            "route" => "e-payment/{id}",
+            "controller" => "Epayment",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "e-payment/{id}",
-    		"controller" => "Epayment",
-    		"method" => "update",
-    	],[
+            "route" => "e-payment/{id}",
+            "controller" => "Epayment",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "e-payment/{id}",
-    		"controller" => "Epayment",
-    		"method" => "delete",
-    	],
+            "route" => "e-payment/{id}",
+            "controller" => "Epayment",
+            "method" => "delete",
+        ],
 
     /*requests for 'credit-card' section*/
         [
             "type" => "post",
-    		"route" => "credit-card",
-    		"controller" => "CreditCard",
-    		"method" => "create",
-    	],[
+            "route" => "credit-card",
+            "controller" => "CreditCard",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "credit-cards",
-    		"controller" => "CreditCard",
-    		"method" => "index",
-    	],[
+            "route" => "credit-cards",
+            "controller" => "CreditCard",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "credit-cards-search",
-    		"controller" => "CreditCard",
-    		"method" => "search",
-    	],[
+            "route" => "credit-cards-search",
+            "controller" => "CreditCard",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "credit-card/{id}",
-    		"controller" => "CreditCard",
-    		"method" => "read",
-    	],[
+            "route" => "credit-card/{id}",
+            "controller" => "CreditCard",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "credit-card/{id}",
-    		"controller" => "CreditCard",
-    		"method" => "update",
-    	],[
+            "route" => "credit-card/{id}",
+            "controller" => "CreditCard",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "credit-card/{id}",
-    		"controller" => "CreditCard",
-    		"method" => "delete",
-    	],
+            "route" => "credit-card/{id}",
+            "controller" => "CreditCard",
+            "method" => "delete",
+        ],
 
     /*requests for 'currency' section*/
         [
             "type" => "post",
-    		"route" => "currency",
-    		"controller" => "Currency",
-    		"method" => "create",
-    	],[
+            "route" => "currency",
+            "controller" => "Currency",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "currencies",
-    		"controller" => "Currency",
-    		"method" => "index",
-    	],[
+            "route" => "currencies",
+            "controller" => "Currency",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "currencies-search",
-    		"controller" => "Currency",
-    		"method" => "search",
-    	],[
+            "route" => "currencies-search",
+            "controller" => "Currency",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "currency/{id}",
-    		"controller" => "Currency",
-    		"method" => "read",
-    	],[
+            "route" => "currency/{id}",
+            "controller" => "Currency",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "currency/{id}",
-    		"controller" => "Currency",
-    		"method" => "update",
-    	],[
+            "route" => "currency/{id}",
+            "controller" => "Currency",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "currency/{id}",
-    		"controller" => "Currency",
-    		"method" => "delete",
-    	],[
+            "route" => "currency/{id}",
+            "controller" => "Currency",
+            "method" => "delete",
+        ],[
             "type" => "post",
-    		"route" => "exchange",
-    		"controller" => "Currency",
-    		"method" => "createExchange",
-    	],[
+            "route" => "exchange",
+            "controller" => "Currency",
+            "method" => "createExchange",
+        ],[
             "type" => "put",
-    		"route" => "exchange/{id}",
-    		"controller" => "Currency",
-    		"method" => "updateExchange",
-    	],[
+            "route" => "exchange/{id}",
+            "controller" => "Currency",
+            "method" => "updateExchange",
+        ],[
             "type" => "delete",
-    		"route" => "exchange/{id}",
-    		"controller" => "Currency",
-    		"method" => "deleteExchange",
-    	],[
+            "route" => "exchange/{id}",
+            "controller" => "Currency",
+            "method" => "deleteExchange",
+        ],[
             "type" => "get",
-    		"route" => "exchanges",
-    		"controller" => "Currency",
-    		"method" => "readExchanges",
-    	],
+            "route" => "exchanges",
+            "controller" => "Currency",
+            "method" => "readExchanges",
+        ],
 
     /*requests for 'media' section*/
         [
             "type" => "post",
-    		"route" => "media",
-    		"controller" => "Media",
-    		"method" => "create",
-    	],[
+            "route" => "media",
+            "controller" => "Media",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "media",
-    		"controller" => "Media",
-    		"method" => "index",
-    	],[
+            "route" => "media",
+            "controller" => "Media",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "media-search",
-    		"controller" => "Media",
-    		"method" => "search",
-    	],[
+            "route" => "media-search",
+            "controller" => "Media",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "media/{id}",
-    		"controller" => "Media",
-    		"method" => "read",
-    	],[
+            "route" => "media/{id}",
+            "controller" => "Media",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "media/{id}",
-    		"controller" => "Media",
-    		"method" => "update",
-    	],[
+            "route" => "media/{id}",
+            "controller" => "Media",
+            "method" => "update",
+        ],[
             "type" => "put",
-    		"route" => "media/{id}",
-    		"controller" => "Media",
-    		"method" => "delete",
-    	],
+            "route" => "media/{id}",
+            "controller" => "Media",
+            "method" => "delete",
+        ],
 
     /*requests for 'documentation' section*/
         [
             "type" => "post",
-    		"route" => "documentation",
-    		"controller" => "Documentation",
-    		"method" => "create",
-    	],[
+            "route" => "documentation",
+            "controller" => "Documentation",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "documentation",
-    		"controller" => "Documentation",
-    		"method" => "index",
-    	],[
+            "route" => "documentation",
+            "controller" => "Documentation",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "documentation-search",
-    		"controller" => "Documentation",
-    		"method" => "search",
-    	],[
+            "route" => "documentation-search",
+            "controller" => "Documentation",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "documentation/{id}",
-    		"controller" => "Documentation",
-    		"method" => "read",
-    	],[
+            "route" => "documentation/{id}",
+            "controller" => "Documentation",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "documentation/{id}",
-    		"controller" => "Documentation",
-    		"method" => "update",
-    	],[
+            "route" => "documentation/{id}",
+            "controller" => "Documentation",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "documentation/{id}",
-    		"controller" => "Documentation",
-    		"method" => "delete",
-    	],
+            "route" => "documentation/{id}",
+            "controller" => "Documentation",
+            "method" => "delete",
+        ],
 
     /*requests for 'users' section and related activities*/
         [
             "type" => "post",
-    		"route" => "user",
-    		"controller" => "UserController",
-    		"method" => "create", "middlewares" => array(
+            "route" => "user",
+            "controller" => "UserController",
+            "method" => "create", "middlewares" => array(
                 "session_verification" => false
             ),
-    	],[
+        ],[
             "type" => "get",
-    		"route" => "signup-confirmation/{hash}",
-    		"controller" => "UserController",
-    		"method" => "signupConfirmation", "middlewares" => array(
+            "route" => "signup-confirmation/{hash}",
+            "controller" => "UserController",
+            "method" => "signupConfirmation", "middlewares" => array(
                 "session_verification" => false
             ),
-    	],[
+        ],[
             "type" => "post",
-    		"route" => "account-recovering",
-    		"controller" => "UserController",
-    		"method" => "accountRecovering", "middlewares" => array(
+            "route" => "account-recovering",
+            "controller" => "UserController",
+            "method" => "accountRecovering", "middlewares" => array(
                 "session_verification" => false
             ),
-    	],[
+        ],[
             "type" => "get",
-    		"route" => "account-recovering/{hash}",
-    		"controller" => "UserController",
-    		"method" => "getAccountRecovering", "middlewares" => array(
+            "route" => "account-recovering/{hash}",
+            "controller" => "UserController",
+            "method" => "getAccountRecovering", "middlewares" => array(
                 "session_verification" => false
             ),
-    	],[
+        ],[
             "type" => "post",
-    		"route" => "signup-confirmation/{iduser}",
-    		"controller" => "UserController",
-    		"method" => "postSignupConfirmation",
-    	],[
+            "route" => "signup-confirmation/{iduser}",
+            "controller" => "UserController",
+            "method" => "postSignupConfirmation",
+        ],[
             "type" => "post",
-    		"route" => "signup-denegation/{iduser}",
-    		"controller" => "UserController",
-    		"method" => "denySignup",
-    	],[
+            "route" => "signup-denegation/{iduser}",
+            "controller" => "UserController",
+            "method" => "denySignup",
+        ],[
             "type" => "get",
-    		"route" => "users",
-    		"controller" => "UserController",
-    		"method" => "index",
-    	],[
+            "route" => "users",
+            "controller" => "UserController",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "users-search",
-    		"controller" => "UserController",
-    		"method" => "search",
-    	],[
+            "route" => "users-search",
+            "controller" => "UserController",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "user/{id}/info",
-    		"controller" => "UserController",
-    		"method" => "read",
-    	],[
+            "route" => "user/{id}/info",
+            "controller" => "UserController",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "user/{id}",
-    		"controller" => "UserController",
-    		"method" => "update",
-    	],[
+            "route" => "user/{id}",
+            "controller" => "UserController",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "user/{id}",
-    		"controller" => "UserController",
-    		"method" => "delete",
-    	],[
+            "route" => "user/{id}",
+            "controller" => "UserController",
+            "method" => "delete",
+        ],[
             "type" => "get",
-    		"route" => "user/{id}/sessions",
-    		"controller" => "UserController",
-    		"method" => "sessionsHistory",
-    	],[
+            "route" => "user/{id}/sessions",
+            "controller" => "UserController",
+            "method" => "sessionsHistory",
+        ],[
             "type" => "get",
-    		"route" => "user/{id}/session/{idsession}/operations",
-    		"controller" => "UserController",
-    		"method" => "sessionOperations",
-    	],[
+            "route" => "user/{id}/session/{idsession}/operations",
+            "controller" => "UserController",
+            "method" => "sessionOperations",
+        ],[
             "type" => "post",
-    		"route" => "account-recovering-denegation/{iduser}",
-    		"controller" => "UserController",
-    		"method" => "denyAccountRecovering",
-    	],[
+            "route" => "account-recovering-denegation/{iduser}",
+            "controller" => "UserController",
+            "method" => "denyAccountRecovering",
+        ],[
             "type" => "post",
-    		"route" => "account-recovering/{iduser}",
-    		"controller" => "UserController",
-    		"method" => "proccessAccountRecovering",
-    	],[
+            "route" => "account-recovering/{iduser}",
+            "controller" => "UserController",
+            "method" => "proccessAccountRecovering",
+        ],[
             "type" => "put",
-    		"route" => "profile-data",
-    		"controller" => "UserController",
-    		"method" => "update",
-    	],[
+            "route" => "profile-data",
+            "controller" => "UserController",
+            "method" => "update",
+        ],[
             "type" => "get",
-    		"route" => "profile-data",
-    		"controller" => "UserController",
-    		"method" => "read",
-    	],
+            "route" => "profile-data",
+            "controller" => "UserController",
+            "method" => "read",
+        ],
 
     /*requests for 'organizations' section*/
         [
             "type" => "post",
-    		"route" => "organization",
-    		"controller" => "OrganizationController",
-    		"method" => "create",
-    	],[
+            "route" => "organization",
+            "controller" => "OrganizationController",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "organizations",
-    		"controller" => "OrganizationController",
-    		"method" => "index",
-    	],[
+            "route" => "organizations",
+            "controller" => "OrganizationController",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "organizations-search",
-    		"controller" => "OrganizationController",
-    		"method" => "search",
-    	],[
+            "route" => "organizations-search",
+            "controller" => "OrganizationController",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "organization/{id}/info",
-    		"controller" => "OrganizationController",
-    		"method" => "read",
-    	],[
+            "route" => "organization/{id}/info",
+            "controller" => "OrganizationController",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "organization/{id}",
-    		"controller" => "OrganizationController",
-    		"method" => "update",
-    	],[
+            "route" => "organization/{id}",
+            "controller" => "OrganizationController",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "organization/{id}",
-    		"controller" => "OrganizationController",
-    		"method" => "delete",
-    	],
+            "route" => "organization/{id}",
+            "controller" => "OrganizationController",
+            "method" => "delete",
+        ],
 
     /*requests for 'clients' section*/
         [
             "type" => "post",
-    		"route" => "customer",
-    		"controller" => "ClientController",
-    		"method" => "create",
-    	],[
+            "route" => "customer",
+            "controller" => "ClientController",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "customers",
-    		"controller" => "ClientController",
-    		"method" => "index",
-    	],[
+            "route" => "customers",
+            "controller" => "ClientController",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "customers-search",
-    		"controller" => "ClientController",
-    		"method" => "search",
-    	],[
+            "route" => "customers-search",
+            "controller" => "ClientController",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "customer/{id}/info",
-    		"controller" => "ClientController",
-    		"method" => "read",
-    	],[
+            "route" => "customer/{id}/info",
+            "controller" => "ClientController",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "customer/{id}",
-    		"controller" => "ClientController",
-    		"method" => "update",
-    	],[
+            "route" => "customer/{id}",
+            "controller" => "ClientController",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "customer/{id}",
-    		"controller" => "ClientController",
-    		"method" => "delete",
-    	],
+            "route" => "customer/{id}",
+            "controller" => "ClientController",
+            "method" => "delete",
+        ],
 
     /*requests for 'products-and-services' section*/
         [
             "type" => "post",
-    		"route" => "product",
-    		"controller" => "Product",
-    		"method" => "create",
-    	],[
+            "route" => "product",
+            "controller" => "Product",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "products",
-    		"controller" => "Product",
-    		"method" => "index",
-    	],[
+            "route" => "products",
+            "controller" => "Product",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "products-search",
-    		"controller" => "Product",
-    		"method" => "search",
-    	],[
+            "route" => "products-search",
+            "controller" => "Product",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "product/{id}",
-    		"controller" => "Product",
-    		"method" => "read",
-    	],[
+            "route" => "product/{id}",
+            "controller" => "Product",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "product/{id}",
-    		"controller" => "Product",
-    		"method" => "update",
-    	],[
+            "route" => "product/{id}",
+            "controller" => "Product",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "product/{id}",
-    		"controller" => "Product",
-    		"method" => "delete",
-    	],[
+            "route" => "product/{id}",
+            "controller" => "Product",
+            "method" => "delete",
+        ],[
             "type" => "get",
-    		"route" => "product/{id}/structure",
-    		"controller" => "Product",
-    		"method" => "getEstructure",
-    	],[
+            "route" => "product/{id}/structure",
+            "controller" => "Product",
+            "method" => "getEstructure",
+        ],[
             "type" => "put",
-    		"route" => "product/{id}/structure",
-    		"controller" => "Product",
-    		"method" => "setEstructure",
-    	],
+            "route" => "product/{id}/structure",
+            "controller" => "Product",
+            "method" => "setEstructure",
+        ],
 
     /*requests for 'settings (global and custom)' section*/
         [
             "type" => "put",
-    		"route" => "global-preferences/logo",
-    		"controller" => "Preferences",
-    		"method" => "updateLogo",
-    	],[
+            "route" => "global-preferences/logo",
+            "controller" => "Preferences",
+            "method" => "updateLogo",
+        ],[
             "type" => "put",
-    		"route" => "user/{id}/system-logo",
-    		"controller" => "Preferences",
-    		"method" => "personalLogo",
-    	],[
+            "route" => "user/{id}/system-logo",
+            "controller" => "Preferences",
+            "method" => "personalLogo",
+        ],[
             "type" => "put",
-    		"route" => "global-preferences/user-register",
-    		"controller" => "Preferences",
-    		"method" => "setLetRegisterUser",
-    	],[
+            "route" => "global-preferences/user-register",
+            "controller" => "Preferences",
+            "method" => "setLetRegisterUser",
+        ],[
             "type" => "put",
-    		"route" => "global-preferences/recover-account-mechanism",
-    		"controller" => "Preferences",
-    		"method" => "recoverAccountMechanism",
-    	],[
+            "route" => "global-preferences/recover-account-mechanism",
+            "controller" => "Preferences",
+            "method" => "recoverAccountMechanism",
+        ],[
             "type" => "put",
-    		"route" => "user/{id}/amount-items-progressive-requests",
-    		"controller" => "Preferences",
-    		"method" => "amountItemsProgressiveRequests",
-    	],[
+            "route" => "amount-items-progressive-requests",
+            "controller" => "Preferences",
+            "method" => "amountItemsProgressiveRequests",
+        ],[
             "type" => "put",
-    		"route" => "tab-title-preferences",
-    		"controller" => "Preferences",
-    		"method" => "tabTitle",
-    	],[
+            "route" => "tab-title-preferences",
+            "controller" => "Preferences",
+            "method" => "tabTitle",
+        ],[
             "type" => "put",
-    		"route" => "global-preferences/tab-icon",
-    		"controller" => "Preferences",
-    		"method" => "updateTabIcon",
-    	],[
+            "route" => "global-preferences/tab-icon",
+            "controller" => "Preferences",
+            "method" => "updateTabIcon",
+        ],[
             "type" => "put",
-    		"route" => "user/{id}/system-tab-icon",
-    		"controller" => "Preferences",
-    		"method" => "personalTabIcon",
-    	],[
+            "route" => "user/{id}/system-tab-icon",
+            "controller" => "Preferences",
+            "method" => "personalTabIcon",
+        ],[
             "type" => "put",
-    		"route" => "user/{id}/use-global-tab-icon",
-    		"controller" => "Preferences",
-    		"method" => "useGlobalTabIcon",
-    	],[
+            "route" => "user/{id}/use-global-tab-icon",
+            "controller" => "Preferences",
+            "method" => "useGlobalTabIcon",
+        ],[
             "type" => "put",
-    		"route" => "global-preferences/terms-of-use-and-privacy-policy",
-    		"controller" => "Preferences",
-    		"method" => "termsAndPrivacy",
-    	],[
+            "route" => "global-preferences/terms-of-use-and-privacy-policy",
+            "controller" => "Preferences",
+            "method" => "termsAndPrivacy",
+        ],[
             "type" => "put",
-    		"route" => "chat-sound-alert",
-    		"controller" => "Preferences",
-    		"method" => "chatSoundAlert",
-    	],[
+            "route" => "chat-sound-alert",
+            "controller" => "Preferences",
+            "method" => "chatSoundAlert",
+        ],[
             "type" => "put",
-    		"route" => "type-content-signup-email",
-    		"controller" => "Preferences",
-    		"method" => "typeContentSignupEmail",
-    	],[
+            "route" => "type-content-signup-email",
+            "controller" => "Preferences",
+            "method" => "typeContentSignupEmail",
+        ],[
             "type" => "put",
-    		"route" => "account-recovering-mechanism",
-    		"controller" => "Preferences",
-    		"method" => "accountRecoveringMechanism",
-    	],[
+            "route" => "account-recovering-mechanism",
+            "controller" => "Preferences",
+            "method" => "accountRecoveringMechanism",
+        ],[
             "type" => "put",
-    		"route" => "account-recovering-mechanism-automatic",
-    		"controller" => "Preferences",
-    		"method" => "accountRecoveringMechanismAutomatic",
-    	],[
+            "route" => "account-recovering-mechanism-automatic",
+            "controller" => "Preferences",
+            "method" => "accountRecoveringMechanismAutomatic",
+        ],[
             "type" => "put",
-    		"route" => "general-session-duration",
-    		"controller" => "Preferences",
-    		"method" => "generalSessionDuration",
-    	],[
+            "route" => "general-session-duration",
+            "controller" => "Preferences",
+            "method" => "generalSessionDuration",
+        ],[
             "type" => "put",
-    		"route" => "custom-session-duration",
-    		"controller" => "Preferences",
-    		"method" => "customSessionDuration",
-    	],[
+            "route" => "custom-session-duration",
+            "controller" => "Preferences",
+            "method" => "customSessionDuration",
+        ],[
             "type" => "put",
-    		"route" => "default-config-inactivity-time-limit",
-    		"controller" => "Preferences",
-    		"method" => "defaultConfigInactivityTimeLimit",
-    	],[
+            "route" => "default-config-inactivity-time-limit",
+            "controller" => "Preferences",
+            "method" => "defaultConfigInactivityTimeLimit",
+        ],[
             "type" => "put",
-    		"route" => "custom-config-inactivity-time-limit",
-    		"controller" => "Preferences",
-    		"method" => "customConfigInactivityTimeLimit",
-    	],[
+            "route" => "custom-config-inactivity-time-limit",
+            "controller" => "Preferences",
+            "method" => "customConfigInactivityTimeLimit",
+        ],[
             "type" => "put",
             "route" => "default-language-system",
             "controller" => "Preferences",
@@ -752,390 +752,397 @@ $requests = array(
     /*requests for 'administrative divisions' section*/
         [
             "type" => "post",
-    		"route" => "administrative-division",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "create",
-    	],[
+            "route" => "administrative-division",
+            "controller" => "AdministrativeDivision",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "administrative-divisions",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "index",
-    	],[
+            "route" => "administrative-divisions",
+            "controller" => "AdministrativeDivision",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "administrative-divisions-search",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "search",
-    	],[
+            "route" => "administrative-divisions-search",
+            "controller" => "AdministrativeDivision",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "administrative-division/{id}",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "read",
-    	],[
+            "route" => "administrative-division/{id}",
+            "controller" => "AdministrativeDivision",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "administrative-division/{id}",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "update",
-    	],[
+            "route" => "administrative-division/{id}",
+            "controller" => "AdministrativeDivision",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "administrative-division/{id}",
-    		"controller" => "AdministrativeDivision",
-    		"method" => "delete",
-    	],
+            "route" => "administrative-division/{id}",
+            "controller" => "AdministrativeDivision",
+            "method" => "delete",
+        ],
 
     /*requests for 'instances of administrative divisions' section*/
         [
             "type" => "post",
-    		"route" => "administrative-division-instance",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "create",
-    	],[
+            "route" => "administrative-division-instance",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "administrative-division-instances",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "index",
-    	],[
+            "route" => "administrative-division-instances",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "administrative-division-instances-search",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "search",
-    	],[
+            "route" => "administrative-division-instances-search",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "administrative-division-instance/{id}",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "read",
-    	],[
+            "route" => "administrative-division-instance/{id}",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "administrative-division-instance/{id}",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "update",
-    	],[
+            "route" => "administrative-division-instance/{id}",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "administrative-division-instance/{id}",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "delete",
-    	],[
+            "route" => "administrative-division-instance/{id}",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "delete",
+        ],[
             "type" => "get",
-    		"route" => "administrative-division-instances-autocomplete",
-    		"controller" => "AdministrativeDivisionInstance",
-    		"method" => "autocomplete",
-    	],
+            "route" => "administrative-division-instances-autocomplete",
+            "controller" => "AdministrativeDivisionInstance",
+            "method" => "autocomplete",
+        ],
 
     /*requests for 'threads' section*/
         [
             "type" => "post",
-    		"route" => "thread",
-    		"controller" => "ThreadController",
-    		"method" => "create",
-    	],[
+            "route" => "thread",
+            "controller" => "ThreadController",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "threads",
-    		"controller" => "ThreadController",
-    		"method" => "index",
-    	],[
+            "route" => "threads",
+            "controller" => "ThreadController",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "threads-search",
-    		"controller" => "ThreadController",
-    		"method" => "search",
-    	],[
+            "route" => "threads-search",
+            "controller" => "ThreadController",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "thread/{id}",
-    		"controller" => "ThreadController",
-    		"method" => "read",
-    	],[
+            "route" => "thread/{id}",
+            "controller" => "ThreadController",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "thread/{id}",
-    		"controller" => "ThreadController",
-    		"method" => "update",
-    	],[
+            "route" => "thread/{id}",
+            "controller" => "ThreadController",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "thread/{id}",
-    		"controller" => "ThreadController",
-    		"method" => "delete",
-    	],[
+            "route" => "thread/{id}",
+            "controller" => "ThreadController",
+            "method" => "delete",
+        ],[
             "type" => "post",
-    		"route" => "thread/{id}/join-request",
-    		"controller" => "ThreadController",
-    		"method" => "joinRequest",
-    	],[
+            "route" => "thread/{id}/join-request",
+            "controller" => "ThreadController",
+            "method" => "joinRequest",
+        ],[
             "type" => "delete",
-    		"route" => "thread/{id}/join-request",
-    		"controller" => "ThreadController",
-    		"method" => "deleteJoinned",
-    	],[
+            "route" => "thread/{id}/join-request",
+            "controller" => "ThreadController",
+            "method" => "deleteJoinned",
+        ],[
             "type" => "delete",
-    		"route" => "thread/{id}/speaker",
-    		"controller" => "ThreadController",
-    		"method" => "removeMe",
-    	],[
+            "route" => "thread/{id}/speaker",
+            "controller" => "ThreadController",
+            "method" => "removeMe",
+        ],[
             "type" => "get",
-    		"route" => "thread/{id}/messages",
-    		"controller" => "ThreadController",
-    		"method" => "messages",
-    	],[
+            "route" => "thread/{id}/messages",
+            "controller" => "ThreadController",
+            "method" => "messages",
+        ],[
             "type" => "get",
-    		"route" => "thread/{id}/recent-messages",
-    		"controller" => "ThreadController",
-    		"method" => "recentMessages",
-    	],[
+            "route" => "thread/{id}/recent-messages",
+            "controller" => "ThreadController",
+            "method" => "recentMessages",
+        ],[
             "type" => "post",
-    		"route" => "thread/{id}/message",
-    		"controller" => "ThreadController",
-    		"method" => "message",
-    	],[
+            "route" => "thread/{id}/message",
+            "controller" => "ThreadController",
+            "method" => "message",
+        ],[
             "type" => "post",
-    		"route" => "thread/{id}/speaker",
-    		"controller" => "ThreadController",
-    		"method" => "createSpeaker",
-    	],[
+            "route" => "thread/{id}/speaker",
+            "controller" => "ThreadController",
+            "method" => "createSpeaker",
+        ],[
             "type" => "post",
-    		"route" => "thread/{id}/admins",
-    		"controller" => "ThreadController",
-    		"method" => "createAdmins",
-    	],[
+            "route" => "thread/{id}/admins",
+            "controller" => "ThreadController",
+            "method" => "createAdmins",
+        ],[
             "type" => "delete",
-    		"route" => "thread/{id}/join-request/{idjoinrq}",
-    		"controller" => "ThreadController",
-    		"method" => "removeJoinRequest",
-    	],[
+            "route" => "thread/{id}/join-request/{idjoinrq}",
+            "controller" => "ThreadController",
+            "method" => "removeJoinRequest",
+        ],[
             "type" => "delete",
-    		"route" => "thread/{id}/admin/{iduser}",
-    		"controller" => "ThreadController",
-    		"method" => "removeAdmin",
-    	],[
+            "route" => "thread/{id}/admin/{iduser}",
+            "controller" => "ThreadController",
+            "method" => "removeAdmin",
+        ],[
             "type" => "put",
-    		"route" => "thread/{id}/admin/{iduser}/permises",
-    		"controller" => "ThreadController",
-    		"method" => "updatePermises",
-    	],
+            "route" => "thread/{id}/admin/{iduser}/permises",
+            "controller" => "ThreadController",
+            "method" => "updatePermises",
+        ],
 
     /*requests for 'sounds' section*/
         [
             "type" => "post",
-    		"route" => "sound",
-    		"controller" => "Sound",
-    		"method" => "create",
-    	],[
+            "route" => "sound",
+            "controller" => "Sound",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "sounds",
-    		"controller" => "Sound",
-    		"method" => "index",
-    	],[
+            "route" => "sounds",
+            "controller" => "Sound",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "sounds-search",
-    		"controller" => "Sound",
-    		"method" => "search",
-    	],[
+            "route" => "sounds-search",
+            "controller" => "Sound",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "sound/{id}",
-    		"controller" => "Sound",
-    		"method" => "read",
-    	],[
+            "route" => "sound/{id}",
+            "controller" => "Sound",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "sound/{id}",
-    		"controller" => "Sound",
-    		"method" => "update",
-    	],[
+            "route" => "sound/{id}",
+            "controller" => "Sound",
+            "method" => "update",
+        ],[
             "type" => "post",
-    		"route" => "sound/{id}/file",
-    		"controller" => "Sound",
-    		"method" => "updateFile",
-    	],[
+            "route" => "sound/{id}/file",
+            "controller" => "Sound",
+            "method" => "updateFile",
+        ],[
             "type" => "delete",
-    		"route" => "sound/{id}",
-    		"controller" => "Sound",
-    		"method" => "delete",
-    	],
+            "route" => "sound/{id}",
+            "controller" => "Sound",
+            "method" => "delete",
+        ],
 
     /*requests for 'operations' section*/
         [
             "type" => "post",
-    		"route" => "operation",
-    		"controller" => "Operation",
-    		"method" => "create",
-    	],[
+            "route" => "operation",
+            "controller" => "Operation",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "operations",
-    		"controller" => "Operation",
-    		"method" => "index",
-    	],[
+            "route" => "operations",
+            "controller" => "Operation",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "operations-search",
-    		"controller" => "Operation",
-    		"method" => "search",
-    	],[
+            "route" => "operations-search",
+            "controller" => "Operation",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "operation/{id}",
-    		"controller" => "Operation",
-    		"method" => "read",
-    	],[
+            "route" => "operation/{id}",
+            "controller" => "Operation",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "operation/{id}",
-    		"controller" => "Operation",
-    		"method" => "update",
-    	],[
+            "route" => "operation/{id}",
+            "controller" => "Operation",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "operation/{id}",
-    		"controller" => "Operation",
-    		"method" => "delete",
-    	],
+            "route" => "operation/{id}",
+            "controller" => "Operation",
+            "method" => "delete",
+        ],
 
     /*requests for 'events' section*/
         [
             "type" => "post",
-    		"route" => "event",
-    		"controller" => "EventController",
-    		"method" => "create",
-    	],[
+            "route" => "event",
+            "controller" => "EventController",
+            "method" => "create",
+        ],[
             "type" => "get",
-    		"route" => "events",
-    		"controller" => "EventController",
-    		"method" => "index",
-    	],[
+            "route" => "events",
+            "controller" => "EventController",
+            "method" => "index",
+        ],[
             "type" => "get",
-    		"route" => "events-search",
-    		"controller" => "EventController",
-    		"method" => "search",
-    	],[
+            "route" => "events-search",
+            "controller" => "EventController",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "event/{id}",
-    		"controller" => "EventController",
-    		"method" => "read",
-    	],[
+            "route" => "event/{id}",
+            "controller" => "EventController",
+            "method" => "read",
+        ],[
             "type" => "put",
-    		"route" => "event/{id}",
-    		"controller" => "EventController",
-    		"method" => "update",
-    	],[
+            "route" => "event/{id}",
+            "controller" => "EventController",
+            "method" => "update",
+        ],[
             "type" => "delete",
-    		"route" => "event/{id}",
-    		"controller" => "EventController",
-    		"method" => "delete",],
+            "route" => "event/{id}",
+            "controller" => "EventController",
+            "method" => "delete",],
 
     /*requests for 'files' section*/
         [
             "type" => "post",
-    		"route" => "directories",
-    		"controller" => "Cloud",
-    		"method" => "createDirs",
-    	],[
+            "route" => "directories",
+            "controller" => "FileManager",
+            "method" => "createDirs",
+        ],[
             "type" => "post",
-    		"route" => "files",
-    		"controller" => "Cloud",
-    		"method" => "createFiles",
-    	],[
+            "route" => "files",
+            "controller" => "FileManager",
+            "method" => "createFiles",
+        ],[
             "type" => "post",
-    		"route" => "files-upload-info",
-    		"controller" => "Cloud",
-    		"method" => "uploadFilesInfo",
-    	],[
+            "route" => "files-upload-info",
+            "controller" => "FileManager",
+            "method" => "uploadFilesInfo",
+        ],[
             "type" => "post",
-    		"route" => "files-upload-file/{id}",
-    		"controller" => "Cloud",
-    		"method" => "uploadFilesFile",
-    	],[
+            "route" => "files-upload-file/{id}",
+            "controller" => "FileManager",
+            "method" => "uploadFilesFile",
+        ],[
             "type" => "get",
-    		"route" => "directory/{id}/content",
-    		"controller" => "Cloud",
-    		"method" => "directoryContent",
-    	],[
+            "route" => "directory/{id}/content",
+            "controller" => "FileManager",
+            "method" => "directoryContent",
+        ],[
             "type" => "delete",
-    		"route" => "directory/{id}",
-    		"controller" => "Cloud",
-    		"method" => "removeDir",
-    	],[
+            "route" => "directory/{id}",
+            "controller" => "FileManager",
+            "method" => "removeDir",
+        ],[
             "type" => "delete",
-    		"route" => "file/{id}",
-    		"controller" => "Cloud",
-    		"method" => "removeFile",
-    	],[
+            "route" => "file/{id}",
+            "controller" => "FileManager",
+            "method" => "removeFile",
+        ],[
             "type" => "put",
-    		"route" => "directory/{id}",
-    		"controller" => "Cloud",
-    		"method" => "updateDir",
-    	],[
+            "route" => "directory/{id}",
+            "controller" => "FileManager",
+            "method" => "updateDir",
+        ],[
             "type" => "put",
-    		"route" => "file/{id}",
-    		"controller" => "Cloud",
-    		"method" => "updateFile",
-    	],[
+            "route" => "file/{id}",
+            "controller" => "FileManager",
+            "method" => "updateFile",
+        ],[
             "type" => "delete",
-    		"route" => "files",
-    		"controller" => "Cloud",
-    		"method" => "removeFiles",
-    	],[
+            "route" => "files",
+            "controller" => "FileManager",
+            "method" => "removeFiles",
+        ],[
             "type" => "delete",
-    		"route" => "directories",
-    		"controller" => "Cloud",
-    		"method" => "removeDirectories",
-    	],[
+            "route" => "directories",
+            "controller" => "FileManager",
+            "method" => "removeDirectories",
+        ],[
             "type" => "get",
-    		"route" => "cloud-search",
-    		"controller" => "Cloud",
-    		"method" => "search",
-    	],[
+            "route" => "cloud-search",
+            "controller" => "FileManager",
+            "method" => "search",
+        ],[
             "type" => "get",
-    		"route" => "directory/{id}/parents-line",
-    		"controller" => "Cloud",
-    		"method" => "parentsLine",
-    	],[
+            "route" => "directory/{id}/parents-line",
+            "controller" => "FileManager",
+            "method" => "parentsLine",
+        ],[
             "type" => "get",
-    		"route" => "file/{id}/download",
-    		"controller" => "Cloud",
-    		"method" => "downloadFile",
-    	],[
+            "route" => "file/{id}/download",
+            "controller" => "FileManager",
+            "method" => "downloadFile",
+        ],[
             "type" => "get",
-    		"route" => "directory/{id}/download",
-    		"controller" => "Cloud",
-    		"method" => "downloadDirectory",
-    	],[
+            "route" => "directory/{id}/download",
+            "controller" => "FileManager",
+            "method" => "downloadDirectory",
+        ],[
             "type" => "post",
-    		"route" => "files-and-directories-compression",
-    		"controller" => "Cloud",
-    		"method" => "compression",
-    	],[
+            "route" => "files-and-directories-compression",
+            "controller" => "FileManager",
+            "method" => "compression",
+        ],[
             "type" => "post",
-    		"route" => "set-selected-items-parent",
-    		"controller" => "Cloud",
-    		"method" => "setParent",
-    	],[
+            "route" => "set-selected-items-parent",
+            "controller" => "FileManager",
+            "method" => "setParent",
+        ],[
             "type" => "post",
-    		"route" => "copy-items-to",
-    		"controller" => "Cloud",
-    		"method" => "copyItemsTo",
-    	],
+            "route" => "copy-items-to",
+            "controller" => "FileManager",
+            "method" => "copyItemsTo",
+        ],
 
     /*requests for 'session' activities*/
         [
             "type" => "post",
-    		"route" => "session",
-    		"controller" => "Login",
-    		"method" => "create", "middlewares" => array(
+            "route" => "session",
+            "controller" => "Session",
+            "method" => "create", "middlewares" => array(
                 "session_verification" => false
             )
         ],[
             "type" => "get",
-    		"route" => "sign-out",
-    		"controller" => "Login",
-    		"method" => "logout", "middlewares" => array(
+            "route" => "sign-out",
+            "controller" => "Session",
+            "method" => "logout", "middlewares" => array(
                 "session_verification" => false
             )
         ],[
             "type" => "post",
-    		"route" => "unlock-screen",
-    		"controller" => "Login",
-    		"method" => "unlock_screen", "middlewares" => array(
+            "route" => "unlock-screen",
+            "controller" => "Session",
+            "method" => "unlock_screen", "middlewares" => array(
                 "session_verification" => false
             )
         ],[
             "type" => "get",
-    		"route" => "inactivity",
-    		"controller" => "Login",
-    		"method" => "inactivity",
+            "route" => "inactivity",
+            "controller" => "Session",
+            "method" => "inactivity",
         ],[
             "type" => "post",
             "route" => "tkns",
-            "controller" => "Login",
+            "controller" => "Session",
             "method" => "remove_tokens",
+        ],[
+            "type" => "get",
+            "route" => "session-monitor",
+            "controller" => "Session",
+            "method" => "SessionMonitor", "middlewares" => array(
+                "session_verification" => false
+            )
         ],
 
     /*requests for 'developer' section*/
@@ -1143,25 +1150,38 @@ $requests = array(
             "type" => "put",
             "route" => "section/{idsection}/use-of-status",
             "controller" => "Section",
-            "method" => "useOfStatus", 
+            "method" => "useOfStatus",
         ],
         [
             "type" => "put",
             "route" => "section/{idsection}/default-statuses-values",
             "controller" => "Section",
-            "method" => "setDefaultStatusesValues", 
+            "method" => "setDefaultStatusesValues",
         ],
         [
             "type" => "put",
             "route" => "section/{idsection}/permitted-statuses-values",
             "controller" => "Section",
-            "method" => "setPermittedStatusesValues", 
+            "method" => "setPermittedStatusesValues",
         ],
         [
             "type" => "put",
             "route" => "section/{idsection}/multiple-statuses",
             "controller" => "Section",
-            "method" => "multipleStatuses", 
+            "method" => "multipleStatuses",
+        ],
+
+    /*other requests...*/
+        [
+            "type" => "get",
+            "route" => "code-to-id/{context}",
+            "controller" => "Other",
+            "method" => "code_to_id",
+        ],
+        [
+            "type" => "get",
+            "route" => "id-to-code/{context}",
+            "controller" => "Other",
+            "method" => "id_to_code",
         ],
 );
-?>

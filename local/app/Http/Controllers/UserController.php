@@ -19,8 +19,10 @@ use App\Models\UserPreferences;
 use App\Models\MasterStatus;
 use App\Models\PanelAdminOperation;
 
-class UserController extends Controller{
-    public function create(Request $request){
+class UserController extends Controller
+{
+    public function create(Request $request)
+    {
         $fullname = $request->input("data.fullname");
         $nick = $request->input("data.nick");
         $pass = $request->input("data.pass");
@@ -29,29 +31,29 @@ class UserController extends Controller{
 
         $exists = User::where("email", "=", $email)->orWhere("nick", "=", $nick)->get();
 
-        if(count($exists) > 0){
+        if (count($exists) > 0) {
             $exists = $exists[0];
 
-            if($exists->nick == $nick){
+            if ($exists->nick == $nick) {
                 return \Response::json([
                     "message"=>HTTP_message("http_msg_nick_already_used")
                 ], 401);
-            }else{        
+            } else {
                 return \Response::json([
                     "message"=>HTTP_message("http_msg_nick_email_used")
-                ], 401);        
+                ], 401);
             }
         }
 
-        if(strpos($profile_img, "default") === false){
+        if (strpos($profile_img, "default") === false) {
             $name_img = rand_string(true).".jpeg";
             $fullroute = SYSTEM_DIR_PROFILE_IMGS.$name_img;
             base64_to_img($profile_img, $fullroute);
             //create thumbnails
             //$imagick = new \Imagick($fullroute);
             //$imagick->thumbnailImage(100, 100, true, true);
-        }else{
-            $name_img = "default.jpg";   
+        } else {
+            $name_img = "default.jpg";
         }
 
         $newuser = new User;
@@ -65,7 +67,7 @@ class UserController extends Controller{
         $newuser->__create__();
         $statuses = $request->input("data.status");
 
-        if(gettype($statuses) != "array"){
+        if (gettype($statuses) != "array") {
             $statuses = array();
         }
 
@@ -74,7 +76,7 @@ class UserController extends Controller{
         foreach ($statuses as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0 && !($request->has("data.role") && $st[0]->code == "SIGNUP_CONFIRMATION")){
+            if (count($st)>0 && !($request->has("data.role") && $st[0]->code == "SIGNUP_CONFIRMATION")) {
                 $newuser->create_Status([
                     "id_status"=>$value
                 ]);
@@ -86,7 +88,7 @@ class UserController extends Controller{
         $newuser->save();
         $coms = $request->input("data.media");
 
-        if(gettype($coms) != "array"){
+        if (gettype($coms) != "array") {
             $coms = array();
         }
 
@@ -111,7 +113,7 @@ class UserController extends Controller{
         $preferences->format_show_items = $globalPreferences["format_show_items"];
         $preferences->__create__();
 
-        if($request->has("data.role")){
+        if ($request->has("data.role")) {
             $newuser->create_Role([
                 "id_role"=>$request->input("data.role")
             ]);
@@ -120,14 +122,14 @@ class UserController extends Controller{
         $content = "";
         $append_http_msg = "";
 
-        if($request->has("data.role")){
+        if ($request->has("data.role")) {
             $content = "<p>Welcome to Admin-Panel</p><br>".
                         "<p><strong>Email: </strong>".$email."</p>".
                         "<p><strong>Nick: </strong>".$nick."</p>".
                         "<p><strong>Password: </strong>".$pass."</p><br>".
                         "<p>We recommend you to change the password as soon as possible.</p>".
                         "<p><strong><a href = '".WEB_URL.WEB_ROOT."'>Login link</a></strong></p>";
-        }else{
+        } else {
             switch ($globalPreferences['content_registration_email']) {
                 case 'link':{
                     $hash = rand_string();
@@ -159,10 +161,7 @@ class UserController extends Controller{
             "content" => $content
         ]);
 
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_USER"]
-        ]);
+        operation("CREATE_USER");
 
         return \Response::json([
             'item' => array(
@@ -177,7 +176,8 @@ class UserController extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, User::all(), [
             "fullname" => [],
             "profile_img" => [],
@@ -186,7 +186,8 @@ class UserController extends Controller{
         ], "READ_USERS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = User::where("fullname", "LIKE", "%".$keywords_search."%")
                             ->orWhere("nick", "LIKE", "%".$keywords_search."%")
@@ -200,8 +201,9 @@ class UserController extends Controller{
         ], "SEARCH_USERS");
     }
 
-    public function read(Request $request, $id = null){
-        if($id == null){
+    public function read(Request $request, $id = null)
+    {
+        if ($id == null) {
             $id = $request->session()->get("iduser");
         }
 
@@ -231,15 +233,15 @@ class UserController extends Controller{
                 "value"=>$value->value
             ));
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_USER"]
-        ]);
+
+        operation("READ_USER");
 
         return \Response::json($response, 200);
     }
 
-    public function update(Request $request, $id = null){
-        if($id == null){
+    public function update(Request $request, $id = null)
+    {
+        if ($id == null) {
             $id = $request->session()->get("iduser");
         }
 
@@ -250,13 +252,13 @@ class UserController extends Controller{
         $email = $request->input("data.email");
         $profile_img = $request->input("data.profile_img");
 
-        if(strpos($profile_img, "assets") === false && strpos($profile_img, "default.jpg") === false){
+        if (strpos($profile_img, "assets") === false && strpos($profile_img, "default.jpg") === false) {
             $name_img = rand_string(true).".jpeg";
             base64_to_img($profile_img, SYSTEM_DIR_PROFILE_IMGS.$name_img);
             $edituser->profile_img = $name_img;
             //create thumbnails
             /**/
-        }else if(strpos($profile_img, "default.jpg") != false){
+        } elseif (strpos($profile_img, "default.jpg") != false) {
             $name_img = "default.jpg";
             $edituser->profile_img = $name_img;
         }
@@ -265,21 +267,21 @@ class UserController extends Controller{
         $edituser->nick = $nick;
         $edituser->email = $email;
 
-        if(strlen($pass)>0){
+        if (strlen($pass)>0) {
             require_once "__phphash/lib/password.php";
             $edituser->hash_pass = password_hash($pass, PASSWORD_BCRYPT);
         }
 
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) == "array"){
+        if (gettype($lstatus) == "array") {
             $available_for_use = false;
             $edituser->delete_Status();
 
             foreach ($lstatus as $key => $value) {
                 $st = MasterStatus::where("id", "=", $value)->get();
 
-                if(count($st)>0){
+                if (count($st)>0) {
                     $edituser->create_Status([
                         "id_status"=>$value
                     ]);
@@ -293,7 +295,7 @@ class UserController extends Controller{
         $edituser->__update__();
         $coms = $request->input("data.media");
 
-        if(gettype($coms) != "array"){
+        if (gettype($coms) != "array") {
             $coms = array();
         }
 
@@ -306,39 +308,37 @@ class UserController extends Controller{
         }
 
 
-        if($request->has("data.role")){
+        if ($request->has("data.role")) {
             $edituser->delete_Role();
             $edituser->create_Role([
                 "id_role"=>$request->input("data.role")
             ]);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_USER"]
-        ]);
+        operation("UPDATE_USER");
 
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = User::where("id", "=", $id)->get()[0];
         $item->__delete__();
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_USER"]
-        ]);
+        operation("DELETE_USER");
 
         return \Response::json(array(), 200);
     }
 
-    public function accountRecovering(Request $request){
+    public function accountRecovering(Request $request)
+    {
         $email = $request->input("data.email");
         $us = User::where("email", "=", $email)->get();
 
-        if(count($us)>0){
+        if (count($us)>0) {
             $us = $us[0];
 
-            if($us->available_for_use == "0"){
+            if ($us->available_for_use == "0") {
                 return \Response::json(array(
                 ), 400);
             }
@@ -346,10 +346,10 @@ class UserController extends Controller{
             include FILE_ADMIN_PANEL_SETTINGS;
             $append_http_msg = "";
 
-            if($globalPreferences["account_recovering_mechanism_automatic"] == "0"){
+            if ($globalPreferences["account_recovering_mechanism_automatic"] == "0") {
                 $id_status_account_recovering = $GLOBALS["__STATUS__"]["ACCOUNT_RECOVERING"];
 
-                if(count(UserStatus::where("id_item", "=", $us->id)->where("id_status", "=", $id_status_account_recovering)->get()) == 0){
+                if (count(UserStatus::where("id_item", "=", $us->id)->where("id_status", "=", $id_status_account_recovering)->get()) == 0) {
                     $us->create_Status([
                         "id_status" => $id_status_account_recovering
                     ]);
@@ -363,7 +363,7 @@ class UserController extends Controller{
                 ]);
 
                 $append_http_msg = HTTP_message("str_admin_is_gonna_do_something");
-            }else if($globalPreferences["account_recovering_mechanism"] == "link"){
+            } elseif ($globalPreferences["account_recovering_mechanism"] == "link") {
                 $hash = rand_string();
                 $us->create_AccountRecovering([
                     "hash"  => $hash
@@ -376,7 +376,7 @@ class UserController extends Controller{
                 ]);
 
                 $append_http_msg = HTTP_message("str_recovering_account_link_sent");
-            }else{
+            } else {
                 $new_password = substr(rand_string(), 0, 8);
                 $us->hash_pass = password_hash($new_password, PASSWORD_BCRYPT);
                 $us->__update__();
@@ -393,20 +393,21 @@ class UserController extends Controller{
             return \Response::json(array(
                 "message" => HTTP_message("http_msg_account_recovering_done")." ".$append_http_msg
             ), 200);
-        }else{
+        } else {
             return \Response::json(array(
                 "message" => HTTP_message("http_msg_user_doesnt_exist")
             ), 404);
         }
     }
 
-    public function sessionsHistory(Request $request, $id){
+    public function sessionsHistory(Request $request, $id)
+    {
         $activas = UserSession::where("id_user", "=", $id)->get();
         $terminadas = DeletedUserSession::all();
         $tmp =  [];
 
         foreach ($terminadas as $key => $value) {
-            if(json_decode($value->info)->id_user == $id){
+            if (json_decode($value->info)->id_user == $id) {
                 $tmp[json_decode($value->info)->id] = json_decode($value->info);
             }
         }
@@ -424,8 +425,9 @@ class UserController extends Controller{
             array_push($array2, $value);
         }
 
-        function order($x, $z){
-            if($x->id == $z->id){
+        function order($x, $z)
+        {
+            if ($x->id == $z->id) {
                 return 0;
             }
 
@@ -433,67 +435,66 @@ class UserController extends Controller{
         }
 
         $return = array_merge($array1, $array2);
-        usort($return, function($x, $z){
-            if($x->id == $z->id){
+        usort($return, function ($x, $z) {
+            if ($x->id == $z->id) {
                 return 0;
             }
 
             return $x->id < $z->id?-1:1;
         });
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_USER_SESSIONS"]
-        ]);
+        operation("READ_USER_SESSIONS");
 
         return \Response::json(array(
             "items" => $return,
         ), 200);
     }
 
-    public function sessionOperations(Request $request, $id, $idsession){
+    public function sessionOperations(Request $request, $id, $idsession)
+    {
         $session = DeletedUserSession::where("id_item", "=", $idsession)->get();
         $activities = array();
 
-        if(count($session) == 0){
+        if (count($session) == 0) {
             $session = UserSession::where("id", "=", $idsession)->get();
 
-            if(count($session) > 0){
+            if (count($session) > 0) {
                 $items = UserSessionActivity::where("id_user_session", "=", $idsession)->orderBy("id", "asc")->get();
-            }else{
+            } else {
                 //return 404;
                 return \Response::json(array(), 404);
             }
-        }else{
+        } else {
             $items = DeletedUserSessionActivity::all();
             $tmp = array();
             foreach ($items as $key => $value) {
                 $obj = json_decode($value->info);
-                if(gettype($obj) == "object" && $obj->id_user_session == $idsession){
+                if (gettype($obj) == "object" && $obj->id_user_session == $idsession) {
                     $tmp[$value->id_item] = json_decode($value->info);
                 }
             }
             $items = $tmp;
         }
 
-        if(count($items) > 0){
+        if (count($items) > 0) {
             $ops = array();
             $createdQuery = null;
             $queryForOps = null;
             $tmp = array();
 
             foreach ($items as $key => $activity) {
-                if($createdQuery != null){
+                if ($createdQuery != null) {
                     $createdQuery->orWhere("id_item", "=", $activity->id);
-                }else{
+                } else {
                     $createdQuery = CreatedUserSessionActivity::where("id_item", "=", $activity->id);
                 }
 
-                if($queryForOps != null){
-                    if(!in_array($activity->id_operation, $ops)){
+                if ($queryForOps != null) {
+                    if (!in_array($activity->id_operation, $ops)) {
                         $queryForOps->orWhere("id", "=", $activity->id_operation);
                         array_push($ops, $activity->id_operation);
                     }
-                }else{
+                } else {
                     $queryForOps = PanelAdminOperation::where("id", "=", $activity->id_operation);
                     array_push($ops, $activity->id_operation);
                 }
@@ -513,7 +514,7 @@ class UserController extends Controller{
             $dataCreated = $createdQuery->get();
             $tmp = array();
 
-            foreach ($dataCreated as $key => $value){
+            foreach ($dataCreated as $key => $value) {
                 $items[strval($value->id_item)]->date = $value->created_at;
                 $items[strval($value->id_item)]->operation = array(
                     "id"            =>  $dataOperations[$items[strval($value->id_item)]->id_operation]->id,
@@ -521,37 +522,37 @@ class UserController extends Controller{
                     "name"          =>  translate($dataOperations[$items[strval($value->id_item)]->id_operation]->name),
                     "description"   =>  translate($dataOperations[$items[strval($value->id_item)]->id_operation]->description)
                 );
-            } 
+            }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_USER_SESSION_OPERATIONS"]
-        ]);
+        operation("READ_USER_SESSION_OPERATIONS");
 
         return \Response::json(array(
             "items" => $items
         ), 200);
     }
 
-    public function signupConfirmation(Request $request, $hash){
+    public function signupConfirmation(Request $request, $hash)
+    {
         $signupConfirmation = UserSignupConfirmation::where("hash", "=", $hash)->get();
 
-        if(count($signupConfirmation) > 0){
+        if (count($signupConfirmation) > 0) {
             $signupConfirmation = $signupConfirmation[0];
             $data_user = User::where("id", "=", $signupConfirmation->id_user)->get()[0];
             $signupConfirmation->__delete__();
             createSession($data_user, $request);
             return redirect("/home");
-        }else{
+        } else {
             return \Response::json(array(), 404);
         }
     }
 
-    public function postSignupConfirmation(Request $request, $iduser){
+    public function postSignupConfirmation(Request $request, $iduser)
+    {
         $id_status_signup_confirmation = $GLOBALS["__STATUS__"]["SIGNUP_CONFIRMATION"];
         $v = UserStatus::where("id_item", "=", $iduser)->where("id_status", "=", $id_status_signup_confirmation)->get();
 
-        if(count($v) > 0){
+        if (count($v) > 0) {
             $v[0]->__delete__();
         }
 
@@ -572,14 +573,14 @@ class UserController extends Controller{
                             "<p>You can already sign-in the system.</p>"
         ]);
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["APPROVE_USER_SIGNUP"]
-        ]);
+        operation("APPROVE_USER_SIGNUP");
+
         return \Response::json([
         ], 200);
     }
 
-    public function denySignup(Request $request, $iduser){
+    public function denySignup(Request $request, $iduser)
+    {
         $user = User::where("id", "=", $iduser)->get()[0];
 
         //enviar correo avisando que ya puede ingresar
@@ -591,28 +592,29 @@ class UserController extends Controller{
         ]);
         $user->__delete__();
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DENY_USER_SIGNUP"]
-        ]);
+        operation("DENY_USER_SIGNUP");
+
         return \Response::json([
         ], 200);
     }
 
-    public function getAccountRecovering(Request $request, $hash){
+    public function getAccountRecovering(Request $request, $hash)
+    {
         $recover = UserAccountRecovering::where("hash", "=", $hash)->get();
 
-        if(count($recover) > 0){
+        if (count($recover) > 0) {
             $data_user = User::where("id", "=", $recover[0]->id_user)->get()[0];
             $recover[0]->__delete__();
             createSession($data_user, $request);
             return redirect("/home");
-        }else{
+        } else {
             return \Response::json([
             ], 404);
         }
     }
 
-    public function denyAccountRecovering(Request $request, $iduser){
+    public function denyAccountRecovering(Request $request, $iduser)
+    {
         $id_status_account_recovering = $GLOBALS["__STATUS__"]["ACCOUNT_RECOVERING"];
         $us = User::where("id", "=", $iduser)->get()[0];
         UserStatus::where("id_item", "=", $iduser)->where("id_status", "=", $id_status_account_recovering)->get()[0]->__delete__();
@@ -622,18 +624,19 @@ class UserController extends Controller{
             "title"     => "Account recovering request denied",
             "content"   => "<p>What the subject says. You can request the recovering of your account whenever you want.</p>"
         ]);
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DENY_ACCOUNT_RECOVERING"]
-        ]);
+
+        operation("DENY_ACCOUNT_RECOVERING");
+
         return \Response::json([
         ], 200);
     }
 
-    public function proccessAccountRecovering(Request $request, $iduser){
+    public function proccessAccountRecovering(Request $request, $iduser)
+    {
         $type = $request->input("data.type");
         $us = User::where("id", "=", $iduser)->get()[0];
 
-        if($type == "link"){
+        if ($type == "link") {
             $hash = rand_string();
             $us->create_AccountRecovering([
                 "hash"  => $hash
@@ -644,10 +647,10 @@ class UserController extends Controller{
                 "title"     => "Account Recovering",
                 "content"   => "<p>Click <a href = '".WEB_URL.WEB_ROOT."/account-recovering/".$hash."'><strong>here</strong></a></p>"
             ]);
-        }else{
-            if($request->has("data.password")){
+        } else {
+            if ($request->has("data.password")) {
                 $password = $request->input("data.password");
-            }else{
+            } else {
                 $password = substr(rand_string(), 0, 8);
             }
             $us->hash_pass = password_hash($password, PASSWORD_BCRYPT);
@@ -662,9 +665,9 @@ class UserController extends Controller{
 
         $id_status_account_recovering = $GLOBALS["__STATUS__"]["ACCOUNT_RECOVERING"];
         UserStatus::where("id_item", "=", $iduser)->where("id_status", "=", $id_status_account_recovering)->get()[0]->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["PROCCESS_ACCOUNT_RECOVERING"]
-        ]);
+
+        operation("PROCCESS_ACCOUNT_RECOVERING");
+
         return \Response::json([
         ], 200);
     }

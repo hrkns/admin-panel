@@ -12,13 +12,15 @@ use App\Models\ProductServiceStatus;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Product extends Controller{
-    public function create(Request $request){
+class Product extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $fields = $request->input("data.fields");
 
-        if(gettype($fields) != "array"){
+        if (gettype($fields) != "array") {
             $fields = array();
         }
 
@@ -33,7 +35,7 @@ class Product extends Controller{
 
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -42,7 +44,7 @@ class Product extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_product_service->create_Status([
                     "id_status"=>$value
                 ]);
@@ -62,10 +64,8 @@ class Product extends Controller{
             ]);
         }
 
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_PRODUCT"]
-        ]);
+        $this->writeConstants("ProductService", "products");
+        operation("CREATE_PRODUCT");
 
         return \Response::json(array(
             "item"  => array(
@@ -79,7 +79,8 @@ class Product extends Controller{
         ), 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, ProductService::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -87,7 +88,8 @@ class Product extends Controller{
         ], "READ_PRODUCTS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = ProductService:: where("code", "LIKE", "%".$keywords_search."%")
                                 ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -100,7 +102,8 @@ class Product extends Controller{
         ], "SEARCH_PRODUCTS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = ProductService::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -109,9 +112,7 @@ class Product extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_PRODUCT"]
-        ]);
+        operation("READ_PRODUCT");
 
         return \Response::json([
             'item' => array(
@@ -125,7 +126,8 @@ class Product extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
@@ -135,7 +137,7 @@ class Product extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -145,7 +147,7 @@ class Product extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -155,18 +157,18 @@ class Product extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_PRODUCT"]
-        ]);
+        $this->writeConstants("ProductService", "products");
+        operation("UPDATE_PRODUCT");
         return \Response::json(array(
-            "message" => "mensaje cualquiera",), 204);
+            "message" => "mensaje cualquiera", ), 204);
     }
 
-    public function getEstructure(Request $request, $id){
+    public function getEstructure(Request $request, $id)
+    {
         $fields = ProductServiceField::where("id_product_service", "=", $id)->get();
         $items = array();
 
-        foreach ($fields as $key => $field){
+        foreach ($fields as $key => $field) {
             array_push($items, [
                 "id"  =>$field->id,
                 "code"=>$field->code,
@@ -175,9 +177,7 @@ class Product extends Controller{
             ]);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_PRODUCT_STRUCTURE"]
-        ]);
+        operation("READ_PRODUCT_STRUCTURE");
 
         return \Response::json(array(
             "items" => $items,
@@ -185,22 +185,23 @@ class Product extends Controller{
         ), 200);
     }
 
-    public function setEstructure(Request $request, $id){
+    public function setEstructure(Request $request, $id)
+    {
         $fields = $request->input("data.fields");
 
-        if(gettype($fields) != "array"){
+        if (gettype($fields) != "array") {
             $fields = array();
         }
 
-        foreach ($fields as $key => $field){
-            if($field["id"] == "-1"){
+        foreach ($fields as $key => $field) {
+            if ($field["id"] == "-1") {
                 $newField = new ProductServiceField;
                 $newField->id_product_service = $id;
                 $newField->code = $field["code"];
                 $newField->name = generateMultilingual($field["name"]);
                 $newField->description = generateMultilingual($field["description"]);
                 $newField->__create__();
-            }else{
+            } else {
                 $oldField = ProductServiceField::where("id", "=", $field["id"])->get()[0];
                 $oldField->code = $field["code"];
                 $oldField->name = setFieldMultilingual($oldField->name, $field["name"]);
@@ -209,20 +210,17 @@ class Product extends Controller{
             }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_PRODUCT_ESTRUCTURE"],
-            "message" => "mensaje cualquiera",
-        ]);
+        operation("UPDATE_PRODUCT_ESTRUCTURE");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = ProductService::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_PRODUCT"]
-        ]);
+        $this->writeConstants("ProductService", "products");
+        operation("DELETE_PRODUCT");
         return \Response::json(array(
-            "message" => "mensaje cualquiera",), 200);
+            "message" => "mensaje cualquiera", ), 200);
     }
 }

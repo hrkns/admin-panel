@@ -10,12 +10,14 @@ use App\Models\MasterAdministrativeDivisionParent;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class AdministrativeDivision extends Controller{
-    public function create(Request $request){
+class AdministrativeDivision extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $desc = $request->input("data.description");
         $lstatus = $request->input("data.status");
-        $parents = $request->input("data.parents");
+        $parents = $request->input("data.parents") ;
 
         $newitem = new MasterAdministrativeDivision;
         $newitem->name = generateMultilingual($name);
@@ -23,7 +25,7 @@ class AdministrativeDivision extends Controller{
         $newitem->code = $request->input("data.code");
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -32,7 +34,7 @@ class AdministrativeDivision extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -43,7 +45,7 @@ class AdministrativeDivision extends Controller{
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
 
-        if(gettype($parents) != "array"){
+        if (gettype($parents) != "array") {
             $parents = array();
         }
 
@@ -52,10 +54,8 @@ class AdministrativeDivision extends Controller{
                 "id_parent"=>$value
             ]);
         }
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_ADMINISTRATIVE_DIVISION"]
-        ]);
+        $this->writeConstants("MasterAdministrativeDivision", "administrative_divisions");
+        operation("CREATE_ADMINISTRATIVE_DIVISION");
 
         return \Response::json([
             'item' => array(
@@ -69,13 +69,14 @@ class AdministrativeDivision extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterAdministrativeDivision::all(), [
             "code" => [],
             "description" => ["translate"=>true],
             "name" => ["translate"=>true]
-        ], "READ_ADMINISTRATIVE_DIVISIONS", ["status"=>true], 
-            function($parms, &$item, &$i){
+        ], "READ_ADMINISTRATIVE_DIVISIONS", ["status"=>true],
+            function ($parms, &$item, &$i) {
                 extract($parms);
 
                 $list_parents = $model->read_Parent;
@@ -90,7 +91,8 @@ class AdministrativeDivision extends Controller{
         );
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterAdministrativeDivision:: where("description", "LIKE", "%".$keywords_search."%")
                                                     ->orWhere("name", "LIKE", "%".$keywords_search."%")
@@ -101,8 +103,8 @@ class AdministrativeDivision extends Controller{
             "code" => [],
             "description" => ["translate"=>true],
             "name" => ["translate"=>true]
-        ], "SEARCH_ADMINISTRATIVE_DIVISIONS", ["status"=>true], 
-            function($parms, &$item, &$i){
+        ], "SEARCH_ADMINISTRATIVE_DIVISIONS", ["status"=>true],
+            function ($parms, &$item, &$i) {
                 extract($parms);
 
                 $list_parents = $model->read_Parent;
@@ -117,7 +119,8 @@ class AdministrativeDivision extends Controller{
         );
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterAdministrativeDivision::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -133,9 +136,7 @@ class AdministrativeDivision extends Controller{
             array_push($lsp, $value->id_parent);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_ADMINISTRATIVE_DIVISION"]
-        ]);
+        operation("READ_ADMINISTRATIVE_DIVISION");
 
         return \Response::json([
             'item' => array(
@@ -149,7 +150,8 @@ class AdministrativeDivision extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -159,7 +161,7 @@ class AdministrativeDivision extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $request->input("data.code");
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -169,7 +171,7 @@ class AdministrativeDivision extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -188,7 +190,7 @@ class AdministrativeDivision extends Controller{
             $dependencias[strval($value->id)] = $this->children($value->id);
         }
 
-        if(gettype($parents) != "array"){
+        if (gettype($parents) != "array") {
             $parents = array();
         }
 
@@ -196,8 +198,8 @@ class AdministrativeDivision extends Controller{
         $parents_added = array();
 
         foreach ($parents as $key => $value) {
-            //en caso de al que vaya a agregar como padre 
-            if(intval($value) != intval($id) && !$this->isDescendentRelation($dependencias, $id, $value)){
+            //en caso de al que vaya a agregar como padre
+            if (intval($value) != intval($id) && !$this->isDescendentRelation($dependencias, $id, $value)) {
                 $item->create_Parent([
                     "id_parent"=>$value
                 ]);
@@ -205,24 +207,24 @@ class AdministrativeDivision extends Controller{
             }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_ADMINISTRATIVE_DIVISION"]
-        ]);
+        $this->writeConstants("MasterAdministrativeDivision", "administrative_divisions");
+        operation("UPDATE_ADMINISTRATIVE_DIVISION");
 
         return \Response::json(array("parents_added"=>$parents_added), 200);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterAdministrativeDivision::where("id", "=", $id)->get()[0];
         $item->__delete__();
+        $this->writeConstants("MasterAdministrativeDivision", "administrative_divisions");
+        operation("DELETE_ADMINISTRATIVE_DIVISION");
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_ADMINISTRATIVE_DIVISION"]
-        ]);
         return \Response::json(array(), 200);
     }
 
-    private function children($idparent){
+    private function children($idparent)
+    {
         $roots = MasterAdministrativeDivisionParent::where("id_parent", "=", $idparent)->get();
         $children = array();
 
@@ -233,16 +235,17 @@ class AdministrativeDivision extends Controller{
         return $children;
     }
 
-    private function isDescendentRelation($dependencias, $parent, $child){
+    private function isDescendentRelation($dependencias, $parent, $child)
+    {
         $parents = array();
         $n = 0;
         $parent = strval($parent);
         $child = strval($child);
 
-        do{
-            foreach ($dependencias as $key => $value){
-                if(in_array($child, $value)){
-                    if($parent == $key){
+        do {
+            foreach ($dependencias as $key => $value) {
+                if (in_array($child, $value)) {
+                    if ($parent == $key) {
                         return true;
                     }
 
@@ -251,11 +254,11 @@ class AdministrativeDivision extends Controller{
                 }
             }
 
-            if($n > 0){
+            if ($n > 0) {
                 $child = $parents[array_keys($parents)[0]];
                 unset($parents[array_keys($parents)[0]]);
             }
-        }while($n-- > 0);
+        } while ($n-- > 0);
 
         return false;
     }

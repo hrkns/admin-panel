@@ -22,7 +22,7 @@
 	<div class = "row">
 		<div class = "col-sm-12">
 			<div class = "btn-group" id = "lineal_tree">
-				<button data-id="root" class = "btn btn-primary" onclick = "Section.currentSection='root';Section.refreshDirectory(true);">{!! term("str_root") !!}&nbsp;<i class = "fa fa-chevron-right"></i></button>
+				<button data-id="root" class = "btn btn-primary" onclick = "Section.enterFromLinealTree('root')">{!! term("str_root") !!}&nbsp;<i class = "fa fa-chevron-right"></i></button>
 			</div>
 		</div>
 		<div class = "col-sm-9">
@@ -114,7 +114,7 @@
 				</thead>
 				<tbody id = "list_items">
 					<tr data-pre = "5" id = "loading_items" style = "display:none;">
-						<td colspan = "5">
+						<td colspan = "5" style = "background-color: white !important;">
 							<div style = "width:100%" align = "center">			
 								<img style = "width:15%;" src="{!! LOADING_ICON !!}">
 							</div>
@@ -123,7 +123,7 @@
 					<tr data-pre = "4">
 						<td colspan = "5">
 							<div style = "width:100%" align = "center">
-								<a href = "javascript:;" style = "text-decoration:none !important;"  data-modal="cloud@create" data-href='modal' id = "show_modal_create">
+								<a href = "javascript:;" style = "text-decoration:none !important;"  data-modal="file-manager@create" data-href='modal' id = "show_modal_create">
 									<i class = "fa fa-plus"></i>
 									&nbsp;
 									{!! term("str_create_directory_or_file") !!}
@@ -187,8 +187,8 @@
 								</div>
 							</td>
 						</tr>
-						<tr data-pre = "5" id = "loading_items_search_results" style = "display:none;">
-							<td colspan = "6">
+						<tr data-pre = "5" id = "loading_items_search_results" style = "display:none;background-color: white !important;">
+							<td colspan = "6" style = "background-color: white !important;">
 								<div style = "width:100%" align = "center">			
 									<img style = "width:15%;" src="{!! LOADING_ICON !!}">
 								</div>

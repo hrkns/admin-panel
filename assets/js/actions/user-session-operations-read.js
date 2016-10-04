@@ -12,12 +12,19 @@ function __action(){
 			column_date.innerHTML = activity.date;
 
 			var column_operation = document.createElement("td");
-			column_operation.align = "center";
-			column_operation.innerHTML = activity.operation.name;
+			column_operation.align = "left";
+			column_operation.innerHTML = activity.operation.name + " ";
+
+			var help_icon = document.createElement("a");
+			help_icon.innerHTML = "<i class = 'icon ion-help-circled'></i>";
+			help_icon.href = "javascript:;";
+			help_icon.title = activity.operation.description;
+
+			column_operation.appendChild(help_icon);
 
 			var column_info = document.createElement("td");
 			column_info.align = "center";
-			column_info.innerHTML = activity.info;
+			column_info.innerHTML = build_info_interface(activity);
 
 			row_operation.appendChild(column_id_operation);
 			row_operation.appendChild(column_date);
@@ -25,10 +32,17 @@ function __action(){
 			row_operation.appendChild(column_info);
 
 			$("#list_operations").append(row_operation);
+
+			$(help_icon).tooltip();
 		});
 	}
 
 	$("form_user-session-operations_read").submit(function(e){
 		e.preventDefault();
 	});
+
+	//DEPLOY THIS, a switch over the "activity.operation.code" field?
+	function build_info_interface(activity){
+		return "";
+	}
 }

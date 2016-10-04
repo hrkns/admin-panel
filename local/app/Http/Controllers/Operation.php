@@ -10,19 +10,21 @@ use App\Models\PanelAdminOperationStatus;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Operation extends Controller{
-    public function create(Request $request){
+class Operation extends Controller
+{
+    public function create(Request $request)
+    {
         $code = trim($request->input("data.code"));
         $name = sanitize(trim($request->input("data.name")));
         $description = sanitize(trim($request->input("data.description")));
         $new_item = new PanelAdminOperation;
         $new_item->name = generateMultilingual($name);
         $new_item->description = generateMultilingual($description);
-        $new_item->code = $code; 
+        $new_item->code = $code;
         $new_item->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -30,7 +32,7 @@ class Operation extends Controller{
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -40,13 +42,8 @@ class Operation extends Controller{
 
         $new_item->available_for_use = $available_for_use?'1':'0';
         $new_item->save();
-
-        $this->writeConstants();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_OPERATION"]
-        ]);
-
+        $this->writeConstants("PanelAdminOperation", "operations");
+        operation("CREATE_OPERATION");
         return \Response::json([
             'item' => array(
                 "id"            =>  $new_item->id,
@@ -58,7 +55,8 @@ class Operation extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, PanelAdminOperation::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -66,7 +64,8 @@ class Operation extends Controller{
         ], "READ_OPERATIONS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = PanelAdminOperation:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -79,7 +78,8 @@ class Operation extends Controller{
         ], "SEARCH_OPERATIONS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = PanelAdminOperation::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -88,10 +88,7 @@ class Operation extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_OPERATION"]
-        ]);
-
+        operation("READ_OPERATION");
         return \Response::json([
             'item' => array(
                 "name"          =>translate($item->name),
@@ -103,7 +100,8 @@ class Operation extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -113,7 +111,7 @@ class Operation extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -123,7 +121,7 @@ class Operation extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -134,33 +132,17 @@ class Operation extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-        $this->writeConstants();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_OPERATION"]
-        ]);
+        $this->writeConstants("PanelAdminOperation", "operations");
+        operation("UPDATE_OPERATION");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = PanelAdminOperation::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        $this->writeConstants();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_OPERATION"]
-        ]);
-
+        $this->writeConstants("PanelAdminOperation", "operations");
+        operation("DELETE_OPERATION");
         return \Response::json(array(), 200);
-    }
-
-    private function writeConstants(){
-        $items = PanelAdminOperation::all();
-        $f = fopen(base_path()."/app/constants_operations.php", "w");
-        fwrite($f, "<?php\n\t\$GLOBALS[\"__OPERATION__\"] = [\n");
-        foreach ($items as $key => $value) {
-            fwrite($f, "\t\t'".$value->code."' => ".$value->id.",\n");
-        }
-        fwrite($f, "\t]\n?>");
-        fclose($f);
     }
 }

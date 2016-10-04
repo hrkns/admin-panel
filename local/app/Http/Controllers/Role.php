@@ -13,8 +13,10 @@ use App\Models\PanelAdminSection;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Role extends Controller{
-    public function create(Request $request){
+class Role extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $new_role = new PanelAdminRole;
@@ -26,7 +28,7 @@ class Role extends Controller{
         $accesos = $request->input("data.permises");
 
         foreach ($accesos as $key => $value) {
-            if(array_key_exists("actions", $value)){
+            if (array_key_exists("actions", $value)) {
                 $new_role_section = $new_role->create_Section([
                     "id_section" => $value["section"]
                 ]);
@@ -35,23 +37,23 @@ class Role extends Controller{
                     $new_role_section->create_Action([
                         "id_action" => $idaction
                     ]);
-                }   
+                }
             }
         }
 
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array")
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
+        }
 
         foreach ($lstatus as $key => $value) {
             $new_role->create_Status([
                 "id_status" => $value
             ]);
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_ROLE"]
-        ]);
+        $this->writeConstants("PanelAdminRole", "roles");
+        operation("CREATE_ROLE");
 
         return \Response::json([
             'item' => array(
@@ -64,7 +66,8 @@ class Role extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, PanelAdminRole::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -72,7 +75,8 @@ class Role extends Controller{
         ], "READ_ROLES");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = PanelAdminRole:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -85,7 +89,8 @@ class Role extends Controller{
         ], "SEARCH_ROLES");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = PanelAdminRole::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -94,9 +99,7 @@ class Role extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_ROLE"]
-        ]);
+        operation("READ_ROLE");
 
         return \Response::json([
             'item' => array(
@@ -109,7 +112,8 @@ class Role extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -119,35 +123,35 @@ class Role extends Controller{
         $item->code = $request->input("data.code");
         $item->__update__();
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
         $item->delete_Status();
 
-        foreach ($status as $key => $value){
+        foreach ($status as $key => $value) {
             $item->create_Status([
                 "id_status"=>$value
             ]);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_ROLE"]
-        ]);
+        $this->writeConstants("PanelAdminRole", "roles");
+        operation("UPDATE_ROLE");
 
         return \Response::json(array("item"=>array()), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = PanelAdminRole::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_ROLE"]
-        ]);
+        $this->writeConstants("PanelAdminRole", "roles");
+        operation("DELETE_ROLE");
         return \Response::json(array(), 200);
     }
 
-    public function permises(Request $request, $id){
+    public function permises(Request $request, $id)
+    {
         $sections = PanelAdminSection::all();
         $permises = array();
 
@@ -155,7 +159,7 @@ class Role extends Controller{
             $vl = array("section"=>$value->id, "actions"=>array());
             $role_section = PanelAdminRoleSection::where("id_panel_admin_role", "=", $id)
                                                ->  where("id_section", "=", $value->id)->get();
-            if(count($role_section)>0){
+            if (count($role_section)>0) {
                 $role_section = $role_section[0];
                 $ractions = PanelAdminRoleSectionAction::where("id_panel_admin_role_section", "=", $role_section->id)->get();
 
@@ -167,14 +171,12 @@ class Role extends Controller{
             array_push($permises, $vl);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_ROLE_PERMISES"]
-        ]);
-
+        operation("READ_ROLE_PERMISES");
         return \Response::json(array("items"=>$permises), 200);
     }
 
-    public function updatePermises(Request $request, $id){
+    public function updatePermises(Request $request, $id)
+    {
         $sections_covered_by_role = PanelAdminRoleSection::where("id_panel_admin_role", "=", $id)->get();
         $actions_on_section = array();
         $sections_on_role = array();
@@ -192,24 +194,24 @@ class Role extends Controller{
         $accesos = $request->input("data.permises");
 
         foreach ($accesos as $key => $value) {
-            if(array_key_exists("actions", $value)){
-                if(!array_key_exists(strval($value["section"]), $sections_on_role)){
+            if (array_key_exists("actions", $value)) {
+                if (!array_key_exists(strval($value["section"]), $sections_on_role)) {
                     $new_role_section = new PanelAdminRoleSection;
                     $new_role_section->id_panel_admin_role = $id;
                     $new_role_section->id_section = $value["section"];
                     $new_role_section->__create__();
-                }else{
+                } else {
                     $new_role_section = $sections_on_role[strval($value["section"])];
                     unset($sections_on_role[strval($value["section"])]);
                 }
 
                 foreach ($value["actions"] as $k => $idaction) {
-                    if(!array_key_exists(strval($value["section"])."-".strval($idaction), $actions_on_section)){
+                    if (!array_key_exists(strval($value["section"])."-".strval($idaction), $actions_on_section)) {
                         $permiso = new PanelAdminRoleSectionAction;
                         $permiso->id_action = $idaction;
                         $permiso->id_panel_admin_role_section = $new_role_section->id;
                         $permiso->__create__();
-                    }else{
+                    } else {
                         unset($actions_on_section[strval($value["section"])."-".strval($idaction)]);
                     }
                 }
@@ -224,10 +226,7 @@ class Role extends Controller{
             $value->__delete__();
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_ROLE_PERMISES"]
-        ]);
-
+        operation(""UPDATE_ROLE_PERMISES);
         return \Response::json(array(), 204);
     }
 }

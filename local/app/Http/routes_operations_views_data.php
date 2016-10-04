@@ -129,7 +129,7 @@
 			)
 		),
 		array(
-			"model" => "cloud", 
+			"model" => "file-manager", 
 			"action" => "create", 
 			"op_code" => "GET_VIEW_CREATE_FILE_OR_DIRECTORY",
 		),

@@ -27,7 +27,7 @@
 		</div>
 		<div class = "col-sm-6 form-group">
 			<p>{!! term("str_password") !!}</p>
-			<input type = "password" name = "password" class = "form-control" placeholder = "{!! term("str_leave_password_empty_if_no_change") !!}" {!! !$role_actions["update"]?"readonly":"s !!}>
+			<input type = "password" name = "password" class = "form-control" placeholder = "{!! term("str_leave_password_empty_if_no_change") !!}" {!! !$role_actions["update"]?"readonly":"" !!}>
 		</div>
 		<div class = "col-sm-6 form-group">
 			<p>{!! term("str_role") !!}</p>

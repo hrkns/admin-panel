@@ -1,3 +1,5 @@
+- instalador ONE-STEP
+
 - asi como en el phpmyadmin, cuando vaya a cargar todos o haya cargado ya varios items en formato cascada, dar aviso de que puede afectar el rendimiento del navegador
 
 - setear status del sistema: desarrollo, depuracion, prueba, produccion, y dependiendo del status del mismo mostrar/ocultar determinados mensajes y alertas
@@ -16,64 +18,18 @@
 
 - correos multi-idioma
 
-- emojis en el chat (creo que el textarea lo cambiariamos por un div writtable)
+- emojis en el chat (creo que el textarea lo cambiariamos por un div writtable?)
 
 - colocar en un lugar visible la hora y fecha de inicio de la sesión actual, y el tiempo restante (en caso de que aplique)
 	podriamos aplicar lo de tiempo restante también para bloqueo de pantalla? o solo un aviso cuando quede ya una determinada cantidad de tiempo? todo esto en caso de que aplique también lo de cantidad mínima de tiempo
 
-- establecer superioridad entre roles, evitar ciclos
-	* si rol x < rol z, entonces usuario con rol x solo puede asignar roles <= rol x en creacion/edicion de usuarios (incluyendo el mismo)
-- captcha para exceso de logins invalidos, bloqueo temporal (por ip?+cookie? mas otra cosa?)
-
-- boton de back dentro de la interfaz, como alternativa al back del navegador, con el mismo comportamiento (LEER SIGUIENTE PUNTO)
-- corregir siguiente proceso:
-	* estoy en una seccion (luego de haber navegado por varias previas)
-	* recargo LA PAGINA
-	* estoy en la misma seccion otra vez, hasta aqui todo bien
-	* le doy al boton back
-	* cambia el slug correspondiente de la url a la seccion previa a la actual que visite ANTES DE RECARGAR LA PAGINA, pero vuelve y recarga en la seccion actual, en la que estaba CUANDO RECARGUÉ LA PAGINA
-
-- que son las organizaciones, que significado se les puede dar
-	=> pueden ser los proveedores
-	=> no se que otra cosa puede ser
-
-- en preferencias, indicar 
-	* capacidad alerta de sistema
-		- con sistema me refiero a todos los archivos del proyecto + gestor de archivos por usuario
-		- se lanza una alerta cuando se detecta que se ha igualado o sobrepasado esa capacidad del sistema, esto es util cuando trabajamos en hostings compartidos, vps, sistemas que poseen caracteristicas que no podemos gestionar nosotros mismos
-	* capacidad maxima del sistema
-		- cuando se iguala o sobrepasa, el sistema deja de funcionar
-			* se cierran todas las sesiones activas
-			* se impiden nuevas actividades
-			* la unica actividad permitida es la de <depuracion del sistema>
-	* capacidad alerta base de datos
-		- los mismos criterios descritos para sistema pero aplicados a la base de datos
-	* capacidad maxima base de datos
-		- los mismos criterios descritos para sistema pero aplicados a la base de datos
-
-- comprobacion del lado del cliente con js de validez de formulario, usar signos de interrogacion y burbujas que salgan de los mismos para describir como debe ser completado un campor obligatorio
-
-- validaciones del lado del servidor, implementar funcion en helpers.php que pase como parametro... ¿que cosa?
-
-- personalizar mensajes de exito y error que vengan del servidor, de cara al cliente
-
-- instalador ONE-STEP
-
-- en panel de preferencias, establecer divisa por defecto
+- en panel de preferencias, establecer divisa por defecto (ESTO ES PARA LA BIFURCACION 'TIENDA')
 
 - en la seccion de "accesos", no se puede acceder a los submenues desde el movil
 
-- optimizar actualizacion de permisos: hacer comparacion de permisos ya cargados con los que estan siendo recibidos por parte del usuario, y ver cuales son verdaderamente necesarios agregar y eliminar de la base de datos
-
 - completar el exchager con las otras apis
 
-- eliminar cualquier rastro de style en las plantillas de vista y en la creacion dinamica de items, usar solamente clases, las clases creadas guardarlas en el archivo admin-panel.css
-
-- archivo de extensiones <=> nombre de tipo de archivo
-
 - hay secciones en donde la tabla de items se muestra por defecto desbordada a la derecha, y cuando hago decremento-incremento de zoom, se acomoda, esto se puede acomodar porque en interclub no me pasa
-
-- aun hay terminos ya cargados a los que hay que hay que modificarles las traducciones correctamente
 
 - en el preview de ultimos mensajes, el desplegable de la parte superior
 	* en las imagenes, mostrar la foto de perfil del ultimo usuario que escribio en el respectivo hilo
@@ -101,15 +57,7 @@
 - completar la descripcion de la seccion home
 	DESCRIBIR QUE?
 
-- la columna operacion en el "historico de operaciones en sesion", mostrar los datos de la misma de una manera mas entendible, ya que se está mostrando solo un json
-
-- formulario para filtrar datos en "Seguimiento histórico de actividades de usuario" y "Histórico de operaciones en sesión", este filtro no realiza consulta a base de datos sino que analiza la data insertada en las tablas y las compara con palabras claves y otra data ingresada pr el usuario
-
-- En codigo, en la insercion de Operacion (cuando el usuario hace algo), personalizar por cada una el campo Info
-
-- Editar mejor la descripcion de cada una de las Operaciones
-
-- sigo sin saber para que implementé el módulo maestro de Geografía (Divisiones Administrativas e Instancias), posiblemente se le pueda dar un uso creativo combinandolo con alguna API de mapas como Google Maps
+- el módulo maestro de Geografía (Divisiones Administrativas e Instancias) posiblemente se le pueda dar un uso creativo combinandolo con alguna API de mapas como Google Maps
 
 - integracion con pasarelas de pago (para que coño)
 
@@ -124,8 +72,6 @@
 - envio masivo de emails
 	¿ENLAZAR CON UN SERVIDOR SMTP PERSONALIZADO?
 	¿ASOCIAR CUENTAS DE CORREO EXTERNAS? ¿ASOCIAR A QUE? A ALGO DENTRO DEL SISTEMA OBVIAMENTE, PERO A QUE EN ESPECIFICO ¿A UN USUARIO? ¿A UN ROL?
-
-- historial de valores y edicion (cuando, por quien, y que edito) de un item
 
 - implementar el buscador del navbar (¿que cosas buscaria?)
 	pensaba en peticiones multiples en paralelo, que mientras traiga los resultados lo añada a la lista de resultados mientras se muestra el icono de carga hasta que todas las peticiones se mueran
@@ -155,28 +101,14 @@
 
 - vetar formatos de archivo a subir (en general? por rol?)
 
-- descomprimir archivos comprimidos subidos al servidor
-
 - el mecanismo de edicion offline de términos se podría replicar para las demás secciones del sistema
 
 - PAGINADO
-	* en la misma seccion, tener la posibilidad intercambiar formatos
-	* si esta en paginado, que pueda escoger el numero de elementos por pagina
-	* INTERROGANTE con respecto a los dos puntos anteriores: serian cambios permanentes (para lo cual habria que hacer las peticiones a los respectivos endpoints, ya implementados en la seccion de preferencias), o temporales mientras no recargue la ventana (no la seccion)?
-	* en la medida de lo posible, evitar la recarga de la pagina entera cuando cambie de formato, cuando mucho que refresque solo la seccion, pero en lo personal desearia que solo resetee el listado y ls busqueda de items
-
 	- pensar en una estrategia que haga la seccion de terminos (que está en un modal y no admite búsquedas con petición al servidor) compatible con la estructura que tengo de paginado
 
-
-
 - cuando el ver todos falla, vuelve a mostrar los ultimos items que habia cargado, no hay mensaje de error y no se vuelve a mostrar el link/botton de "ver todos"
-- un timer para monitorizar que la sesion sigue abierta o de no logueado pase a logueado, sino, refrescar automaticamente la pagina
+
 - cuando falla traerse un recurso auxiliar al modal (un archivo js), se queda estancando con el modal de "cargando"
-
-* modo edicion
-* modo vista
-
-ubicarlos en seccion de "Configuraciones"
 
 - el boton de "ver mas" no alcanza el ancho de 100% en la version movil
 
@@ -192,34 +124,11 @@ ubicarlos en seccion de "Configuraciones"
 	* vias de comunicacion
 	* documentacion
 
-- iconos de bancos, pago electronico, etc...
-
 - la fecha de los mensajes en el chat, refinar el formato con el que se muestran, en base al momento que aparece y a los que van pasando
 
 - cuando llega mensaje a chat y estoy en otra pestaña, que el title de la pestaña se intercambie con una alerta que diga "mensaje recibido", con cualquier otra caracteristica relacionada al mensaje recibido
 
 - completar modulo de diccionario importe/exporte
-
-- hacer lo de la unificacion y estandarizacion de terminos, codigos, operaciones, nombres de archivos, identificadores...
-
-- en la seccion de archivos acomodar el comportamiento del checkbox select_all en search (no está mal sino hacerlo más coherente)
-
-- archivos .blade a mejorar codigo
-	> sections
-		* cloud
-		* developer
-		* global-settings
-		* home
-		* my-profile
-		* sections
-		* settings
-		* terms
-		* threads-management
-	> modals
-		* currency-exchange
-		* user-sessions-read
-		* user-session-operations-read
-		* terms-read
 
 - ir diseñando un sistema de caches para peticiones y vistas (modales y API requests seguramente y secciones posiblemente)
 
@@ -264,7 +173,7 @@ mensaje cuando (frontend)
 	username_from
 
 
-
+- hora del usuario vs hora del servidor
 
 
 
@@ -376,6 +285,7 @@ completar modulo de archivos
 	* maxima capacidad permitida de almacenamiento
 	* limitar capacidad de almacenamiento de archivos de acuerdo al rol
 		* a futuro: el valor del rol es referencial para cuando se carga un usuario o se actualiza su rol, podramos evaluar personalizar esa capacidad por usuario
+	* descomprimir archivos comprimidos subidos al servidor
 
 ----------------------------------------------------------------------
 
@@ -402,6 +312,10 @@ completar modulo de importe/exporte de diccionario
 		-> individualmente
 		-> visibles
 	y entonces, boton de descargar de acuerdo a los criterios previos
+
+- en la misma interfaz inicial de términos, que haya un boton que se traiga el boton de creacion de término, y tenga ahora como campo adicional la seccion a la cual pertenece el termino (podria ser un select multiple)
+
+- que se pueda crear tambien un termino desde cualquier seccion
 
 ----------------------------------------------------------------------
 

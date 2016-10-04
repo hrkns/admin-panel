@@ -13,14 +13,16 @@ use App\Models\ThreadMessage;
 use App\Models\ThreadSpeaker;
 use App\Models\UserSession;
 
-class ThreadController extends Controller{
-    public function create(Request $request){
+class ThreadController extends Controller
+{
+    public function create(Request $request)
+    {
         $title = $request->input("data.title");
         $description = $request->input("data.description");
         $privacy = $request->input("data.privacy");
         $speakers = $request->input("data.speakers");
 
-        if(gettype($speakers) != "array"){
+        if (gettype($speakers) != "array") {
             $speakers = array();
         }
 
@@ -37,7 +39,7 @@ class ThreadController extends Controller{
         $admin->added_by = $request->session()->get("iduser");
         $admin->__create__();
 
-        if(intval($privacy) != 2){
+        if (intval($privacy) != 2) {
             foreach ($speakers as $key => $value) {
                 $spk = new ThreadSpeaker;
                 $spk->id_thread = $new_thread->id;
@@ -67,7 +69,7 @@ class ThreadController extends Controller{
 
         $list_admins = $request->input("data.admins");
 
-        if(gettype($list_admins) != "array"){
+        if (gettype($list_admins) != "array") {
             $list_admins = array();
         }
 
@@ -81,7 +83,7 @@ class ThreadController extends Controller{
 
             $fullname = User::where("id", "=", $a["id_user"])->get()[0]->fullname;
 
-            if(intval($privacy) != 2 && !in_array($a["id_user"], $participantes)){
+            if (intval($privacy) != 2 && !in_array($a["id_user"], $participantes)) {
                 $spk = new ThreadSpeaker;
                 $spk->id_thread = $new_thread->id;
                 $spk->id_user = $a["id_user"];
@@ -100,9 +102,7 @@ class ThreadController extends Controller{
             ));
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_THREAD"]
-        ]);
+        operation("CREATE_THREAD");
 
         return \Response::json(array(
             "item"  => array(
@@ -118,17 +118,18 @@ class ThreadController extends Controller{
         ), 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, Thread::orderBy("last_activity", "desc")->get(), [
             "title" => [],
             "description" => [],
             "privacy" => []
-        ], "READ_THREADS", ["status"=>false], 
-            function($parms, &$item, &$i){
+        ], "READ_THREADS", ["status"=>false],
+            function ($parms, &$item, &$i) {
                 extract($parms);
                 $cond = intval($model->privacy) != 0 || count(ThreadAdmin::where("id_user", "=", $request->session()->get("iduser"))->where("id_thread", "=", $model->id)->get())>0 || count(ThreadSpeaker::where("id_user", "=", $request->session()->get("iduser"))->where("id_thread", "=", $model->id)->get())>0;
 
-                if($cond){
+                if ($cond) {
                     $joinThread= intval($model->privacy)==2;
                     $admins = ThreadAdmin::where("id_thread", "=", $model->id)->get();
                     $list_of_admins=array();
@@ -148,13 +149,13 @@ class ThreadController extends Controller{
 
                     $joinRequests = array();
 
-                    if($IAmAnAdmin){
+                    if ($IAmAnAdmin) {
                         $tr = ThreadJoinRequest::where("id_thread", "=", $model->id)->get();
 
                         foreach ($tr as $key => $value) {
                             $us = User::where("id", "=", $value->id_user)->get()[0];
                             array_push($joinRequests, array(
-                                "id"        =>  $us->id, 
+                                "id"        =>  $us->id,
                                 "fullname"  =>  $us->fullname,
                                 "idrequest" =>  $value->id
                             ));
@@ -167,14 +168,14 @@ class ThreadController extends Controller{
                     foreach ($speakers as $key => $value) {
                         $us = User::where("id", "=", $value->id_user)->get();
 
-                        if(count($us)){
+                        if (count($us)) {
                             $us = $us[0];
                             array_push($list_of_participants, array(
                                 "fullname"=>$us->fullname,
                                 "id"=>$us->id
                             ));
                             $joinThread = $joinThread || intval($value->id_user) == intval($request->session()->get("iduser"));
-                        }else{
+                        } else {
                             $value->__delete__();
                         }
                     }
@@ -185,7 +186,7 @@ class ThreadController extends Controller{
                     $item["joinRequest"] = count(ThreadJoinRequest::where("id_thread", "=", $model->id)->where("id_user", "=", $request->session()->get("iduser"))->get());
                     $item["joinRequests"] = $joinRequests;
 
-                    if(!$see_all){
+                    if (!$see_all) {
                         $i++;
                     }
                 }
@@ -193,7 +194,8 @@ class ThreadController extends Controller{
         );
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = Thread:: where("description", "LIKE", "%".$keywords_search."%")
                             ->orWhere("title", "LIKE", "%".$keywords_search."%")
@@ -203,12 +205,12 @@ class ThreadController extends Controller{
             "title" => [],
             "description" => [],
             "privacy" => []
-        ], "SEARCH_THREADS", ["status"=>false], 
-            function($parms, &$item, &$i){
+        ], "SEARCH_THREADS", ["status"=>false],
+            function ($parms, &$item, &$i) {
                 extract($parms);
                 $cond = intval($model->privacy) != 0 || count(ThreadAdmin::where("id_user", "=", $request->session()->get("iduser"))->where("id_thread", "=", $model->id)->get())>0 || count(ThreadSpeaker::where("id_user", "=", $request->session()->get("iduser"))->where("id_thread", "=", $model->id)->get())>0;
 
-                if($cond){
+                if ($cond) {
                     $joinThread= intval($model->privacy)==2;
                     $admins = ThreadAdmin::where("id_thread", "=", $model->id)->get();
                     $list_of_admins=array();
@@ -228,13 +230,13 @@ class ThreadController extends Controller{
 
                     $joinRequests = array();
 
-                    if($IAmAnAdmin){
+                    if ($IAmAnAdmin) {
                         $tr = ThreadJoinRequest::where("id_thread", "=", $model->id)->get();
 
                         foreach ($tr as $key => $value) {
                             $us = User::where("id", "=", $value->id_user)->get()[0];
                             array_push($joinRequests, array(
-                                "id"        =>  $us->id, 
+                                "id"        =>  $us->id,
                                 "fullname"  =>  $us->fullname,
                                 "idrequest" =>  $value->id
                             ));
@@ -258,14 +260,15 @@ class ThreadController extends Controller{
                     $item["joinThread"] = $joinThread?0:1;
                     $item["joinRequest"] = count(ThreadJoinRequest::where("id_thread", "=", $model->id)->where("id_user", "=", $request->session()->get("iduser"))->get());
                     $item["joinRequests"] = $joinRequests;
-                }else{
+                } else {
                     $i--;
                 }
             }
         );
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $title = $request->input("data.title");
         $description = $request->input("data.description");
         $privacy = $request->input("data.privacy");
@@ -287,7 +290,7 @@ class ThreadController extends Controller{
         }
         */
 
-        if(gettype($speakers) != "array"){
+        if (gettype($speakers) != "array") {
             $speakers = array();
         }
 
@@ -295,12 +298,12 @@ class ThreadController extends Controller{
             $speakers[$key] = strval($value);
         }
 
-        if($privacy_now < 2 && $privacy_previous < 2){
+        if ($privacy_now < 2 && $privacy_previous < 2) {
             $admins = ThreadAdmin::where("id_thread", "=", $id)->get();
 
             foreach ($admins as $key => $value) {
-                if( strval($value->id_user) != $request->session()->get("iduser") &&
-                    !in_array(strval($value->id_user), $speakers)){
+                if (strval($value->id_user) != $request->session()->get("iduser") &&
+                    !in_array(strval($value->id_user), $speakers)) {
                     $value->__delete__();
                 }
             }
@@ -322,22 +325,23 @@ class ThreadController extends Controller{
         $joinrqs = ThreadJoinRequest::where("id_thread", "=", $id)->get();
 
         foreach ($joinrqs as $key => $value) {
-            if(in_array(intval($value->id_user), $speakers))
+            if (in_array(intval($value->id_user), $speakers)) {
                 $value->__delete__();
+            }
         }
 
         $ret = array();
 
-        if($privacy_previous == 2 && $privacy_now < 2){
+        if ($privacy_previous == 2 && $privacy_now < 2) {
             $ret = array("speakers"=>array());
 
-            if(intval($request->input("data.add_previous_participants")) == 1){
+            if (intval($request->input("data.add_previous_participants")) == 1) {
                 //dependiendo de la decision del usuario, se agregan o no como participantes los que ya han hablado
                 $itt = ThreadMessage::distinct()->select("id_user")->where("id_thread", "=", $id)->groupBy("id_user")->get();
 
-                foreach ($itt as $key => $value){
-                    if( $value->id_user != $request->session()->get("iduser") && 
-                        count(ThreadSpeaker::where("id_thread", "=", $id)->where("id_user", "=", $value->id_user)->get()) == 0){
+                foreach ($itt as $key => $value) {
+                    if ($value->id_user != $request->session()->get("iduser") &&
+                        count(ThreadSpeaker::where("id_thread", "=", $id)->where("id_user", "=", $value->id_user)->get()) == 0) {
                         $newspk = new ThreadSpeaker;
                         $newspk->id_thread = $id;
                         $newspk->id_user = $value->id_user;
@@ -351,8 +355,8 @@ class ThreadController extends Controller{
             $admins = ThreadAdmin::where("id_thread", "=", $id)->get();
 
             foreach ($admins as $key => $value) {
-                if( $value->id_user != $request->session()->get("iduser") && 
-                    count(ThreadSpeaker::where("id_thread", "=", $id)->where("id_user", "=", $value->id_user)->get()) == 0){
+                if ($value->id_user != $request->session()->get("iduser") &&
+                    count(ThreadSpeaker::where("id_thread", "=", $id)->where("id_user", "=", $value->id_user)->get()) == 0) {
                     $newspk = new ThreadSpeaker;
                     $newspk->id_thread = $id;
                     $newspk->id_user = $value->id_user;
@@ -360,7 +364,7 @@ class ThreadController extends Controller{
                     array_push($ret["speakers"], $value->id_user);
                 }
             }
-        }else if($privacy_previous < 2 && $privacy_now == 2){
+        } elseif ($privacy_previous < 2 && $privacy_now == 2) {
             //se eliminan todos los registros de participantes, ya que ahora cualquiera puede hablar, el inconveniente es que si lo quiere cambiar otra vez a privado tendra que agregarlos manualmente
             $for_delete = ThreadSpeaker::where("id_thread", "=", $id)->get();
 
@@ -369,66 +373,64 @@ class ThreadController extends Controller{
             }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_THREAD"]
-        ]);
+        operation("UPDATE_THREAD");
 
         return \Response::json($ret, 200);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = Thread::where("id", "=", $id)->get()[0];
         $lastSpeakers = ThreadSpeaker::where("id_thread", "=", $id)->get();
         $messagesjson = ThreadMessage::where("id_thread", "=", $id)->get()->toJson();
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_THREAD"]
-        ]);
+
+        operation("DELETE_THREAD");
         return \Response::json(array(), 200);
     }
 
-    public function joinRequest(Request $request, $id){
+    public function joinRequest(Request $request, $id)
+    {
         $joinrqs = ThreadJoinRequest::where("id_thread", "=", $id)->where("id_user", "=", $request->session()->get("iduser"))->get();
 
-        if(count($joinrqs)>0){
+        if (count($joinrqs)>0) {
             $joinrqs[0]->__delete__();
             return \Response::json(array("val"=>0), 200);
-        }else{
+        } else {
             $nuevo = new ThreadJoinRequest;
             $nuevo->id_user = $request->session()->get("iduser");
             $nuevo->id_thread = $id;
             $nuevo->__create__();
-            __ACTIVITY__([
-                "operation" => $GLOBALS["__OPERATION__"]["CREATE_JOIN_REQUEST"]
-            ]);
+            operation("CREATE_JOIN_REQUEST");
             return \Response::json(array("val"=>1), 200);
         }
     }
 
-    public function deleteJoinned(Request $request, $id){
+    public function deleteJoinned(Request $request, $id)
+    {
         ThreadSpeaker::where("id_thread", "=", $id)->where("id_user", "=", $request->session()->get("iduser"))->get()[0]->__delete__();
         $tmp = Thread::where("id", "=", $id)->get();
         $tmp[0]->last_activity = sqldate();
         $tmp[0]->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_THREAD_SPEAKER"]
-        ]);
+        operation("DELETE_THREAD_SPEAKER");
         return \Response::json(array(), 200);
     }
 
-    public function messages(Request $request, $id){
+    public function messages(Request $request, $id)
+    {
         $code_status = 200;
         $token = $request->input("data.token");
         $tokens_list = $request->session()->get(PROGRESSIVE_REQUEST_TOKENS);
         $items_to_return = array();
 
-        if(gettype($tokens_list) == "array" && array_key_exists($token, $tokens_list)){
+        if (gettype($tokens_list) == "array" && array_key_exists($token, $tokens_list)) {
             $type = $request->input("data.type_request");
 
-            if($request->has("data.reset") && array_key_exists($type, $tokens_list[$token]))
+            if ($request->has("data.reset") && array_key_exists($type, $tokens_list[$token])) {
                 unset($tokens_list[$token][$type]);
+            }
 
-            if(!array_key_exists($type, $tokens_list[$token])){
+            if (!array_key_exists($type, $tokens_list[$token])) {
                 $tokens_list[$token][$type] = array( "items"=>ThreadMessage::where("id_thread", "=", $id)->orderBy("id", "desc")->get(),
                                             "index"=>0);
                 $tokens_list[$token][$type]["length"] = count($tokens_list[$token][$type]["items"]);
@@ -436,23 +438,23 @@ class ThreadController extends Controller{
 
             $temporal_array = $tokens_list[$token][$type];
 
-            for($i = 0; $i < AMOUNT_ITEMS_PER_REQUEST && $tokens_list[$token][$type]["index"] < $tokens_list[$token][$type]["length"]; $i++){
+            for ($i = 0; $i < AMOUNT_ITEMS_PER_REQUEST && $tokens_list[$token][$type]["index"] < $tokens_list[$token][$type]["length"]; $i++) {
                 $model = $tokens_list[$token][$type]["items"][$tokens_list[$token][$type]["index"]];
                 $user = User::where("id", "=", $model->id_user)->get();
 
-                if(count($user) > 0){
+                if (count($user) > 0) {
                     $user = $user[0];
-                }else{
+                } else {
                     $user = array(
-                        "id" => NULL, 
+                        "id" => null,
                         "profile_img" => "default.jpg",
                         "fullname" => term("str_user")
                     );
                 }
 
                 array_push($items_to_return, array(
-                    "id"=>$model->id, 
-                    "message"=>$model->message, 
+                    "id"=>$model->id,
+                    "message"=>$model->message,
                     "user"=>array(
                         "profile_img" => $user["profile_img"],
                         "fullname"=> $user["fullname"],
@@ -464,21 +466,20 @@ class ThreadController extends Controller{
             }
 
             $request->session()->put(PROGRESSIVE_REQUEST_TOKENS, $tokens_list);
-        }else{
+        } else {
             $code_status=400;
             $items_to_return = $token;
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_THREAD_MESSAGES"]
-        ]);
+        operation("READ_THREAD_MESSAGES");
 
         return \Response::json([
             'items' => $items_to_return
         ], $code_status);
     }
 
-    public function message(Request $request, $id){
+    public function message(Request $request, $id)
+    {
         $msg = $request->input("data.msg");
         $newMessage = new ThreadMessage;
         $newMessage->id_thread = $id;
@@ -490,14 +491,12 @@ class ThreadController extends Controller{
         $tmp[0]->last_activity = sqldate();
         $tmp[0]->__update__();
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_THREAD_MESSAGE"]
-        ]);
+        operation("CREATE_THREAD_MESSAGE");
 
         return \Response::json(array(
             "item"  => array(
-                "id"=>$newMessage->id, 
-                "message"=>$newMessage->message, 
+                "id"=>$newMessage->id,
+                "message"=>$newMessage->message,
                 "user"=>array(
                     "profile_img" => $us->profile_img,
                     "fullname"=> $us->fullname,
@@ -508,7 +507,8 @@ class ThreadController extends Controller{
         ), 201);
     }
 
-    public function createSpeaker(Request $request, $id){
+    public function createSpeaker(Request $request, $id)
+    {
         $idspeaker = $request->input("data.iduser");
         $v = ThreadJoinRequest::where("id_thread", "=", $id)->where("id_user", "=", $idspeaker)->get()[0];
         $v->__delete__();
@@ -519,28 +519,26 @@ class ThreadController extends Controller{
         $tmp = Thread::where("id", "=", $id)->get();
         $tmp[0]->last_activity = sqldate();
         $tmp[0]->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_THREAD_PARTICIPANT"]
-        ]);
+        operation("CREATE_THREAD_PARTICIPANT");
         return \Response::json(array(
         ), 201);
     }
 
-    public function removeJoinRequest(Request $request, $id, $idjoinrq){
+    public function removeJoinRequest(Request $request, $id, $idjoinrq)
+    {
         ThreadJoinRequest::where("id", "=", $idjoinrq)->get()[0]->__delete__();
         $tmp = Thread::where("id", "=", $id)->get();
         $tmp[0]->last_activity = sqldate();
         $tmp[0]->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["REJECT_JOIN_REQUEST"]
-        ]);
+        operation("REJECT_JOIN_REQUEST");
         return \Response::json(array(
         ), 200);
     }
 
-    public function recentMessages(Request $request, $id){
+    public function recentMessages(Request $request, $id)
+    {
         $msgs = ThreadMessage::where("moment", ">", $request->input("data.last_date"))
-        ->orWhere(function($query) use ($request) {
+        ->orWhere(function ($query) use ($request) {
             $query->where("moment", "=", $request->input("data.last_date"));
             $query->where("id", ">",  $request->input("data.last_id"));
         })->get();
@@ -548,12 +546,12 @@ class ThreadController extends Controller{
         $items = array();
 
         foreach ($msgs as $key => $value) {
-            if($value->id_user != $request->session()->get("iduser")){
+            if ($value->id_user != $request->session()->get("iduser")) {
                 $us = User::where("id", "=", $value->id_user)->get()[0];
 
                 array_push($items, array(
-                    "id"=>$value->id, 
-                    "message"=>$value->message, 
+                    "id"=>$value->id,
+                    "message"=>$value->message,
                     "user"=>array(
                         "profile_img" => $us->profile_img,
                         "fullname"=> $us->fullname,
@@ -569,11 +567,12 @@ class ThreadController extends Controller{
         ), 200);
     }
 
-    public function createAdmins(Request $request, $id){
+    public function createAdmins(Request $request, $id)
+    {
         $participantes = array();
         $list_admins = $request->input("data.admins");
 
-        if(gettype($list_admins) != "array"){
+        if (gettype($list_admins) != "array") {
             $list_admins = array();
         }
 
@@ -589,7 +588,7 @@ class ThreadController extends Controller{
 
             $fullname = User::where("id", "=", $a["id_user"])->get()[0]->fullname;
 
-            if(intval($privacy) != 2 && !in_array($a["id_user"], $participantes)){
+            if (intval($privacy) != 2 && !in_array($a["id_user"], $participantes)) {
                 $spk = new ThreadSpeaker;
                 $spk->id_thread = $id;
                 $spk->id_user = $a["id_user"];
@@ -598,33 +597,31 @@ class ThreadController extends Controller{
             }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_THREAD_ADMINS"]
-        ]);
+        operation("CREATE_THREAD_ADMINS");
 
         return \Response::json(array(), 200);
     }
 
-    public function removeAdmin(Request $request, $id, $iduser){
+    public function removeAdmin(Request $request, $id, $iduser)
+    {
         $admin = ThreadAdmin::where("id_thread", "=", $id)->where("id_user", "=", $iduser)->get();
 
-        if(count($admin)>0){
+        if (count($admin)>0) {
             $admin[0]->__delete__();
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_THREAD_ADMIN"]
-        ]);
+
+        operation("DELETE_THREAD_ADMIN");
 
         return \Response::json(array(), 200);
     }
 
-    public function updatePermises(Request $request, $id, $iduser){
+    public function updatePermises(Request $request, $id, $iduser)
+    {
         $v = ThreadAdmin::where("id_thread", "=", $id)->where("id_user", "=", $iduser)->get()[0];
         $v->permises = json_encode($request->input("data.permises"));
         $v->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_THREAD_ADMIN_PERMISES"]
-        ]);
+
+        operation("UPDATE_THREAD_ADMIN_PERMISES");
 
         return \Response::json(array(), 200);
     }

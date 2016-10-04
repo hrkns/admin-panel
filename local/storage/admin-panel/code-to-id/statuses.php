@@ -1,0 +1,9 @@
+<?php
+	$GLOBALS["CODE_TO_ID_STATUSES"] = [
+		'ENABLED' => 1,
+		'UNABLED' => 2,
+		'DELETE' => 3,
+		'SIGNUP_CONFIRMATION' => 6,
+		'ACCOUNT_RECOVERING' => 7,
+	]
+?>

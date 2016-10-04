@@ -53,6 +53,15 @@ function module(){
 		Section.accessRoute(id_dir, true);
 	}
 
+	this.enterFromLinealTree = function(id_dir){
+		if(id_dir == Section.currentDirectory){
+			return;
+		}
+
+		Section.currentDirectory=id_dir;
+		Section.refreshDirectory(true);
+	}
+
 	this.refreshDirectory = function(flag, fafter){
 		if(refreshingDirectory){
 			return;
@@ -155,7 +164,7 @@ function module(){
 
 				$.each(items, function(k, v){
 					$("#lineal_tree").append(''+
-						'<button class = "btn" data-id = "'+v.id+'" onclick = "Section.currentDirectory=\''+v.id+'\';Section.refreshDirectory(true);">'+
+						'<button class = "btn" data-id = "'+v.id+'" onclick = "Section.enterFromLinealTree('+v.id+')">'+
 							v.name+'&nbsp;<i class = "fa fa-chevron-right"></i>'+
 						'</button>'+
 					'');
@@ -196,7 +205,7 @@ function module(){
 							cond = cond || this.getAttribute("data-id") == Section.currentDirectory;
 						});
 
-						$("#lineal_tree").append('<button data-id = "'+t.getAttribute("data-id")+'" onclick = "Section.currentDirectory='+t.getAttribute("data-id")+';Section.refreshDirectory(true);" class = "btn btn-primary">'+t.getAttribute("data-name")+'&nbsp;<i class = "fa fa-chevron-right"></i></button>');
+						$("#lineal_tree").append('<button data-id = "'+t.getAttribute("data-id")+'" onclick = "Section.enterFromLinealTree('+t.getAttribute("data-id")+')" class = "btn btn-primary">'+t.getAttribute("data-name")+'&nbsp;<i class = "fa fa-chevron-right"></i></button>');
 					}
 
 					Section.currentDirectory = t.getAttribute("data-id");

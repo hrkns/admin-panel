@@ -2590,10 +2590,213 @@ function app(){
 				}, log_ui_msg : false
 			});
 		}
-	setInterval(function(){
-		$(".modal").css("overflow-y", "scroll");
-		$(".modal-backdrop").css("height", $(window).height()+"px").css("position", "fixed");
-	}, this.INTERVAL_RETARD);
+
+	/*
+		@description: patch for modal scrolling
+	*/
+		setInterval(function(){
+			$(".modal").css("overflow-y", "scroll");
+			$(".modal-backdrop").css("height", $(window).height()+"px").css("position", "fixed");
+		}, this.INTERVAL_RETARD);
+
+	/*
+		@method: sessionMonitor
+		@description: it checks if a session has been already started or it has already finished
+	*/
+		var lastValSessionMonitor = null;
+
+		function sessionMonitor(){
+			App.HTTP.get({
+				url : App.WEB_ROOT + "/session-monitor",
+				success : function(d, e, f){
+					if(lastValSessionMonitor != null && lastValSessionMonitor != d.data.session){
+						App.ShowLoading();
+						window.location.reload();
+					}else{
+						lastValSessionMonitor = d.data.session;
+					}
+				},
+				error : function(x, y, z){
+				},
+				after: function(){
+					setTimeout(sessionMonitor, 10000);
+				},
+				log_ui_msg : false
+			});
+		}
+		setTimeout(sessionMonitor, 1000);
+
+	/*
+		@method: changeFormatShowItems
+		@description: the format to show the items (progressive load vs pagination) is changed
+		@parameters:
+			> format: the choosen format
+			> fsuccess: the function to be executed if the change is proccessed with no problems in the server
+			> ferror : the function to be executed if we receive a 4xx error
+			> fafter : the function to be executed when the error or success response is already processed
+	*/
+		this.changeFormatShowItems = function(format, fsuccess, ferror, fafter){
+			App.HTTP.update({
+				url : App.WEB_ROOT + "/format-show-items",
+				data : {
+					format : format
+				}, success : function(d, e, f){
+					$("meta[name='format_show_items']").attr("content", format)
+					App.FORMAT_SHOW_ITEMS = format;
+					fsuccess();
+				}, error : ferror, after : fafter
+			});
+		}
+
+		var changing_format_show_items = false;
+
+		$("input[name='global_format_show_items']").change(function(){
+			if(!this.checked || changing_format_show_items){
+				return;
+			}
+
+			var thing = this;
+			changing_format_show_items = true;
+			$("input[name='global_format_show_items']").prop("disabled", true)
+			App.LockScreen();
+			App.ShowLoading();
+
+			App.changeFormatShowItems(thing.value, function(){
+				App.UnlockScreen();
+				App.HideLoading();
+				get_section(App.currentSection)
+			}, function(){
+				thing.checked = false;
+
+				if(thing.value == "progressive"){
+					$("input[value='pagination']").prop("checked", true)
+				}else{
+					$("input[value='progressive']").prop("checked", true)
+				}
+			}, function(){
+				changing_format_show_items = false;
+				$("input[name='global_format_show_items']").prop("disabled", false)
+			})
+		});
+
+	/*
+		@method: changeFormatEditItems
+		@description: the format to edit the items (modal vs inline) is changed
+		@parameters:
+			> format: the choosen format
+			> fsuccess: the function to be executed if the change is proccessed with no problems in the server
+			> ferror : the function to be executed if we receive a 4xx error
+			> fafter : the function to be executed when the error or success response is already processed
+	*/
+		this.changeFormatEditItems = function(format, fsuccess, ferror, fafter){
+			App.HTTP.update({
+				url : App.WEB_ROOT + "/format-edit-items",
+				data : {
+					format : format
+				}, success : function(d, e, f){
+					$("meta[name='format_edit_items']").attr("content", format)
+					App.FORMAT_EDIT_ITEMS = format;
+					fsuccess();
+				}, error : ferror, after : fafter
+			});
+		}
+
+		var changing_format_edit_items = false;
+
+		$("input[name='global_format_edit_items']").change(function(){
+			if(!this.checked || changing_format_edit_items){
+				return;
+			}
+
+			var thing = this;
+			changing_format_edit_items = true;
+			$("input[name='global_format_edit_items']").prop("disabled", true)
+			App.LockScreen();
+			App.ShowLoading();
+
+			App.changeFormatEditItems(thing.value, function(){
+				App.UnlockScreen();
+				App.HideLoading();
+				get_section(App.currentSection)
+			}, function(){
+				thing.checked = false;
+
+				if(thing.value == "inline"){
+					$("input[value='modal']").prop("checked", true)
+				}else{
+					$("input[value='inline']").prop("checked", true)
+				}
+			}, function(){
+				changing_format_edit_items = false;
+				$("input[name='global_format_edit_items']").prop("disabled", false)
+			})
+		});
+
+		this.monitorAmountItemsPerRequest = function(id_form, fbefore, fsuccess, fafter){
+			if(typeof fsuccess == "undefined"){
+				fsuccess = function(){}
+			}
+
+			if(typeof fafter == "undefined"){
+				fafter = function(){}
+			}
+
+			if(typeof fbefore == "undefined"){
+				fbefore = function(){}
+			}
+
+			var lastVal_amount_items_per_request = $("#"+id_form).find("input[type='text']").val().trim();
+
+			function fmonitor(){
+				if(!isNaN(this.value) && this.value != lastVal_amount_items_per_request && Number(this.value)>0 ){
+					$("#"+id_form).find("input[type='submit']").show(App.TIME_FOR_SHOW);
+				}else{
+					$("#"+id_form).find("input[type='submit']").hide(App.TIME_FOR_HIDE);
+				}
+			}
+
+			$("#"+id_form).find("input[type='text']").click(fmonitor).change(fmonitor).keyup(fmonitor).keydown(fmonitor).blur(fmonitor).focus(fmonitor);
+
+			var saving_pr = false;
+
+			$("#"+id_form).submit(function(e){
+				e.preventDefault();
+
+				if(saving_pr){
+					return;
+				}
+
+				saving_pr = true;
+				$("#"+id_form).find("input[type='submit']").attr("disabled", true);
+
+				App.HTTP.update({
+					url:App.WEB_ROOT+"/amount-items-progressive-requests",
+					data:{
+						val:$("#"+id_form).find("input[type='text']").val().trim()
+					},success:function(d, e, f){
+						App.AMOUNT_ITEMS_PER_REQUEST = lastVal_amount_items_per_request = Number($("#"+id_form).find("input[type='text']").val().trim());
+						$("#"+id_form).find("input[type='submit']").hide(App.TIME_FOR_HIDE);
+						fsuccess(d, e, f);
+					},after:function(x, y, z){
+						$("#"+id_form).find("input[type='submit']").attr("disabled", false);
+						saving_pr = false;
+						fafter(x, y, z);
+					},before : fbefore
+				});
+			});
+		}
+
+		if(document.getElementById("global_form_amount_items_per_request") != null){
+			this.monitorAmountItemsPerRequest("global_form_amount_items_per_request", function(){
+				App.LockScreen();
+				App.ShowLoading();
+			}, function(){
+				get_section(App.currentSection)
+			}, function(){
+				App.UnlockScreen();
+				App.HideLoading();
+			});
+		}
 }
 
 var App = new app(), 

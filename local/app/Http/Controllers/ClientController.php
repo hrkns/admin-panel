@@ -9,17 +9,19 @@ use App\Models\Client;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class ClientController extends Controller{
-    public function create(Request $request){
+class ClientController extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $img = $request->input("data.img");
 
-        if(strpos($img, "default.jpg") === false){
+        if (strpos($img, "default.jpg") === false) {
             $name_img = rand_string(true).".jpeg";
             base64_to_img($img, SYSTEM_DIR_CLIENT_IMGS.$name_img);
             //create thumbnails
             /**/
-        }else{
+        } else {
             $name_img = "default.jpg";
         }
 
@@ -29,7 +31,7 @@ class ClientController extends Controller{
         $newClient->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -38,7 +40,7 @@ class ClientController extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newClient->create_Status([
                     "id_status"=>$value
                 ]);
@@ -50,11 +52,11 @@ class ClientController extends Controller{
         $newClient->save();
         $coms = $request->input("data.media");
 
-        if(gettype($coms) != "array"){
+        if (gettype($coms) != "array") {
             $coms = array();
         }
 
-        foreach ($coms as $key => $value){
+        foreach ($coms as $key => $value) {
             $newClient->create_Media([
                 "id_media"=>$value["code"],
                 "value"=>$value["value"]
@@ -63,7 +65,7 @@ class ClientController extends Controller{
 
         $ladres = $request->input("data.addresses");
 
-        if(gettype($ladres) != "array"){
+        if (gettype($ladres) != "array") {
             $ladres = array();
         }
 
@@ -75,7 +77,7 @@ class ClientController extends Controller{
 
         $ids = $request->input("data.documentation");
 
-        if(gettype($ids) != "array"){
+        if (gettype($ids) != "array") {
             $ids = array();
         }
 
@@ -85,9 +87,8 @@ class ClientController extends Controller{
                 "id_documentation"=>$value["code"]
             ]);
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_CLIENT"]
-        ]);
+
+        operation("CREATE_CLIENT");
 
         return \Response::json([
             'item' => array(
@@ -99,14 +100,16 @@ class ClientController extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, Client::all(), [
             "name" => [],
             "img" => []
         ], "READ_CLIENTS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = Client::where("name", "LIKE", "%".$keywords_search."%")
                             ->get();
@@ -116,7 +119,8 @@ class ClientController extends Controller{
         ], "SEARCH_CLIENTS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $Client =    Client::where("id", "=", $id)->get()[0];
         $response = array("item"=>array(
             "id"=>$id,
@@ -154,25 +158,24 @@ class ClientController extends Controller{
             array_push($response["item"]["addresses"], $value->address);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_CLIENT"]
-        ]);
+        operation("READ_CLIENT");
 
         return \Response::json($response, 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $editClient = Client::where("id", "=", $id)->get()[0];
         $name = $request->input("data.name");
         $img = $request->input("data.img");
 
-        if(strpos($img, "assets") === false && strpos($img, "default.jpg") === false){
+        if (strpos($img, "assets") === false && strpos($img, "default.jpg") === false) {
             $name_img = rand_string(true).".jpeg";
             base64_to_img($img, SYSTEM_DIR_CLIENT_IMGS.$name_img);
             $editClient->img = $name_img;
             //create thumbnails
             /**/
-        }else if(strpos($img, "default.jpg") != false){
+        } elseif (strpos($img, "default.jpg") != false) {
             $name_img = "default.jpg";
             $editClient->img = $name_img;
         }
@@ -180,7 +183,7 @@ class ClientController extends Controller{
         $editClient->name = $name;
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -190,7 +193,7 @@ class ClientController extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $editClient->create_Status([
                     "id_status"=>$value
                 ]);
@@ -202,7 +205,7 @@ class ClientController extends Controller{
         $editClient->__update__();
         $coms = $request->input("data.media");
 
-        if(gettype($coms) != "array"){
+        if (gettype($coms) != "array") {
             $coms = array();
         }
 
@@ -217,7 +220,7 @@ class ClientController extends Controller{
 
         $ladres = $request->input("data.addresses");
 
-        if(gettype($ladres) != "array"){
+        if (gettype($ladres) != "array") {
             $ladres = array();
         }
 
@@ -231,7 +234,7 @@ class ClientController extends Controller{
 
         $ids = $request->input("data.documentation");
 
-        if(gettype($ids) != "array"){
+        if (gettype($ids) != "array") {
             $ids = array();
         }
 
@@ -244,20 +247,17 @@ class ClientController extends Controller{
                 "value"=>$value["value"]
             ]);
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_CLIENT"]
-        ]);
+
+        operation("UPDATE_CLIENT");
 
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = Client::where("id", "=", $id)->get()[0];
         $item->__delete__();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_CLIENT"]
-        ]);
+        operation("DELETE_CLIENT");
         return \Response::json(array(), 200);
     }
 }

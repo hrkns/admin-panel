@@ -48,7 +48,7 @@
 					<hr style = "border:solid 1px">
 					<p><strong>{!! term("str_amount_items_to_bring_by_progressive_request") !!}</strong></p>
 					<form id = "form_amount_items_per_request">
-						<input class = "form-control" id = "amount_items_per_request" value = "{!! $userPreferences["amount_items_per_request"] !!}"><br>
+						<input type = "text" class = "form-control" id = "amount_items_per_request" value = "{!! $userPreferences["amount_items_per_request"] !!}"><br>
 						<input type = "submit" class = "btn btn-primary" value = "{!! term("str_save") !!}" style = "display:none;" id = "amount_items_per_request_submit">
 					</form>
 

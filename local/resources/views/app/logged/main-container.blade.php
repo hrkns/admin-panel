@@ -17,31 +17,66 @@
 		</header>
 		<div class = "container" style = "width:100%;">
 			<div class = "row" style = "padding-left:2%;padding-right:2%;">
-				<div class = "col-sm-6">
-					{{-- amount of items per request settled by user --}}
-						<input type = "hidden" id = "AMOUNT_ITEMS_PER_REQUEST" value = {!! $userPreferences["amount_items_per_request"] !!}>
-
+				<div class = "col-sm-9">
 					{{-- control to show/hide basic user configs, available for all sections --}}
-						<strong><a href = "javascript:;" onclick = "$('#global_configs').toggle(200);">{!! term("str_settings", true) !!}</a></strong>
+						<div class = "row">
+							<div class = "col-sm-12">
+								<strong><a href = "javascript:;" onclick = "$('#global_configs').toggle(200);">{!! term("str_settings", true) !!}</a></strong>
+							</div>
+						</div>
 
 					{{-- basic user configs --}}
-						<div style = "display: none;" id = "global_configs">
+						<div class="row"  id = "global_configs">
 							{{-- app language --}}
-								<p>{!! term("str_language_navigation", true) !!}</p>
-								<select class = "form-control" id = "select_set_user_session_lng" style = "width:75%;">
-									@foreach ($languages as $key => $value)
-										<option value = "{!! $value["code"] !!}" {!! $value["code"] == __LNG__?"selected":"" !!}>
-											{!! translate($value["name"]) !!}
-										</option>
-									@endforeach
-								</select>
+								<div class = "col-sm-3">
+									<br>
+									<p><strong>{!! term("str_language_navigation", true) !!}</strong></p>
+									<select class = "form-control" id = "select_set_user_session_lng" style = "width:100%;">
+										@foreach ($languages as $key => $value)
+											<option value = "{!! $value["code"] !!}" {!! $value["code"] == __LNG__?"selected":"" !!}>
+												{!! translate($value["name"]) !!}
+											</option>
+										@endforeach
+									</select>
+								</div>
+
+							{{-- format show items --}}
+								<div class = "col-sm-3">
+									<br>
+									<p><strong>{!! term("str_format_to_show_items", true) !!}</strong></p>
+									<input type = "radio" value = "progressive" name = "global_format_show_items" {!! $userPreferences["format_show_items"] == "progressive"?"checked":"" !!}>&nbsp;<span>{!! term("str_progressive_load", true) !!}</span>
+									<br>
+									<input type = "radio" value = "pagination" name = "global_format_show_items" {!! $userPreferences["format_show_items"] == "pagination"?"checked":"" !!}>&nbsp;<span>{!! term("str_pagination", true) !!}</span>
+								</div>
+
+							{{-- format edit items --}}
+								<div class = "col-sm-3">
+									<br>
+									<p><strong>{!! term("str_format_to_edit_items", true) !!}</strong></p>
+									<input type = "radio" value = "inline" name = "global_format_edit_items" {!! $userPreferences["format_edit_items"] == "inline"?"checked":"" !!}>&nbsp;<span>{!! term("str_inline", true) !!}</span>
+									<br>
+									<input type = "radio" value = "modal" name = "global_format_edit_items" {!! $userPreferences["format_edit_items"] == "modal"?"checked":"" !!}>&nbsp;<span>{!! term("str_modal", true) !!}</span>
+								</div>
+
+							{{-- amount items per request --}}
+								<div class = "col-sm-3">
+									<br>
+									<p><strong>{!! term("str_amount_items_to_bring_by_progressive_request", true) !!}</strong></p>
+									<form id = "global_form_amount_items_per_request">
+										<input type = "text" class = "form-control" id = "global_amount_items_per_request" name = "amount_items_per_request" value = "{!! $userPreferences["amount_items_per_request"] !!}"><br>
+										<input type = "submit" class = "btn btn-primary" value = "{!! term("str_save", true) !!}" style = "display:none;" id = "global_amount_items_per_request_submit">
+									</form>
+								</div>
 						</div>
+
+					{{-- amount of items per request settled by user --}}
+					<input type = "hidden" id = "AMOUNT_ITEMS_PER_REQUEST" value = {!! $userPreferences["amount_items_per_request"] !!}>
 				</div>
 
 				{{-- control to reload the current section --}}
-					<div class = "col-sm-6">
+					<div class = "col-sm-3">
 						<br>
-						<button class = "btn btn-success pull-right" id = "reload_section" style = "display:none;">{!! term("str_reload_section", true) !!}</button>
+						<button class = "btn btn-success pull-right btn-block" id = "reload_section" style = "display:none;">{!! term("str_reload_section", true) !!}</button>
 					</div>
 			</div>
 			<div class = "row">

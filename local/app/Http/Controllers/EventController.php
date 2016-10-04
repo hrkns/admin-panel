@@ -9,9 +9,11 @@ use App\Models\Event;
 use App\Models\EventStatus;
 use App\Models\MasterStatus;
 
-class EventController extends Controller{
-    public function create(Request $request){
-        if(!$request->session()->has("iduser")){
+class EventController extends Controller
+{
+    public function create(Request $request)
+    {
+        if (!$request->session()->has("iduser")) {
             return \Response::json(array("session" => "finished"), 401);
         }
 
@@ -23,7 +25,7 @@ class EventController extends Controller{
         $new_item->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -31,7 +33,7 @@ class EventController extends Controller{
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -41,10 +43,7 @@ class EventController extends Controller{
 
         $new_item->available_for_use = $available_for_use?'1':'0';
         $new_item->save();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_EVENT"]
-        ]);
+        operation("CREATE_EVENT");
 
         return \Response::json([
             'item' => array(
@@ -56,14 +55,16 @@ class EventController extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, Event::all(), [
             "description" => ["translate"=>true],
             "name" => ["translate"=>true]
         ], "READ_EVENTS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = Event:: where("description", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("name", "LIKE", "%".$keywords_search."%")
@@ -74,8 +75,9 @@ class EventController extends Controller{
         ], "SEARCH_EVENTS");
     }
 
-    public function read(Request $request, $id){
-        if(!$request->session()->has("iduser")){
+    public function read(Request $request, $id)
+    {
+        if (!$request->session()->has("iduser")) {
             return \Response::json(array("session" => "finished"), 401);
         }
 
@@ -87,9 +89,7 @@ class EventController extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_EVENT"]
-        ]);
+        operation("READ_EVENT");
 
         return \Response::json([
             'item' => array(
@@ -101,8 +101,9 @@ class EventController extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
-        if(!$request->session()->has("iduser")){
+    public function update(Request $request, $id)
+    {
+        if (!$request->session()->has("iduser")) {
             return \Response::json(array("session" => "finished"), 401);
         }
 
@@ -113,7 +114,7 @@ class EventController extends Controller{
         $item->name = setFieldMultilingual($item->name, $name);
         $item->description = setFieldMultilingual($item->name, $description);
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -123,7 +124,7 @@ class EventController extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -131,27 +132,21 @@ class EventController extends Controller{
             }
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_EVENT"]
-        ]);
-
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
+        operation("UPDATE_EVENT");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
-        if(!$request->session()->has("iduser")){
+    public function delete(Request $request, $id)
+    {
+        if (!$request->session()->has("iduser")) {
             return \Response::json(array("session" => "finished"), 401);
         }
 
         $item = Event::where("id", "=", $id)->get()[0];
         $item->__delete__();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_EVENT"]
-        ]);
-
+        operation("DELETE_EVENT");
         return \Response::json(array(), 200);
     }
 }

@@ -10,19 +10,21 @@ use App\Models\MasterLanguage;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Language extends Controller{
-    public function create(Request $request){
+class Language extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
         $new_language = new MasterLanguage;
         $new_language->name = generateMultilingual($name);
         $new_language->description = generateMultilingual($description);
-        $new_language->code = $code; 
+        $new_language->code = $code;
         $new_language->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -31,7 +33,7 @@ class Language extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_language->create_Status([
                     "id_status"=>$value
                 ]);
@@ -39,20 +41,14 @@ class Language extends Controller{
             }
         }
 
-
-
         require FILE_ADMIN_PANEL_SETTINGS;
         $globalPreferences["terms_of_use_and_privacy_policy"][$new_language->code] = "";
         file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalPreferences = ' . var_export($globalPreferences, true) . ';?>');
 
-
-
         $new_language->available_for_use = $available_for_use?'1':'0';
         $new_language->save();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_LANGUAGE"]
-        ]);
-
+        $this->writeConstants("MasterLanguage", "languages");
+        operation("CREATE_LANGUAGE");
         return \Response::json(array(
             "item"  => array(
                 "id"            =>  $new_language->id,
@@ -64,7 +60,8 @@ class Language extends Controller{
         ), 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterLanguage::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -72,7 +69,8 @@ class Language extends Controller{
         ], "READ_LANGUAGES");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterLanguage:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -85,17 +83,15 @@ class Language extends Controller{
         ], "SEARCH_LANGUAGES");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterLanguage::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
         foreach ($status as $key => $value) {
             array_push($ls, $value->id_status);
         }
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_LANGUAGE"]
-        ]);
+        operation("READ_LANGUAGE");
         return \Response::json([
             'item' => array(
                 "name"          =>translate($item->name),
@@ -106,7 +102,8 @@ class Language extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
@@ -117,7 +114,7 @@ class Language extends Controller{
         $old_code = $item->code;
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -127,7 +124,7 @@ class Language extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -142,27 +139,25 @@ class Language extends Controller{
         require FILE_ADMIN_PANEL_SETTINGS;
         $globalPreferences["terms_of_use_and_privacy_policy"][$item->code] = $globalPreferences["terms_of_use_and_privacy_policy"][$old_code];
         file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalPreferences = ' . var_export($globalPreferences, true) . ';?>');
-
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_LANGUAGE"]
-        ]);
+        $this->writeConstants("MasterLanguage", "languages");
+        operation("UPDATE_LANGUAGE");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterLanguage::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_LANGUAGE"]
-        ]);
+        $this->writeConstants("MasterLanguage", "languages");
+        operation("DELETE_LANGUAGE");
         return \Response::json(array(), 200);
     }
 
-    public function updateLanguageSession(Request $request){
+    public function updateLanguageSession(Request $request)
+    {
         $codelng = $request->input("data.lng");
 
-        if(!$request->session()->has("iduser")){
+        if (!$request->session()->has("iduser")) {
             $request->session()->put("lng", $codelng);
             return \Response::json(array("session" => "finished"), 200);
         }
@@ -171,9 +166,7 @@ class Language extends Controller{
         $user->default_language_session = $codelng;
         $user->__update__();
         $request->session()->put("lng", $codelng);
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_USER_LANGUAGE"]
-        ]);
+        operation("UPDATE_USER_LANGUAGE");
         return \Response::json(array(), 204);
     }
 }

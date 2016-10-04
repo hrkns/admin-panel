@@ -25,7 +25,7 @@
 								<br>
 
 							{{-- if an item has one of status selected of the next select multiple, the item is shown --}}
-								<p>{!! term("str_text_statuses_to_show") !!}</p>
+								<p><strong>{!! term("str_text_statuses_to_show") !!}</strong></p>
 								<select multiple id = "see_with_status" data-select-type = "status">
 									@foreach ($list_status as $key => $value) 
 										<option data-code = "{!! $value["code"] !!}" value = "{!! $value["id"] !!}" {!! $value["show_default"]=="1"?"selected":"" !!}>{!! translate($value["name"]) !!}</option>
@@ -40,7 +40,7 @@
 					<div class = "col-sm-4" id = "col_items_language" data-column="language">
 						{{-- languages available in the system to show items (remember, is a multilingual system) --}}
 							<br>
-							<p>{!! term("str_text_language_to_show_items") !!}</p>
+							<p><strong>{!! term("str_text_language_to_show_items") !!}</strong></p>
 							<select class = "form-control" id = "set_items_language">
 								@foreach ($languages as $key => $value) 
 									<option value = "{!! $value["code"] !!}" {!! $value["code"] == __LNG__?"selected":"" !!}>
@@ -52,7 +52,7 @@
 					<div class = "col-sm-4" id = "col_search_text">
 						{{-- keywords for searching --}}
 							<br>
-							<p>{!! term("str_text_description_of_input_text_search") !!}</p>
+							<p><strong>{!! term("str_text_description_of_input_text_search") !!}</strong></p>
 							<input class = "form-control" style = "width:100%;" id = "input_text_search">
 					</div>
 				</div>
@@ -60,7 +60,7 @@
 					<div class = "col-sm-4" id = "col_select_page" style = "display:none;">
 						{{-- control shown when the pagination format is being used, contains in a select all the pages of the current list of items --}}
 							<br>
-							<p>{!! term("str_go_to_page", true) !!}</p>
+							<p><strong>{!! term("str_go_to_page", true) !!}</strong></p>
 							<select id = "pages_of_list" class = "form-control" style = "display:none;">
 							</select>
 							<select id = "pages_of_search" class = "form-control" style = "display:none;">

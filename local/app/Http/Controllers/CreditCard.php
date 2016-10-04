@@ -9,8 +9,10 @@ use App\Models\MasterCreditCard;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class CreditCard extends Controller{
-    public function create(Request $request){
+class CreditCard extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $desc = $request->input("data.description");
         $lstatus = $request->input("data.status");
@@ -21,7 +23,7 @@ class CreditCard extends Controller{
         $newitem->code = $request->input("data.code");
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -30,7 +32,7 @@ class CreditCard extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -40,9 +42,9 @@ class CreditCard extends Controller{
 
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_CREDIT_CARD"]
-        ]);
+        $this->writeConstants("MasterCreditCard", "credit_cards");
+
+        operation("CREATE_CREDIT_CARD");
 
         return \Response::json([
             'item' => array(
@@ -55,7 +57,8 @@ class CreditCard extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterCreditCard::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -63,7 +66,8 @@ class CreditCard extends Controller{
         ], "READ_CREDIT_CARDS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterCreditCard:: where("description", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("name", "LIKE", "%".$keywords_search."%")
@@ -75,7 +79,8 @@ class CreditCard extends Controller{
         ], "SEARCH_CREDIT_CARDS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterCreditCard::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -84,9 +89,7 @@ class CreditCard extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_CREDIT_CARD"]
-        ]);
+        operation("READ_CREDIT_CARD");
 
         return \Response::json([
             'item' => array(
@@ -99,7 +102,8 @@ class CreditCard extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -109,7 +113,7 @@ class CreditCard extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $request->input("data.code");
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -119,7 +123,7 @@ class CreditCard extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -130,18 +134,17 @@ class CreditCard extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_CREDIT_CARD"]
-        ]);
+        $this->writeConstants("MasterCreditCard", "credit_cards");
+        operation("UPDATE_CREDIT_CARD");
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterCreditCard::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_CREDIT_CARD"]
-        ]);
+        $this->writeConstants("MasterCreditCard", "credit_cards");
+        operation("DELETE_CREDIT_CARD");
         return \Response::json(array(), 200);
     }
 }

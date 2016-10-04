@@ -143,39 +143,7 @@ function module(){
 		});
 	});
 	/**********************************************************************************************************************/
-	input_amount_items_per_request.onchange = input_amount_items_per_request.onkeydown = input_amount_items_per_request.onkeyup = input_amount_items_per_request.onchange = input_amount_items_per_request.onfocus = input_amount_items_per_request.onblur = function(e) {
-		if(!isNaN(this.value) && this.value != lastVal_amount_items_per_request && Number(this.value)>0 ){
-			$("#amount_items_per_request_submit").show(App.TIME_FOR_SHOW);
-		}else{
-			$("#amount_items_per_request_submit").hide(App.TIME_FOR_HIDE);
-		}
-	}
-
-	var saving_pr = false;
-
-	$("#form_amount_items_per_request").submit(function(e){
-		e.preventDefault();
-
-		if(saving_pr){
-			return;
-		}
-
-		saving_pr = true;
-		$("#amount_items_per_request_submit").attr("disabled", true);
-
-		App.HTTP.update({
-			url:App.WEB_ROOT+"/user/"+iduser+"/amount-items-progressive-requests",
-			data:{
-				val:$("#amount_items_per_request").val().trim()
-			},success:function(d, e, f){
-				App.AMOUNT_ITEMS_PER_REQUEST = lastVal_amount_items_per_request = Number($("#amount_items_per_request").val().trim());
-				$("#amount_items_per_request_submit").hide(App.TIME_FOR_HIDE);
-			},after:function(x, y, z){
-				$("#amount_items_per_request_submit").attr("disabled", false);
-				saving_pr = false;
-			}
-		});
-	});
+	App.monitorAmountItemsPerRequest("form_amount_items_per_request");
 	/**********************************************************************************************************************/
 
 	document.getElementById("change_personal_tab_icon").onclick = function(){
@@ -488,25 +456,19 @@ function module(){
 		changing_format_show_items = true;
 		$("input[name='format_show_items']").prop("disabled", true)
 
-		App.HTTP.update({
-			url : App.WEB_ROOT + "/format-show-items",
-			data : {
-				format : thing.value
-			},success : function(){
-				$("meta[name='format_show_items']").attr("content", thing.value)
-			},  error : function(){
-				thing.checked = false;
+		App.changeFormatShowItems(thing.value, function(){
+		}, function(){
+			thing.checked = false;
 
-				if(thing.value == "progressive"){
-					$("input[value='pagination']").prop("checked", true)
-				}else{
-					$("input[value='progressive']").prop("checked", true)
-				}
-			},after : function(){
-				changing_format_show_items = false;
-				$("input[name='format_show_items']").prop("disabled", false)
+			if(thing.value == "progressive"){
+				$("input[value='pagination']").prop("checked", true)
+			}else{
+				$("input[value='progressive']").prop("checked", true)
 			}
-		});
+		}, function(){
+			changing_format_show_items = false;
+			$("input[name='format_show_items']").prop("disabled", false)
+		})
 	});
 	/**********************************************************************************************************************/
 	var changing_format_edit_items = false;
@@ -520,23 +482,18 @@ function module(){
 		changing_format_edit_items = true;
 		$("input[name='format_edit_items']").prop("disabled", true)
 
-		App.HTTP.update({
-			url : App.WEB_ROOT + "/format-edit-items",
-			data : {
-				format : thing.value
-			},
-			error : function(){
-				thing.checked = false;
+		App.changeFormatEditItems(thing.value, function(){
+		}, function(){
+			thing.checked = false;
 
-				if(thing.value == "inline"){
-					$("input[value='modal']").prop("checked", true)
-				}else{
-					$("input[value='inline']").prop("checked", true)
-				}
-			},after : function(){
-				changing_format_edit_items = false;
-				$("input[name='format_edit_items']").prop("disabled", false)
+			if(thing.value == "inline"){
+				$("input[value='modal']").prop("checked", true)
+			}else{
+				$("input[value='inline']").prop("checked", true)
 			}
-		});
+		}, function(){
+			changing_format_edit_items = false;
+			$("input[name='format_edit_items']").prop("disabled", false)
+		})
 	});
 }

@@ -10,19 +10,21 @@ use App\Models\PanelAdminSoundStatus;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Sound extends Controller{
-    public function create(Request $request){
+class Sound extends Controller
+{
+    public function create(Request $request)
+    {
         $code = trim($request->input("data.code"));
         $name = sanitize(trim($request->input("data.name")));
         $description = sanitize(trim($request->input("data.description")));
         $new_item = new PanelAdminSound;
         $new_item->name = generateMultilingual($name);
         $new_item->description = generateMultilingual($description);
-        $new_item->code = $code; 
+        $new_item->code = $code;
         $new_item->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -30,7 +32,7 @@ class Sound extends Controller{
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -40,10 +42,9 @@ class Sound extends Controller{
 
         $new_item->available_for_use = $available_for_use?'1':'0';
         $new_item->save();
+        $this->writeConstants("PanelAdminSound", "sounds");
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_SOUND"]
-        ]);
+        operation("CREATE_SOUND");
 
         return \Response::json([
             'item' => array(
@@ -56,7 +57,8 @@ class Sound extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, PanelAdminSound::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -65,7 +67,8 @@ class Sound extends Controller{
         ], "READ_SOUNDS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = PanelAdminSound:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -79,7 +82,8 @@ class Sound extends Controller{
         ], "SEARCH_SOUNDS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = PanelAdminSound::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -88,9 +92,7 @@ class Sound extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_SOUND"]
-        ]);
+        operation("READ_SOUND");
 
         return \Response::json([
             'item' => array(
@@ -103,7 +105,8 @@ class Sound extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -113,7 +116,7 @@ class Sound extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -123,7 +126,7 @@ class Sound extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -134,22 +137,25 @@ class Sound extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_SOUND"]
-        ]);
+        $this->writeConstants("PanelAdminSound", "sounds");
+
+        operation("UPDATE_SOUND");
+
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = PanelAdminSound::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_SOUND"]
-        ]);
+
+        operation("DELETE_SOUND");
+
         return \Response::json(array(), 200);
     }
 
-    public function updateFile(Request $request, $id){
+    public function updateFile(Request $request, $id)
+    {
         $file = $request->file("audio");
         $namefile = rand_string().".mp3";//.$file->getClientOriginalExtension();
         $file->move(SYSTEM_AUDIO_NOTIFICATIONS_FOLDER, $namefile);
@@ -157,14 +163,16 @@ class Sound extends Controller{
         $sound = PanelAdminSound::where("id", "=", $id)->get()[0];
         $sound->file = $namefile;
 
-        if($request->has("updating")){
+        if ($request->has("updating")) {
             $sound->__update__();
-        }else{
+        } else {
             $sound->save();
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_SOUND_FILE"]
-        ]);
+
+        $this->writeConstants("PanelAdminSound", "sounds");
+
+        operation("UPDATE_SOUND_FILE");
+
         return \Response::json(array(
             "filename"  =>  $namefile
         ), 200);

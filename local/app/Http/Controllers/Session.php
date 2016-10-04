@@ -11,8 +11,10 @@ use App\Models\UserPreferences;
 use App\Models\UserSession;
 use App\Models\MasterStatus;
 
-class Login extends Controller{
-    public function create(Request $request){
+class Session extends Controller
+{
+    public function create(Request $request)
+    {
         //throw error if data is not valid
         $this->validate($request, array(
             "data.id"                   =>'required|min:1|max:100',
@@ -25,34 +27,34 @@ class Login extends Controller{
         $hpass = $request->input("data.pass");
         $usrs = User::where("nick", "=", $id)->orWhere("email", "=", $id)->take(1)->get();
 
-        if(count($usrs) == 1){
+        if (count($usrs) == 1) {
             $data_user = $usrs[0];
             $confirmation = UserSignupConfirmation::where("id_user", "=", $data_user["id"])->get();
 
-            if(count($confirmation) > 0){
+            if (count($confirmation) > 0) {
                 return \Response::json([
                     "message"=> HTTP_message("http_msg_no_confirmed_user")
                 ], 400);
-            }else{
-                if($data_user->available_for_use == '1'){
-                    if(password_verify($hpass, $data_user["hash_pass"])){
+            } else {
+                if ($data_user->available_for_use == '1') {
+                    if (password_verify($hpass, $data_user["hash_pass"])) {
                         //throw 200 success on login
                         createSession($data_user, $request);
                         return \Response::json([
                         ], 200);
-                    }else{
+                    } else {
                         //throw 404 invalid password
                         return \Response::json([
                             "message" => HTTP_message("http_msg_invalid_password")
                         ], 404);
                     }
-                }else{
+                } else {
                     return \Response::json([
                         "message"=> HTTP_message("http_msg_desactived_user")
                     ], 400);
                 }
             }
-        }else{
+        } else {
             //throw 404 not found
             return \Response::json([
                 "message" => HTTP_message("http_msg_nick_email_doesnt_exist")
@@ -60,10 +62,11 @@ class Login extends Controller{
         }
     }
 
-    public function remove_tokens(Request $request){
+    public function remove_tokens(Request $request)
+    {
         $tkns = $request->input("data.tokens");
 
-        if(gettype($tkns) == "array"){
+        if (gettype($tkns) == "array") {
             $arr_tkns = $request->session()->get(PROGRESSIVE_REQUEST_TOKENS);
 
             foreach ($tkns as $key => $value) {
@@ -79,10 +82,11 @@ class Login extends Controller{
         ], 200);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $__SESSION__ = UserSession::where("id", "=", $request->session()->get('idsession'))->get();
 
-        if(count($__SESSION__) > 0){
+        if (count($__SESSION__) > 0) {
             $__SESSION__[0]->end = sqldate();
             $__SESSION__[0]->save();
             $__SESSION__[0]->__delete__();
@@ -98,39 +102,45 @@ class Login extends Controller{
         return redirect("/");
     }
 
-    public function unlock_screen(Request $request){
-        if($request->session()->has("iduser")){
+    public function unlock_screen(Request $request)
+    {
+        if ($request->session()->has("iduser")) {
             $password = $request->input("data.password");
             $iduser = $request->session()->get("iduser");
             $user = User::where("id", "=", $iduser)->get()[0];
 
-            if(password_verify($password, $user["hash_pass"])){
+            if (password_verify($password, $user["hash_pass"])) {
                 $request->session()->put("lock_screen", "0");
-                __ACTIVITY__([
-                    "operation" => $GLOBALS["__OPERATION__"]["UNLOCK_SCREEN"]
-                ]);
+                operation("UNLOCK_SCREEN");
+
                 return \Response::json([
                 ], 200);
-            }else{
+            } else {
                 return \Response::json([
                 ], 400);
             }
-        }else{
+        } else {
             return \Response::json([
             ], 200);
         }
     }
 
-    public function inactivity(Request $request){
-        if( $request->session()->has("inactivity_time_limit_action") &&
-            $request->session()->get("inactivity_time_limit_action") != "no"){
-            if($request->session()->get("inactivity_time_limit_action") == "lock_screen"){
+    public function inactivity(Request $request)
+    {
+        if ($request->session()->has("inactivity_time_limit_action") &&
+            $request->session()->get("inactivity_time_limit_action") != "no") {
+            if ($request->session()->get("inactivity_time_limit_action") == "lock_screen") {
                 return redirect("/lock-screen");
-            }else{
+            } else {
                 return redirect("/logout");
             }
-        }else{
+        } else {
             return \Response::json([], 400);
         }
+    }
+
+    public function sessionMonitor(Request $request)
+    {
+        return \Response::json(["session"=>$request->session()->has("iduser")], 200);
     }
 }

@@ -18,11 +18,11 @@ function module(){
 		var configs = App.cloneObject(Section.FLAGS.formConfigs);
 		var row = App.startConfigRow(data, configs);
 
-		const CODE_OF_CONFIRMATION_STATUS = Number($("#see_with_status").find("option[data-code='SIGNUP_CONFIRMATION']").val());
-		const CODE_OF_STATUS_USER_ENABLED = Number($("#see_with_status").find("option[data-code='ENABLED']").val());
-		const CODE_OF_STATUS_RECOVERING_ACCOUNT = Number($("#see_with_status").find("option[data-code='ACCOUNT_RECOVERING']").val());
-		const USER_IS_WAITING_FOR_MANUAL_CONFIRMATION = data.status.indexOf(CODE_OF_CONFIRMATION_STATUS) != -1;
-		const USER_IS_WAITING_FOR_RECOVER_ACCOUNT = data.status.indexOf(CODE_OF_STATUS_RECOVERING_ACCOUNT) != -1;
+		const ID_OF_SIGNUP_CONFIRMATION_STATUS = CODE_TO_ID_STATUSES["SIGNUP_CONFIRMATION"];
+		const ID_OF_ENABLED_USER_STATUS = CODE_TO_ID_STATUSES["ENABLED"];
+		const ID_OF_RECOVERING_ACCOUNT_STATUS = CODE_TO_ID_STATUSES["ACCOUNT_RECOVERING"];
+		const USER_IS_WAITING_FOR_MANUAL_CONFIRMATION = data.status.indexOf(ID_OF_SIGNUP_CONFIRMATION_STATUS) != -1;
+		const USER_IS_WAITING_FOR_RECOVER_ACCOUNT = data.status.indexOf(ID_OF_RECOVERING_ACCOUNT_STATUS) != -1;
 
 		/*
 			column for user id
@@ -109,10 +109,10 @@ function module(){
 						success : function(d, e, f){
 							$(aceptar_solicitud).hide(App.TIME_FOR_HIDE, function(){ $(aceptar_solicitud).remove(); });
 							$(denegar_solicitud).hide(App.TIME_FOR_HIDE, function(){ $(denegar_solicitud).remove(); });
-							data.status = data.status.slice(0, data.status.indexOf(CODE_OF_CONFIRMATION_STATUS)).concat(data.status.slice(data.status.indexOf(CODE_OF_CONFIRMATION_STATUS) + 1));
+							data.status = data.status.slice(0, data.status.indexOf(ID_OF_SIGNUP_CONFIRMATION_STATUS)).concat(data.status.slice(data.status.indexOf(ID_OF_SIGNUP_CONFIRMATION_STATUS) + 1));
 
-							if(data.status.indexOf(CODE_OF_STATUS_USER_ENABLED) == -1){
-								data.status.push(CODE_OF_STATUS_USER_ENABLED);
+							if(data.status.indexOf(ID_OF_ENABLED_USER_STATUS) == -1){
+								data.status.push(ID_OF_ENABLED_USER_STATUS);
 							}
 
 							column_statuses.innerHTML = App.stringify_statuses(data.status);
@@ -202,7 +202,7 @@ function module(){
 								success : function(d, e, f){
 									$(aceptar_solicitud_recuperacion).hide(App.TIME_FOR_HIDE, function(){ $(aceptar_solicitud_recuperacion).remove(); });
 									$(denegar_solicitud_recuperacion).hide(App.TIME_FOR_HIDE, function(){ $(denegar_solicitud_recuperacion).remove(); });
-									data.status = data.status.slice(0, data.status.indexOf(CODE_OF_STATUS_RECOVERING_ACCOUNT)).concat(data.status.slice(data.status.indexOf(CODE_OF_STATUS_RECOVERING_ACCOUNT) + 1));
+									data.status = data.status.slice(0, data.status.indexOf(ID_OF_RECOVERING_ACCOUNT_STATUS)).concat(data.status.slice(data.status.indexOf(ID_OF_RECOVERING_ACCOUNT_STATUS) + 1));
 									column_statuses.innerHTML = App.stringify_statuses(data.status);
 									row.setAttribute("data-status", JSON.stringify(data.status));
 									$("#modal_user-account-recovering_create").hide();
@@ -240,7 +240,7 @@ function module(){
 						success : function(d, e, f){
 							$(aceptar_solicitud_recuperacion).hide(App.TIME_FOR_HIDE, function(){ $(aceptar_solicitud_recuperacion).remove(); });
 							$(denegar_solicitud_recuperacion).hide(App.TIME_FOR_HIDE, function(){ $(denegar_solicitud_recuperacion).remove(); });
-							data.status = data.status.slice(0, data.status.indexOf(CODE_OF_STATUS_RECOVERING_ACCOUNT)).concat(data.status.slice(data.status.indexOf(CODE_OF_STATUS_RECOVERING_ACCOUNT) + 1));
+							data.status = data.status.slice(0, data.status.indexOf(ID_OF_RECOVERING_ACCOUNT_STATUS)).concat(data.status.slice(data.status.indexOf(ID_OF_RECOVERING_ACCOUNT_STATUS) + 1));
 							column_statuses.innerHTML = App.stringify_statuses(data.status);
 							row.setAttribute("data-status", JSON.stringify(data.status));
 						}, error: function(x, y, z){
@@ -331,13 +331,6 @@ function module(){
 			column_controls.appendChild(button_get_info_of_user);
 
 		/*
-			if the user has authorization, create controls for delete user
-		*/
-			if(Section.permises["delete"]){
-				App.controls_for_delete_item(data, data.row_selector, column_controls);
-			}
-
-		/*
 			button to get the complete list of sessions
 		*/
 			var button_get_sessions_list = document.createElement("button");
@@ -377,6 +370,13 @@ function module(){
 			}
 
 			column_controls.appendChild(button_get_sessions_list);
+
+		/*
+			if the user has authorization, create controls for delete user
+		*/
+			if(Section.permises["delete"]){
+				App.controls_for_delete_item(data, data.row_selector, column_controls);
+			}
 
 		/*
 			appending columns to row of item
@@ -457,8 +457,21 @@ function module(){
 	}
 
 	var master_media;
+	var CODE_TO_ID_STATUSES;
 
 	this.start = function(){
+		function getStatusesIdToCode(){
+			App.HTTP.get({
+				url : App.WEB_ROOT + "/code-to-id/statuses",
+				success : function(d, e, f){
+					CODE_TO_ID_STATUSES = d.data.items;
+					getMedia();
+				},error : function(x, y, z){
+				}, after : function(){
+				},log_ui_msg : false
+			});
+		}
+
 		function getMedia(){
 			App.GetMasterData("media", function(d, e, f){
 				master_media = d.data.items;
@@ -468,6 +481,6 @@ function module(){
 		}
 
 		App.ShowLoading();
-		getMedia();
+		getStatusesIdToCode();
 	}
 }

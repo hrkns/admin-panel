@@ -11,19 +11,21 @@ use App\Models\MasterCurrencyStatus;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Currency extends Controller{
-    public function create(Request $request){
+class Currency extends Controller
+{
+    public function create(Request $request)
+    {
         $code = trim($request->input("data.code"));
         $name = sanitize(trim($request->input("data.name")));
         $description = sanitize(trim($request->input("data.description")));
         $new_currency = new MasterCurrency;
         $new_currency->name = generateMultilingual($name);
         $new_currency->description = generateMultilingual($description);
-        $new_currency->code = $code; 
+        $new_currency->code = $code;
         $new_currency->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -31,7 +33,7 @@ class Currency extends Controller{
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_currency->create_Status([
                     "id_status"=>$value
                 ]);
@@ -41,10 +43,8 @@ class Currency extends Controller{
 
         $new_currency->available_for_use = $available_for_use?'1':'0';
         $new_currency->save();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_CURRENCY"]
-        ]);
-
+        $this->writeConstants("MasterCurrency", "currencies");
+        operation("CREATE_CURRENCY");
         return \Response::json([
             'item' => array(
                 "id"            =>  $new_currency->id,
@@ -56,7 +56,8 @@ class Currency extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterCurrency::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -64,7 +65,8 @@ class Currency extends Controller{
         ], "READ_CURRENCIES");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterCurrency:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -77,7 +79,8 @@ class Currency extends Controller{
         ], "SEARCH_CURRENCIES");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterCurrency::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -86,9 +89,7 @@ class Currency extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_CURRENCY"]
-        ]);
+        operation("READ_CURRENCY");
 
         return \Response::json([
             'item' => array(
@@ -101,7 +102,8 @@ class Currency extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -111,7 +113,7 @@ class Currency extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -121,58 +123,55 @@ class Currency extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
                 $available_for_use = $available_for_use || (intval($st[0]->show_item) == 1);
             }
         }
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_CURRENCY"]
-        ]);
-
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
+        $this->writeConstants("MasterCurrency", "currencies");
+        operation("UPDATE_CURRENCY");
+
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterCurrency::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_CURRENCY"]
-        ]);
+        $this->writeConstants("MasterCurrency", "currencies");
+        operation("DELETE_CURRENCY");
         return \Response::json(array(), 200);
     }
 
-    public function createExchange(Request $request){
+    public function createExchange(Request $request)
+    {
         $currency_1 = $request->input("data.currency_1");
         $currency_2 = $request->input("data.currency_2");
         $value = $request->input("data.value");
 
-        $existe = MasterCurrencyExchange::where(function($query) use ($currency_1, $currency_2){
+        $existe = MasterCurrencyExchange::where(function ($query) use ($currency_1, $currency_2) {
             $query->where("id_currency", "=", $currency_1);
             $query->where("id_currency_2", "=", $currency_2);
-        })->orWhere(function($query) use ($currency_1, $currency_2){
+        })->orWhere(function ($query) use ($currency_1, $currency_2) {
             $query->where("id_currency", "=", $currency_2);
             $query->where("id_currency_2", "=", $currency_1);
         })->get();
 
-        if(count($existe) > 0){
+        if (count($existe) > 0) {
             //conflict
             return \Response::json(array(), 400);
-        }else{
+        } else {
             //crear
             $exchange = new MasterCurrencyExchange;
             $exchange->id_currency = $currency_1;
             $exchange->id_currency_2 = $currency_2;
             $exchange->value = $value;
             $exchange->__create__();
-            __ACTIVITY__([
-                "operation" => $GLOBALS["__OPERATION__"]["CREATE_CURRENCY_EXCHANGE"]
-            ]);
+            operation("CREATE_CURRENCY_EXCHANGE");
             return \Response::json(array(
                 "item"=>array(
                     "currency_1"=>$currency_1,
@@ -184,27 +183,26 @@ class Currency extends Controller{
         }
     }
 
-    public function updateExchange(Request $request, $id){
+    public function updateExchange(Request $request, $id)
+    {
         $exchange = MasterCurrencyExchange::where("id", "=", $id)->get()[0];
         $exchange->value = $request->input("data.value");
         $exchange->__update__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_CURRENCY_EXCHANGE"]
-        ]);
+        operation("UPDATE_CURRENCY_EXCHANGE");
         return \Response::json(array(
         ), 200);
     }
 
-    public function deleteExchange(Request $request, $id){
+    public function deleteExchange(Request $request, $id)
+    {
         $item = MasterCurrencyExchange::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_CURRENCY_EXCHANGE"]
-        ]);
+        operation("DELETE_CURRENCY_EXCHANGE");
         return \Response::json(array(), 200);
     }
 
-    public function readExchanges(Request $request){
+    public function readExchanges(Request $request)
+    {
         $exchanges = MasterCurrencyExchange::all();
         $ret = array();
 
@@ -216,10 +214,8 @@ class Currency extends Controller{
                 "id"    => $value->id
             ));
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_CURRENCY_EXCHANGES"]
-        ]);
 
+        operation("READ_CURRENCY_EXCHANGES");
         return \Response::json(array("items"=>$ret), 200);
     }
 }

@@ -9,8 +9,10 @@ use App\Models\MasterBank;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Bank extends Controller{
-    public function create(Request $request){
+class Bank extends Controller
+{
+    public function create(Request $request)
+    {
         $newitem = new MasterBank;
         $name = $request->input("data.name");
         $lstatus = $request->input("data.status");
@@ -18,7 +20,7 @@ class Bank extends Controller{
         $newitem->code = $request->input("data.code");
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -26,7 +28,7 @@ class Bank extends Controller{
 
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -36,9 +38,8 @@ class Bank extends Controller{
 
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_BANK"]
-        ]);
+        $this->writeConstants("MasterBank", "banks");
+        operation("CREATE_BANK");
 
         return \Response::json([
             'item' => array(
@@ -50,14 +51,16 @@ class Bank extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterBank::all(), [
             "code" => [],
             "name" => ["translate"=>true]
         ], "READ_BANKS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterBank:: where("name", "LIKE", "%".$keywords_search."%")
                                 ->orWhere("code", "LIKE", "%".$keywords_search."%")
@@ -68,7 +71,8 @@ class Bank extends Controller{
         ], "SEARCH_BANKS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterBank::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -77,9 +81,7 @@ class Bank extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_BANK"]
-        ]);
+        operation("READ_BANK");
 
         return \Response::json([
             'item' => array(
@@ -91,7 +93,8 @@ class Bank extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $status = $request->input("data.status");
         $countries = $request->input("data.countries");
@@ -99,7 +102,7 @@ class Bank extends Controller{
         $item->name = setFieldMultilingual($item->name, $name);
         $item->code = $request->input("data.code");
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -109,7 +112,7 @@ class Bank extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -119,20 +122,20 @@ class Bank extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
+        $this->writeConstants("MasterBank", "banks");
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_BANK"]
-        ]);
+        operation("UPDATE_BANK");
+
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterBank::where("id", "=", $id)->get()[0];
         $item->__delete__();
+        $this->writeConstants("MasterBank", "banks");
+        operation("DELETE_BANK");
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_BANK"]
-        ]);
         return \Response::json(array(), 200);
     }
 }

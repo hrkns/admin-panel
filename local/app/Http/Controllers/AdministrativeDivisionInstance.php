@@ -9,8 +9,10 @@ use App\Models\MasterAdministrativeDivisionInstance;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class AdministrativeDivisionInstance extends Controller{
-    public function create(Request $request){
+class AdministrativeDivisionInstance extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $desc = $request->input("data.description");
         $lstatus = $request->input("data.status");
@@ -23,7 +25,7 @@ class AdministrativeDivisionInstance extends Controller{
         $newitem->code = $request->input("data.code");
         $newitem->__create__();
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -32,7 +34,7 @@ class AdministrativeDivisionInstance extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $newitem->create_Status([
                     "id_status"=>$value
                 ]);
@@ -43,7 +45,7 @@ class AdministrativeDivisionInstance extends Controller{
         $newitem->available_for_use = $available_for_use?'1':'0';
         $newitem->save();
 
-        if(gettype($parents) != "array"){
+        if (gettype($parents) != "array") {
             $parents = array();
         }
 
@@ -53,7 +55,7 @@ class AdministrativeDivisionInstance extends Controller{
             ]);
         }
 
-        if(gettype($types) != "array"){
+        if (gettype($types) != "array") {
             $types = array();
         }
 
@@ -62,9 +64,9 @@ class AdministrativeDivisionInstance extends Controller{
                 "id_type"=>$value
             ]);
         }
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_ADMINISTRATIVE_DIVISION_INSTANCE"]
-        ]);
+
+        $this->writeConstants("MasterAdministrativeDivisionInstance", "administrative_division_instances");
+        operation("CREATE_ADMINISTRATIVE_DIVISION_INSTANCE");
 
         return \Response::json([
             'item' => array(
@@ -79,13 +81,14 @@ class AdministrativeDivisionInstance extends Controller{
         ], 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterAdministrativeDivisionInstance::all(), [
             "code" => [],
             "description" => ["translate"=>true],
             "name" => ["translate"=>true]
-        ], "READ_ADMINISTRATIVE_DIVISION_INSTANCES", ["status"=>true], 
-            function($parms, &$item){
+        ], "READ_ADMINISTRATIVE_DIVISION_INSTANCES", ["status"=>true],
+            function ($parms, &$item) {
                 extract($parms);
 
                 $list_parents = $model->read_Parent;
@@ -108,7 +111,8 @@ class AdministrativeDivisionInstance extends Controller{
         );
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterAdministrativeDivisionInstance:: where("description", "LIKE", "%".$keywords_search."%")
                                                             ->orWhere("name", "LIKE", "%".$keywords_search."%")
@@ -119,8 +123,8 @@ class AdministrativeDivisionInstance extends Controller{
             "code" => [],
             "description" => ["translate"=>true],
             "name" => ["translate"=>true]
-        ], "SEARCH_ADMINISTRATIVE_DIVISION_INSTANCES", ["status"=>true], 
-            function($parms, &$item){
+        ], "SEARCH_ADMINISTRATIVE_DIVISION_INSTANCES", ["status"=>true],
+            function ($parms, &$item) {
                 extract($parms);
 
                 $list_parents = $model->read_Parent;
@@ -143,7 +147,8 @@ class AdministrativeDivisionInstance extends Controller{
         );
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterAdministrativeDivisionInstance::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -166,9 +171,7 @@ class AdministrativeDivisionInstance extends Controller{
             array_push($types, $value->id_type);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_ADMINISTRATIVE_DIVISION_INSTANCE"]
-        ]);
+        operation("READ_ADMINISTRATIVE_DIVISION_INSTANCE");
 
         return \Response::json([
             'item' => array(
@@ -183,7 +186,8 @@ class AdministrativeDivisionInstance extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $description = $request->input("data.description");
         $status = $request->input("data.status");
@@ -195,7 +199,7 @@ class AdministrativeDivisionInstance extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $request->input("data.code");
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -205,7 +209,7 @@ class AdministrativeDivisionInstance extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -216,7 +220,7 @@ class AdministrativeDivisionInstance extends Controller{
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
 
-        if(gettype($parents) != "array"){
+        if (gettype($parents) != "array") {
             $parents = array();
         }
 
@@ -228,7 +232,7 @@ class AdministrativeDivisionInstance extends Controller{
             ]);
         }
 
-        if(gettype($types) != "array"){
+        if (gettype($types) != "array") {
             $types = array();
         }
 
@@ -240,19 +244,18 @@ class AdministrativeDivisionInstance extends Controller{
             ]);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_ADMINISTRATIVE_DIVISION_INSTANCE"]
-        ]);
+        $this->writeConstants("MasterAdministrativeDivisionInstance", "administrative_division_instances");
+        operation("UPDATE_ADMINISTRATIVE_DIVISION_INSTANCE");
 
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterAdministrativeDivisionInstance::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_ADMINISTRATIVE_DIVISION_INSTANCE"]
-        ]);
+        $this->writeConstants("MasterAdministrativeDivisionInstance", "administrative_division_instances");
+        operation("DELETE_ADMINISTRATIVE_DIVISION_INSTANCE");
         return \Response::json(array(), 200);
     }
 }

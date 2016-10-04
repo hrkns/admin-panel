@@ -13,7 +13,7 @@ use App\Models\MasterLanguage;
 
 /*******************************************************************************************************************/
 
-//sleep(rand(10, 20));
+//sleep(rand(100, 200));
 
 /*
     unique code used to mark the current request and related operations in the database
@@ -21,19 +21,20 @@ use App\Models\MasterLanguage;
 
 define("HASH_OPERATION", sqldate()."|".uniqid());
 /*
-    
+
 */
 
-function __ACTIVITY__($arr){
+function __ACTIVITY__($arr)
+{
     $__SESSION__ = UserSession::where("id", "=", Request::session()->get('idsession'))->get();
 
-    if(count($__SESSION__) > 0){
+    if (count($__SESSION__) > 0) {
         $__SESSION__ = $__SESSION__[0];
-    }else{
+    } else {
         $__SESSION__ = false;
     }
 
-    if($__SESSION__){
+    if ($__SESSION__) {
         $__SESSION__->create_Activity([
             "id_operation"  => $arr["operation"],
             "hash_operation"=> HASH_OPERATION,
@@ -42,13 +43,22 @@ function __ACTIVITY__($arr){
     }
 }
 
+function operation($code, $data=array())
+{
+    __ACTIVITY__([
+        "operation" => $code,
+        "info" => $data
+    ]);
+}
+
 /*******************************************************************************************************************/
 
 /*
     returns a modal (lightbox) view, used mostly to create or edit info on the system
 */
 
-function onModalRequest($context, $action, $extra = array() ){
+function onModalRequest($context, $action, $extra = array())
+{
     $tmp = true?GetForUse("MasterStatus"):MasterStatus::all();
     $list_status = array();
 
@@ -79,7 +89,7 @@ function onModalRequest($context, $action, $extra = array() ){
     }
 
     //evaluo cada uno de los roles que el usuario posee en cada organizacion (uno por organizacion)
-    foreach ($roles as $key => $value){
+    foreach ($roles as $key => $value) {
         $role_sections = PanelAdminRoleSection::where("id_panel_admin_role", "=", $value->id_role)
                                               ->where("id_section", "=", $id_section)->get();
 
@@ -95,13 +105,13 @@ function onModalRequest($context, $action, $extra = array() ){
 
     $GLOBALS["section_terms"] = $terms;
 
-    $viewParms = array( "list_status"=>$list_status, 
+    $viewParms = array( "list_status"=>$list_status,
                         "terms"=>$terms,
                         "role_actions"=>$boolean_actions,
                         "context"=>$context,
                         "action"=>$action,);
 
-    if(array_key_exists("viewParms", $extra)){
+    if (array_key_exists("viewParms", $extra)) {
         foreach ($extra["viewParms"] as $key => $value) {
             $viewParms[$key] = $value;
         }
@@ -128,7 +138,7 @@ $GLOBALS["terms"] = terms();
 /*******************************************************************************************************************/
 
 /*
-    handlers to modal requests 
+    handlers to modal requests
 
     modal are used mostly to edit data, among other operations
 
@@ -138,12 +148,10 @@ $GLOBALS["terms"] = terms();
 require "routes_operations_views_data.php";
 
 foreach ($operations_views_data as $key => $data) {
-    Route::get("/".$data["model"]."/".$data["action"], function() use($data){
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"][$data["op_code"]]
-        ]);
+    Route::get("/".$data["model"]."/".$data["action"], function () use ($data) {
+        operation($data["op_code"]);
 
-        if(!isset($data["data"])){
+        if (!isset($data["data"])) {
             $data["data"] = array();
         }
 
@@ -170,12 +178,13 @@ $middlewares = array("session_verification");
 foreach ($requests as $key => $data_request) {
     $v = Route::$data_request["type"]("/".$data_request["route"], $data_request["controller"]."@".$data_request["method"]);
 
-    if(!isset($data_request["middlewares"])){
-        $data_request["middlewares"] = array();;
+    if (!isset($data_request["middlewares"])) {
+        $data_request["middlewares"] = array();
+        ;
     }
 
     foreach ($middlewares as $k => $middleware) {
-        if(!isset($data_request["middlewares"][$middleware]) || $data_request["middlewares"][$middleware]){
+        if (!isset($data_request["middlewares"][$middleware]) || $data_request["middlewares"][$middleware]) {
             $v->middleware($middleware);
         }
     }
@@ -186,7 +195,8 @@ foreach ($requests as $key => $data_request) {
 /*
     this method decides if it's shown the logged or not-logged view
 */
-function show_logged_or_not_logged(){
+function show_logged_or_not_logged()
+{
     include FILE_ADMIN_PANEL_SETTINGS;
 
     /*
@@ -197,10 +207,10 @@ function show_logged_or_not_logged(){
     $userData = User::where("id", "=", Request::session()->get("iduser"))->get()[0];
     $role = UserRole::where("id_user", "=", $userData->id)->get();
 
-    if(count($role)>0){
+    if (count($role)>0) {
         $role = $role[0]->id_role;
         $roleData = PanelAdminRole::where("id", "=", $role)->get()[0];
-    }else{
+    } else {
         $roleData = [
             "id"=>$userData->id_role,
             "available_for_use" => "",
@@ -214,9 +224,9 @@ function show_logged_or_not_logged(){
     $languages = GetForUse("MasterLanguage");
 
     $parameters = array(
-        "globalPreferences" =>$globalPreferences, 
-        "userPreferences"   =>$userPreferences, 
-        "iduser"            =>Request::session()->get("iduser"), 
+        "globalPreferences" =>$globalPreferences,
+        "userPreferences"   =>$userPreferences,
+        "iduser"            =>Request::session()->get("iduser"),
         "userData"          =>$userData,
         "terms"             =>$terms,
         "roleData"          =>$roleData,
@@ -229,12 +239,12 @@ function show_logged_or_not_logged(){
 /*
     request to show the root view of the app
 */
-Route::get("/", function(){
+Route::get("/", function () {
     Request::session()->put('backward', "");
 
-    if(Request::session()->has("iduser")){
+    if (Request::session()->has("iduser")) {
         return show_logged_or_not_logged();
-    }else{
+    } else {
         return view('app.not-logged');
     }
 })->middleware("lock_screen");
@@ -243,9 +253,9 @@ Route::get("/", function(){
     request to show the terms of use and privacy policy
 */
 
-Route::get("/terms-of-use-and-privacy-policy", function(){
+Route::get("/terms-of-use-and-privacy-policy", function () {
     /*
-        Call the admin-panel settins file, where the TSPP is located 
+        Call the admin-panel settins file, where the TSPP is located
     */
     include FILE_ADMIN_PANEL_SETTINGS;
 
@@ -265,15 +275,15 @@ Route::get("/terms-of-use-and-privacy-policy", function(){
     request to lock the screen
 */
 
-Route::get("/lock-screen", function(){
+Route::get("/lock-screen", function () {
     include FILE_ADMIN_PANEL_SETTINGS;
     $terms = terms();
     Request::session()->put("lock_screen", "1");
     $datauser = User::where("id", "=", Request::session()->get("iduser"))->get();
 
-    if(count($datauser) > 0){
+    if (count($datauser) > 0) {
         $datauser = $datauser[0];
-    }else{
+    } else {
         return redirect(WEB_ROOT.'/logout');
     }
 
@@ -294,10 +304,10 @@ here we handle the GET requests associated with the sections, when they are not 
 require "routes_sections_url.php";
 
 foreach ($sections_url as $key => $url) {
-    Route::get("/".$url, function(){
-        if(!Request::session()->has("iduser")){
+    Route::get("/".$url, function () {
+        if (!Request::session()->has("iduser")) {
             return redirect("/");
-        }else{
+        } else {
             return show_logged_or_not_logged();
         }
     })->middleware("lock_screen");

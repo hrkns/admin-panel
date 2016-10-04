@@ -10,19 +10,21 @@ use App\Models\MasterDocumentation;
 use App\Models\MasterStatus;
 use App\Models\UserSession;
 
-class Documentation extends Controller{
-    public function create(Request $request){
+class Documentation extends Controller
+{
+    public function create(Request $request)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
         $new_language = new MasterDocumentation;
         $new_language->name = generateMultilingual($name);
         $new_language->description = generateMultilingual($description);
-        $new_language->code = $code; 
+        $new_language->code = $code;
         $new_language->__create__();
         $lstatus = $request->input("data.status");
 
-        if(gettype($lstatus) != "array"){
+        if (gettype($lstatus) != "array") {
             $lstatus = array();
         }
 
@@ -31,7 +33,7 @@ class Documentation extends Controller{
         foreach ($lstatus as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $new_language->create_Status([
                     "id_status"=>$value
                 ]);
@@ -41,10 +43,8 @@ class Documentation extends Controller{
 
         $new_language->available_for_use = $available_for_use?'1':'0';
         $new_language->save();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["CREATE_DOCUMENTATION"]
-        ]);
-
+        $this->writeConstants("MasterDocumentation", "documentation");
+        operation("CREATE_DOCUMENTATION");
         return \Response::json(array(
             "item"  => array(
                 "id"            =>  $new_language->id,
@@ -56,7 +56,8 @@ class Documentation extends Controller{
         ), 201);
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return $this->index_items($request, MasterDocumentation::all(), [
             "code" => [],
             "description" => ["translate"=>true],
@@ -64,7 +65,8 @@ class Documentation extends Controller{
         ], "READ_DOCUMENTATIONS");
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keywords_search = $request->input("data.keywords_search");
         $base_items = MasterDocumentation:: where("code", "LIKE", "%".$keywords_search."%")
                                         ->orWhere("description", "LIKE", "%".$keywords_search."%")
@@ -77,7 +79,8 @@ class Documentation extends Controller{
         ], "SEARCH_DOCUMENTATIONS");
     }
 
-    public function read(Request $request, $id){
+    public function read(Request $request, $id)
+    {
         $item = MasterDocumentation::where("id", "=", $id)->get()[0];
         $status = $item->read_Status;
         $ls=array();
@@ -86,9 +89,7 @@ class Documentation extends Controller{
             array_push($ls, $value->id_status);
         }
 
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["READ_DOCUMENTATION"]
-        ]);
+        operation("READ_DOCUMENTATION");
 
         return \Response::json([
             'item' => array(
@@ -100,7 +101,8 @@ class Documentation extends Controller{
         ], 200);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $name = $request->input("data.name");
         $code = $request->input("data.code");
         $description = $request->input("data.description");
@@ -110,7 +112,7 @@ class Documentation extends Controller{
         $item->description = setFieldMultilingual($item->description, $description);
         $item->code = $code;
 
-        if(gettype($status) != "array"){
+        if (gettype($status) != "array") {
             $status = array();
         }
 
@@ -120,7 +122,7 @@ class Documentation extends Controller{
         foreach ($status as $key => $value) {
             $st = MasterStatus::where("id", "=", $value)->get();
 
-            if(count($st)>0){
+            if (count($st)>0) {
                 $item->create_Status([
                     "id_status"=>$value
                 ]);
@@ -130,20 +132,18 @@ class Documentation extends Controller{
 
         $item->available_for_use = $available_for_use?'1':'0';
         $item->__update__();
-
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["UPDATE_DOCUMENTATION"]
-        ]);
+        $this->writeConstants("MasterDocumentation", "documentation");
+        operation("UPDATE_DOCUMENTATION");
 
         return \Response::json(array(), 204);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $item = MasterDocumentation::where("id", "=", $id)->get()[0];
         $item->__delete__();
-        __ACTIVITY__([
-            "operation" => $GLOBALS["__OPERATION__"]["DELETE_DOCUMENTATION"]
-        ]);
+        $this->writeConstants("MasterDocumentation", "documentation");
+        operation("DELETE_DOCUMENTATION");
         return \Response::json(array(), 200);
     }
 }
