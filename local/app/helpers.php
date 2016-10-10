@@ -56,10 +56,10 @@ use App\Models\UserPreferences;
     {
         return
         (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || $_SERVER['SERVER_PORT'] == 443;
+        || ( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
     }
 
-    $SERVER_NAME = $_SERVER["SERVER_NAME"];
+    $SERVER_NAME = isset($_SERVER["SERVER_NAME"])?$_SERVER["SERVER_NAME"]:"";
     $current_directory = str_replace("\\", "/", __DIR__);
 
     while (!in_array("root.ap", scandir($current_directory))) {
@@ -581,7 +581,8 @@ use App\Models\UserPreferences;
         save global settings
     */
 
-    function saveGlobalSettings($arr){
+    function saveGlobalSettings($arr)
+    {
         file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalSettings = ' . var_export($arr, true) . ';?>');
     }
 ?>
