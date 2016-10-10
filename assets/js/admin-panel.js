@@ -2604,6 +2604,7 @@ function app(){
 		@description: it checks if a session has been already started or it has already finished
 	*/
 		var lastValSessionMonitor = null;
+		var abortSessionMonitor = false;
 
 		function sessionMonitor(){
 			App.HTTP.get({
@@ -2619,12 +2620,19 @@ function app(){
 				error : function(x, y, z){
 				},
 				after: function(){
-					setTimeout(sessionMonitor, 10000);
+					if(!abortSessionMonitor){
+						setTimeout(sessionMonitor, 10000);
+					}
 				},
 				log_ui_msg : false
 			});
 		}
+
 		setTimeout(sessionMonitor, 1000);
+
+		this.abort_session_monitor = function(){
+			abortSessionMonitor = true;
+		}
 
 	/*
 		@method: changeFormatShowItems

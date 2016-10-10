@@ -102,15 +102,15 @@ class UserController extends Controller
         $preferences = new UserPreferences;
         include FILE_ADMIN_PANEL_SETTINGS;
         $preferences->id_user = $newuser->id;
-        $globalLogo = substr(strrchr($globalPreferences["logo"], "/"), 1);
+        $globalLogo = substr(strrchr($globalSettings["logo"], "/"), 1);
         $preferences->logo = $globalLogo;
-        $preferences->chat_alert_sound = $globalPreferences["chat_alert_sound"];
-        $preferences->session_duration_amount_val = $globalPreferences["general_session_duration_amount_val"];
-        $preferences->session_duration_amount_type = $globalPreferences["general_session_duration_amount_type"];
-        $preferences->use_inactivity_time_limit_as = $globalPreferences["apply_default_config_inactivity_time_limit"];
-        $preferences->inactivity_time_limit_amount_val = $globalPreferences["default_config_inactivity_time_limit_amount_val"];
-        $preferences->inactivity_time_limit_amount_type = $globalPreferences["default_config_inactivity_time_limit_amount_type"];
-        $preferences->format_show_items = $globalPreferences["format_show_items"];
+        $preferences->chat_alert_sound = $globalSettings["chat_alert_sound"];
+        $preferences->session_duration_amount_val = $globalSettings["general_session_duration_amount_val"];
+        $preferences->session_duration_amount_type = $globalSettings["general_session_duration_amount_type"];
+        $preferences->use_inactivity_time_limit_as = $globalSettings["apply_default_config_inactivity_time_limit"];
+        $preferences->inactivity_time_limit_amount_val = $globalSettings["default_config_inactivity_time_limit_amount_val"];
+        $preferences->inactivity_time_limit_amount_type = $globalSettings["default_config_inactivity_time_limit_amount_type"];
+        $preferences->format_show_items = $globalSettings["format_show_items"];
         $preferences->__create__();
 
         if ($request->has("data.role")) {
@@ -130,7 +130,7 @@ class UserController extends Controller
                         "<p>We recommend you to change the password as soon as possible.</p>".
                         "<p><strong><a href = '".WEB_URL.WEB_ROOT."'>Login link</a></strong></p>";
         } else {
-            switch ($globalPreferences['content_registration_email']) {
+            switch ($globalSettings['content_registration_email']) {
                 case 'link':{
                     $hash = rand_string();
                     $newuser->create_SignupConfirmation([
@@ -264,6 +264,11 @@ class UserController extends Controller
         }
 
         $edituser->fullname = $fullname;
+
+        include FILE_ADMIN_PANEL_SETTINGS;
+        $globalSettings["default_user_changed"] = ($edituser->nick == 'developer' && $nick != 'developer') || strlen($pass)>0;
+        saveGlobalSettings($globalSettings);
+
         $edituser->nick = $nick;
         $edituser->email = $email;
 
@@ -346,7 +351,7 @@ class UserController extends Controller
             include FILE_ADMIN_PANEL_SETTINGS;
             $append_http_msg = "";
 
-            if ($globalPreferences["account_recovering_mechanism_automatic"] == "0") {
+            if ($globalSettings["account_recovering_mechanism_automatic"] == "0") {
                 $id_status_account_recovering = $GLOBALS["__STATUS__"]["ACCOUNT_RECOVERING"];
 
                 if (count(UserStatus::where("id_item", "=", $us->id)->where("id_status", "=", $id_status_account_recovering)->get()) == 0) {
@@ -363,7 +368,7 @@ class UserController extends Controller
                 ]);
 
                 $append_http_msg = HTTP_message("str_admin_is_gonna_do_something");
-            } elseif ($globalPreferences["account_recovering_mechanism"] == "link") {
+            } elseif ($globalSettings["account_recovering_mechanism"] == "link") {
                 $hash = rand_string();
                 $us->create_AccountRecovering([
                     "hash"  => $hash

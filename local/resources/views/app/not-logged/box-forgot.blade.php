@@ -1,5 +1,5 @@
 <div id = "box_forgot" style = "display:none;" align = "center">
-	<a href class="navbar-brand block m-t" style = "width:100%;">{!! $globalPreferences["name_of_system"] !!}</a>
+	<a href class="navbar-brand block m-t" style = "width:100%;">{!! $globalSettings["name_of_system"] !!}</a>
 	<div class="m-b-lg">
 		<div class="wrapper text-center">
 			<strong>{!! term('str_reset_password_description', true) !!}</strong><br><br>

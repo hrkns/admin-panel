@@ -39,5 +39,4 @@
 <script src="assets/js/theme/theme.init.js"></script>
 <script src="assets/js/admin-panel.js"></script>
 <script src="assets/plugins/alertify/alertify.js"></script>
-<script src="assets/js/public.js"></script>
 <script src="assets/js/installer.js"></script>

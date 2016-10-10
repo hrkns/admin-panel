@@ -1,5 +1,5 @@
 <?php
-		$test_remote = false;
+	include FILE_ADMIN_PANEL_SETTINGS;
 
 		return [
 
@@ -55,10 +55,10 @@
 
 		        'mysql' => [
 		            'driver'    => 'mysql',
-		            'host'      => env('DB_HOST', 		__REMOTE__ || $test_remote?__REMOTE__DB_HOST:'localhost'),
-		            'database'  => env('DB_DATABASE', 	__REMOTE__ || $test_remote?__REMOTE__DB_DB:'admin_panel'),
-		            'username'  => env('DB_USERNAME', 	__REMOTE__ || $test_remote?__REMOTE__DB_USER:'root'),
-		            'password'  => env('DB_PASSWORD', 	__REMOTE__ || $test_remote?__REMOTE__DB_PASSWORD:''),
+		            'host'      => env('DB_HOST', 		$globalSettings["db_address"]),
+		            'database'  => env('DB_DATABASE', 	$globalSettings["db_name"]),
+		            'username'  => env('DB_USERNAME', 	$globalSettings["db_user"]),
+		            'password'  => env('DB_PASSWORD', 	$globalSettings["db_password"]),
 		            'charset'   => 'utf8',
 		            'collation' => 'utf8_unicode_ci',
 		            'prefix'    => '',

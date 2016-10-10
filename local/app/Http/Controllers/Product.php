@@ -74,8 +74,7 @@ class Product extends Controller
                 "code"          =>  $code,
                 "description"   =>  $description,
                 "status"        =>  $lstatus
-            ),
-            "message" => "mensaje cualquiera",
+            )
         ), 201);
     }
 
@@ -122,7 +121,6 @@ class Product extends Controller
                 "id"            =>$item->id,
                 "code"            =>$item->code,
             ),
-            "message" => "mensaje cualquiera",
         ], 200);
     }
 
@@ -159,8 +157,7 @@ class Product extends Controller
         $item->__update__();
         $this->writeConstants("ProductService", "products");
         operation("UPDATE_PRODUCT");
-        return \Response::json(array(
-            "message" => "mensaje cualquiera", ), 204);
+        return \Response::json(array(), 204);
     }
 
     public function getEstructure(Request $request, $id)
@@ -181,7 +178,6 @@ class Product extends Controller
 
         return \Response::json(array(
             "items" => $items,
-            "message" => "mensaje cualquiera",
         ), 200);
     }
 
@@ -220,7 +216,6 @@ class Product extends Controller
         $item->__delete__();
         $this->writeConstants("ProductService", "products");
         operation("DELETE_PRODUCT");
-        return \Response::json(array(
-            "message" => "mensaje cualquiera", ), 200);
+        return \Response::json(array( ), 200);
     }
 }

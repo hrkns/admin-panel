@@ -1,10 +1,4 @@
 <?php
-define("__REMOTE__", false);
-define("__REMOTE__DB_HOST", "sql302.byethost3.com");
-define("__REMOTE__DB_DB", "b3_18838539_adminpanel");
-define("__REMOTE__DB_USER", "b3_18838539");
-define("__REMOTE__DB_PASSWORD", "n40m1j43g3r");
-define("WEBHOST", __REMOTE__?"http://adminpanel.byethost3.com":"http://localhost");
 
 /**
  * Laravel - A PHP Framework For Web Artisans

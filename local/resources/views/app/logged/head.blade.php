@@ -1,7 +1,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title id = "tab_title">
-			{!! $globalPreferences["name_of_system"]; !!}
+			{!! $globalSettings["name_of_system"]; !!}
 		</title>
 
 		{{-- the AP_Asset function is located in the file 'local/app/helpers.php' --}}
@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="{!! AP_Asset("assets/plugins/alertify/css/alertify.rtl.css") !!}">
 		<link rel="stylesheet" href="{!! AP_Asset("assets/css/admin-panel.css") !!}">
 		<link rel="stylesheet" href="{!! AP_Asset("assets/plugins/emoji/emoji.css") !!}">
-		<link rel="shortcut icon" href="{!! intval($userPreferences->use_global_tab_icon) == 1?$globalPreferences["tab_icon"]:AP_Asset("assets/images/tab_icons/".$userPreferences["tab_icon"]) !!}" id = "original_global_tab_icon"/>
+		<link rel="shortcut icon" href="{!! intval($userPreferences->use_global_tab_icon) == 1?$globalSettings["tab_icon"]:AP_Asset("assets/images/tab_icons/".$userPreferences["tab_icon"]) !!}" id = "original_global_tab_icon"/>
 		<meta name="_token" content="{!! csrf_token() !!}"/>
 		<meta name="use_inactivity_time_limit" content = "{!! $userPreferences->use_inactivity_time_limit_as !!}">
 		<meta name="format_show_items" content = "{!! $userPreferences->format_show_items !!}">

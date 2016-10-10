@@ -1,5 +1,5 @@
 {{-- visually located at the top of the page --}}
-	@include('app.logged.navbar'			, [	"globalPreferences"	=>$globalPreferences, 
+	@include('app.logged.navbar'			, [	"globalSettings"	=>$globalSettings, 
 												"userPreferences"	=>$userPreferences, 
 												"userData"			=>$userData,
 												"terms"				=>$terms,

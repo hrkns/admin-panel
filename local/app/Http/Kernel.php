@@ -33,5 +33,6 @@ class Kernel extends HttpKernel
 
         'session_verification' => \App\Http\Middleware\SessionVerification::class,
         'lock_screen' => \App\Http\Middleware\LockScreenMiddleware::class,
+        'installer' => \App\Http\Middleware\InstallerMiddleware::class,
     ];
 }

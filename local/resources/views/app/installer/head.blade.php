@@ -1,6 +1,6 @@
 <head>
 	<meta charset="utf-8" />
-	<title>{!! $globalSettings["name_of_system"] !!}</title>
+	<title>{!! $globalSettings["name_of_system"] ." - " . term("str_installer", true)!!}</title>
 	<meta name="description" content="Programming Template for Administration Panel" />
 	<meta name="keywords" content="admin panel back office management administration" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

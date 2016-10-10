@@ -448,7 +448,7 @@ class ThreadController extends Controller
                     $user = array(
                         "id" => null,
                         "profile_img" => "default.jpg",
-                        "fullname" => term("str_user")
+                        "fullname" => term("str_user", true)
                     );
                 }
 

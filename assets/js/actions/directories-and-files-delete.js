@@ -101,13 +101,13 @@ function __action(){
 						removing_selected_items = false;
 						App.DOM_Enabling($("#modal_directories-and-files_delete"));
 						App.HideLoading();
-					}
+					},log_ui_msg : false
 				});
 			}, error : function(x, y, z){
 				removing_selected_items = false;
 				App.DOM_Enabling($("#modal_directories-and-files_delete"));
 				App.HideLoading();
-			}
+			},log_ui_msg : false
 		});
 	});
 }

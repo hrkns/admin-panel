@@ -188,6 +188,8 @@ foreach ($requests as $key => $data_request) {
             $v->middleware($middleware);
         }
     }
+
+    $v->middleware("installer");
 }
 
 /*******************************************************************************************************************/
@@ -224,7 +226,7 @@ function show_logged_or_not_logged()
     $languages = GetForUse("MasterLanguage");
 
     $parameters = array(
-        "globalPreferences" =>$globalPreferences,
+        "globalSettings" =>$globalSettings,
         "userPreferences"   =>$userPreferences,
         "iduser"            =>Request::session()->get("iduser"),
         "userData"          =>$userData,
@@ -247,7 +249,7 @@ Route::get("/", function () {
     } else {
         return view('app.not-logged');
     }
-})->middleware("lock_screen");
+})->middleware("lock_screen")->middleware("installer");
 
 /*
     request to show the terms of use and privacy policy
@@ -266,10 +268,10 @@ Route::get("/terms-of-use-and-privacy-policy", function () {
 
     return view('app.terms-of-use-and-privacy-policy', [
         "terms" => $terms,
-        'terms_of_use_and_privacy_policy' => $globalPreferences["terms_of_use_and_privacy_policy"][__LNG__],
-        "tab_icon" => $globalPreferences["tab_icon"]
+        'terms_of_use_and_privacy_policy' => $globalSettings["terms_of_use_and_privacy_policy"][__LNG__],
+        "tab_icon" => $globalSettings["tab_icon"]
     ]);
-})->middleware("lock_screen");
+})->middleware("lock_screen")->middleware("installer");
 
 /*
     request to lock the screen
@@ -290,9 +292,53 @@ Route::get("/lock-screen", function () {
     return view('app.lock-screen', [
         "terms" => $terms,
         "datauser" => $datauser,
-        "tab_icon" => $globalPreferences["tab_icon"],
-        "name_of_system" => $globalPreferences["name_of_system"]
+        "tab_icon" => $globalSettings["tab_icon"],
+        "name_of_system" => $globalSettings["name_of_system"]
     ]);
+})->middleware("installer");
+
+/*
+    request for installer interface
+*/
+
+Route::get("/installer", function () {
+    include FILE_ADMIN_PANEL_SETTINGS;
+    $terms = terms();
+
+    return view('app.installer', [
+        "terms" => $terms,
+        "settings" => $globalSettings,
+        "globalSettings" => $globalSettings,
+    ]);
+});
+
+Route::post("/install", function () {
+    include FILE_ADMIN_PANEL_SETTINGS;
+    $dbconfig = Request::input("data.db");
+    $smtpconfig = Request::input("data.smtp");
+
+    $globalSettings["db_address"] = $dbconfig["host"];
+    $globalSettings["db_name"] = $dbconfig["name"];
+    $globalSettings["db_user"] = $dbconfig["user"];
+
+    if (strlen($dbconfig["password"]) > 0) {
+        $globalSettings["db_password"] = $dbconfig["password"];
+    }
+
+    $globalSettings["smtp_host"] = $smtpconfig["host"];
+    $globalSettings["smtp_port"] = intval($smtpconfig["port"]);
+    $globalSettings["smtp_email_from"] = $smtpconfig["email"];
+
+    if (strlen($smtpconfig["password"]) > 0) {
+        $globalSettings["smtp_password_from"] = $smtpconfig["password"];
+    }
+
+    $globalSettings["smtp_fullname_from"] = $smtpconfig["fullname"];
+    $globalSettings["smtp_secure"] = isTrue($smtpconfig["secure"]);
+    $globalSettings["installed"]++;
+    saveGlobalSettings($globalSettings);
+
+    return \Response::json([], 200);
 });
 
 /*******************************************************************************************************************/
@@ -310,5 +356,5 @@ foreach ($sections_url as $key => $url) {
         } else {
             return show_logged_or_not_logged();
         }
-    })->middleware("lock_screen");
+    })->middleware("lock_screen")->middleware("installer");
 }

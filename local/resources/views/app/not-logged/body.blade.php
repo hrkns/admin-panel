@@ -3,7 +3,7 @@
 		$languages = GetForUse("MasterLanguage");
 		$parameters = array(
 			"terms"=>terms(),
-			"globalPreferences"=>$globalPreferences
+			"globalSettings"=>$globalSettings
 		);
 	?>
 	<body>
@@ -31,7 +31,7 @@
 
 			{{--if it is configured to let anybody could register, print the sign-up box --}}
 
-			@if(intval($globalPreferences["let_register_user"])==1)
+			@if(intval($globalSettings["let_register_user"])==1)
 				@include('app.not-logged.box-register', $parameters)
 			@endif
 

@@ -42,9 +42,8 @@ class Language extends Controller
         }
 
         require FILE_ADMIN_PANEL_SETTINGS;
-        $globalPreferences["terms_of_use_and_privacy_policy"][$new_language->code] = "";
-        file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalPreferences = ' . var_export($globalPreferences, true) . ';?>');
-
+        $globalSettings["terms_of_use_and_privacy_policy"][$new_language->code] = "";
+        saveGlobalSettings($globalSettings);
         $new_language->available_for_use = $available_for_use?'1':'0';
         $new_language->save();
         $this->writeConstants("MasterLanguage", "languages");
@@ -137,8 +136,8 @@ class Language extends Controller
 
 
         require FILE_ADMIN_PANEL_SETTINGS;
-        $globalPreferences["terms_of_use_and_privacy_policy"][$item->code] = $globalPreferences["terms_of_use_and_privacy_policy"][$old_code];
-        file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalPreferences = ' . var_export($globalPreferences, true) . ';?>');
+        $globalSettings["terms_of_use_and_privacy_policy"][$item->code] = $globalSettings["terms_of_use_and_privacy_policy"][$old_code];
+        saveGlobalSettings($globalSettings);
         $this->writeConstants("MasterLanguage", "languages");
         operation("UPDATE_LANGUAGE");
         return \Response::json(array(), 204);
