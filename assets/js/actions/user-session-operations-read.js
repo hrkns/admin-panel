@@ -13,12 +13,12 @@ function __action(){
 
 			var column_operation = document.createElement("td");
 			column_operation.align = "left";
-			column_operation.innerHTML = activity.operation.name + " ";
+			column_operation.innerHTML = (activity.operation) ? (activity.operation.name + " ") : '';
 
 			var help_icon = document.createElement("a");
 			help_icon.innerHTML = "<i class = 'icon ion-help-circled'></i>";
 			help_icon.href = "javascript:;";
-			help_icon.title = activity.operation.description;
+			help_icon.title = (activity.operation) ? (activity.operation.description + " ") : '';
 
 			column_operation.appendChild(help_icon);
 

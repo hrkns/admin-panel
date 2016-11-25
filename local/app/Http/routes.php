@@ -35,8 +35,10 @@ function __ACTIVITY__($arr)
     }
 
     if ($__SESSION__) {
+        include CODE_TO_ID_FOLDER."operations.php";
+
         $__SESSION__->create_Activity([
-            "id_operation"  => $arr["operation"],
+            "id_operation"  => $GLOBALS["CODE_TO_ID_OPERATIONS"][$arr["operation"]],
             "hash_operation"=> HASH_OPERATION,
             "info"          => isset($arr["operation"]["info"])?json_encode($arr["operation"]["info"]):json_encode([])
         ]);

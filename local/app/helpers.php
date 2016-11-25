@@ -99,6 +99,7 @@ use App\Models\UserPreferences;
     define("DEFAULT_LANGUAGE", $globalSettings["default_language_system"]);
     define("FILE_URL_ROUTES", PROJECT_SYSTEM_ROOT."/app/Http/routes_sections_url.php");
     define("DEFAULT_CLIENT_IMAGE", WEB_ROOT . "/assets/images/client/default.jpg");
+    define("CODE_TO_ID_FOLDER", PROJECT_SYSTEM_ROOT."/storage/admin-panel/code-to-id/");
 
     function sanitize($s)
     {

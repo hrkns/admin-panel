@@ -459,6 +459,7 @@ class UserController extends Controller
     {
         $session = DeletedUserSession::where("id_item", "=", $idsession)->get();
         $activities = array();
+        $cond = 0;
 
         if (count($session) == 0) {
             $session = UserSession::where("id", "=", $idsession)->get();
@@ -482,12 +483,14 @@ class UserController extends Controller
         }
 
         if (count($items) > 0) {
+            $cond = 1;
             $ops = array();
             $createdQuery = null;
             $queryForOps = null;
             $tmp = array();
 
             foreach ($items as $key => $activity) {
+                $cond++;
                 if ($createdQuery != null) {
                     $createdQuery->orWhere("id_item", "=", $activity->id);
                 } else {
@@ -533,7 +536,11 @@ class UserController extends Controller
         operation("READ_USER_SESSION_OPERATIONS");
 
         return \Response::json(array(
-            "items" => $items
+            "items" => $items,
+            "dataCreated" => $dataCreated,
+            "dataOperations" => $dataOperations,
+            "ops" => $ops,
+            "cond" => $cond,
         ), 200);
     }
 

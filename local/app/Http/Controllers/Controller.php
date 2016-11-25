@@ -190,4 +190,7 @@ abstract class Controller extends BaseController
         fwrite($f2, "\t]\n?>");
         fclose($f2);
     }
+
+    public function create_item($request, $fields){
+    }
 }
