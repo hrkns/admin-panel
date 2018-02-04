@@ -178,7 +178,7 @@ require "routes_requests.php";
 $middlewares = array("session_verification");
 
 foreach ($requests as $key => $data_request) {
-    $v = Route::$data_request["type"]("/".$data_request["route"], $data_request["controller"]."@".$data_request["method"]);
+    $v = Route::{$data_request["type"]}("/".$data_request["route"], $data_request["controller"]."@".$data_request["method"]);
 
     if (!isset($data_request["middlewares"])) {
         $data_request["middlewares"] = array();
