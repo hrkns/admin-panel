@@ -226,7 +226,7 @@ class Role extends Controller
             $value->__delete__();
         }
 
-        operation(""UPDATE_ROLE_PERMISES);
+        operation("UPDATE_ROLE_PERMISES");
         return \Response::json(array(), 204);
     }
 }
