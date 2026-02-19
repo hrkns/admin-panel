@@ -29,3 +29,27 @@ Use this document to track defects discovered during modernization phases that a
   - Remaining issue appears specific to unlock validation/request flow.
 - Owner: pending assignment
 - Target phase: Phase 3 (or dedicated bugfix patch)
+
+## Issue Template
+
+Use this block when adding a new issue:
+
+```markdown
+### ISSUE-YYYY-MM-DD-SHORT-NAME
+- Date discovered: YYYY-MM-DD
+- Phase: Phase X
+- Status: open
+- Severity: low|medium|high|critical
+- Area: subsystem / module
+- Summary: One-line description.
+- Reproduction (observed):
+  1. Step one
+  2. Step two
+  3. Step three
+- Expected behavior: What should happen.
+- Current behavior: What actually happens.
+- Current workaround: Temporary mitigation, if any.
+- Notes: Any diagnostics, links, traces, or context.
+- Owner: pending assignment
+- Target phase: Phase X or bugfix patch
+```

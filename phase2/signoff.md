@@ -3,7 +3,7 @@
 - Date: 2026-02-19
 - Approver(s): pending human approval
 - Branch: upgrade
-- Git SHA: e57bb4b
+- Git SHA: 28f6332
 - App boots from environment without editing source files: yes
 - Runtime config writes to PHP files disabled: yes
 - Runtime mutable settings moved to JSON config service: yes (`local/storage/admin-panel/runtime-settings.json`)
