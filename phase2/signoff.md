@@ -10,6 +10,10 @@
 - Centralized config contract implemented: yes (`local/config/admin-panel-config-contract.php`)
 - Legacy compatibility adapter retained temporarily: yes (`local/admin-panel-settings.php`)
 - Required env validation implemented: yes (`AP_ENFORCE_COMPLETE_ENV=true`)
+- Secret-bearing local files are untracked and ignored: yes (`local/.env`, `local/storage/admin-panel/legacy-settings.snapshot.php`)
+- Template env file is redacted and safe for source control: yes (`local/.env.example`)
+- APP_KEY hardcoded fallback removed from framework config: yes (`local/config/app.php`)
+- Local secret hygiene scan across tracked files: pass (no active credential values detected)
 - Ready for Phase 3: yes
 - Deferred / out-of-scope issues:
   - Lock-screen unlock does not consistently accept valid password in browser flow.

@@ -30,6 +30,7 @@ Phase 1 deliverable (stabilize + credential hygiene runbook):
 Phase 2 deliverable (configuration overhaul sign-off):
 
 - [phase2/signoff.md](phase2/signoff.md)
+- [docs/phase-2-env-secrets-policy.md](docs/phase-2-env-secrets-policy.md)
 
 Known issues tracker:
 
@@ -55,6 +56,9 @@ Phase 2 configuration baseline (implemented):
 - App settings now load through a compatibility adapter in `local/admin-panel-settings.php` with precedence: environment -> runtime JSON -> legacy snapshot -> defaults.
 - Runtime-mutated settings are persisted in `local/storage/admin-panel/runtime-settings.json` (JSON config service), not by rewriting PHP source files.
 - Environment contract is centralized in `local/config/admin-panel-config-contract.php` and includes app, DB, SMTP, paths, and feature flags.
+- Secret-bearing local files (`local/.env`, `local/storage/admin-panel/legacy-settings.snapshot.php`) must stay untracked and are ignored by git.
+- `local/.env.example` is template-only and must never contain active credentials, real APP_KEY values, or production secrets.
+- Phase 2 exit criteria includes passing a repo secret hygiene check with no tracked secrets.
 
 ## Historical Instructions (Deprecated)
 

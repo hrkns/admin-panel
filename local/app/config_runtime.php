@@ -234,6 +234,45 @@ if (!function_exists('ap_apply_env_overrides')) {
     }
 }
 
+if (!function_exists('ap_apply_env_only_constraints')) {
+    function ap_apply_env_only_constraints($settings)
+    {
+        $contract = ap_load_config_contract();
+        $keys = isset($contract['keys']) && is_array($contract['keys']) ? $contract['keys'] : [];
+
+        foreach ($keys as $key => $definition) {
+            $envOnly = isset($definition['env_only']) && $definition['env_only'];
+
+            if (!$envOnly || !isset($definition['env'])) {
+                continue;
+            }
+
+            $envCandidates = is_array($definition['env']) ? $definition['env'] : [$definition['env']];
+            $envValue = null;
+
+            foreach ($envCandidates as $envName) {
+                $candidate = ap_env_value($envName);
+
+                if ($candidate !== null && trim(strval($candidate)) !== '') {
+                    $envValue = $candidate;
+                    break;
+                }
+            }
+
+            $type = isset($definition['type']) ? $definition['type'] : 'string';
+
+            if ($envValue === null) {
+                $settings[$key] = $type === 'string' ? '' : null;
+                continue;
+            }
+
+            $settings[$key] = ap_cast_value($envValue, $type);
+        }
+
+        return $settings;
+    }
+}
+
 if (!function_exists('ap_enforce_complete_env')) {
     function ap_enforce_complete_env()
     {
@@ -331,6 +370,7 @@ if (!function_exists('ap_build_global_settings')) {
 
         $settings = array_replace_recursive($defaults, $legacy, $runtime);
         $settings = ap_apply_env_overrides($settings);
+        $settings = ap_apply_env_only_constraints($settings);
 
         return $settings;
     }
