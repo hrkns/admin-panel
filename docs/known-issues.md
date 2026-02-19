@@ -34,7 +34,7 @@ Use this document to track defects discovered during modernization phases that a
 ### ISSUE-2026-02-19-SECRET-HISTORY-REMEDIATION
 - Date discovered: 2026-02-19
 - Phase: Phase 2
-- Status: resolved
+- Status: in-progress
 - Severity: high
 - Area: security / repository hygiene
 - Summary: Current tracked files are cleaner, but historical secret exposure reports indicate continuing remediation requirements (rotation/history review).
@@ -42,13 +42,14 @@ Use this document to track defects discovered during modernization phases that a
   1. Review repository/PR security scan reports for historical incidents.
   2. Confirm incidents reference prior committed content.
 - Expected behavior: No active secrets in tracked files and completed incident remediation workflow (rotation/revocation/history strategy as applicable).
-- Current behavior: Tracked-file hygiene is enforced and closure workflow is documented at Phase 3B.
-- Current workaround: none required; continue standard incident workflow for any newly discovered historical exposure.
+- Current behavior: Tracked-file hygiene is enforced and closure workflow is documented at Phase 3B, but PR security checks still report one historical incident pending closure.
+- Current workaround: maintain incident workflow and complete external security-check closure before marking fully resolved.
 - Notes:
   - Treated as a security operations stream parallel to code modernization.
   - Closure record captured in `phase3b/evidence/01-secret-history-remediation-closure.md` and referenced by `phase3b/signoff.md`.
+  - Active PR check context currently reports `GitGuardian Security Checks` failure (`1 secret uncovered`) until incident handling is finalized.
 - Owner: pending assignment
-- Target phase: Phase 3B (or dedicated security remediation patch)
+- Target phase: Phase 3B closure follow-up (or dedicated security remediation patch)
 
 ### ISSUE-2026-02-19-LOCKSCREEN-UNLOCK
 - Date discovered: 2026-02-19

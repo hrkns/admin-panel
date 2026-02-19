@@ -14,8 +14,8 @@
 - Container image build validation (nginx php-fpm profile): pass
 - Secret-bearing local files tracked by git: no (`local/.env`, `local/storage/admin-panel/legacy-settings.snapshot.php`)
 - Historical secret-exposure remediation closure path documented: yes (`phase3b/evidence/01-secret-history-remediation-closure.md`)
-- Phase 3B readiness outcome: ready to continue roadmap phases
-- Sign-off status: approved
+- Phase 3B readiness outcome: runtime readiness achieved; security closure pending external check clearance
+- Sign-off status: conditional (pending external security-check clearance)
 
 ## Validation Summary
 
@@ -58,9 +58,10 @@ Security closure checks executed:
 Result:
 
 - No tracked secret-bearing local files returned.
+- External PR security check currently remains failing (`GitGuardian Security Checks: 1 secret uncovered`) until incident closure is confirmed.
 
 ## Notes
 
-- Security-remediation closure evidence is complete for this phase.
+- Security-remediation evidence is complete, but final closure remains pending external check green status.
 - Runtime alignment is complete and validated at live startup level for both supported Phase 3 profiles.
 - Lock-screen unlock behavior remains explicitly deferred as non-blocking backlog.

@@ -1,8 +1,8 @@
-# Secret-History Remediation Closure Record
+# Secret-History Remediation Tracking Record
 
 ## Scope
 
-This record closes the modernization requirement for historical secret-exposure remediation at Phase 3B level.
+This record tracks the modernization requirement for historical secret-exposure remediation at Phase 3B level and its closure prerequisites.
 
 ## Current-State Verification
 
@@ -30,5 +30,5 @@ Closure for historical findings is handled as a security operations track parall
 
 ## Phase 3B Closure Decision
 
-- Phase 3B closure criterion is met by documented remediation workflow + current tracked-file hygiene verification + operational ownership requirement for rotation/revocation evidence.
+- Phase 3B security closure criterion remains in-progress: documented remediation workflow and tracked-file hygiene verification are complete, while external PR security-check clearance is still pending.
 - Any newly discovered historical exposure after this checkpoint must open a new security incident item in `docs/known-issues.md`.

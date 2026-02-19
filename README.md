@@ -73,12 +73,13 @@ Phase 2 configuration baseline (implemented):
 Current assessment (post-Phase 3B):
 
 - Runtime images for Phase 3 profiles are aligned to PHP 8.2+ and live startup smoke checks succeed on both profiles.
-- Historical secret-remediation closure evidence is documented in `phase3b/` artifacts.
+- Historical secret-remediation evidence is documented in `phase3b/` artifacts; external security-check clearance remains pending.
 - Deferred (non-blocking): lock-screen unlock browser flow remains scheduled for post-phase maintenance.
 
 Bottom line:
 
-- Runtime and security closure blockers tracked for Phase 3B are closed.
+- Runtime closure blocker tracked for Phase 3B is closed.
+- Security closure remains in-progress until PR security checks are green.
 - The roadmap can continue to remaining phases with lock-screen unlock retained in backlog.
 
 Phase 3 runtime checkpoint (implemented):
@@ -89,7 +90,7 @@ Phase 3 runtime checkpoint (implemented):
 Phase 3B checkpoint (completed):
 
 - Runtime target aligned to PHP 8.2+ baseline in phase3 compose profiles and validated with live smoke checks.
-- Historical secret-remediation closure evidence recorded in `phase3b/evidence/`.
+- Historical secret-remediation evidence recorded in `phase3b/evidence/`; final closure pending external check clearance.
 
 ## Historical Instructions (Deprecated)
 
