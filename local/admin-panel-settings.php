@@ -15,7 +15,7 @@
   'status_display_amount_criterion_updated_by' => 1,
   'terms_of_use_and_privacy_policy' => 
   array (
-    'es' => '<div style="text-align: center;"><b>prueba en español</b></div>',
+    'es' => '<div style="text-align: center;"><b>prueba en espaÃ±ol</b></div>',
     'en' => '<div style="text-align: center;"><b><font style="font-size: 14px;">english test</font></b></div>',
     'fr' => 'hihi',
   ),
@@ -41,13 +41,14 @@
   'installed' => 1,
   'db_address' => 'db',
   'db_name' => 'admin_panel',
-  'db_user' => 'root',
-  'db_password' => 'adminpanel',
-  'smtp_host' => 'smtp.gmail.com',
-  'smtp_port' => 465,
-  'smtp_email_from' => 'wbpnldmn101@gmail.com',
-  'smtp_password_from' => 'adminpanel101',
-  'smtp_fullname_from' => 'Info',
-  'smtp_secure' => true,
+  'db_user' => 'app_adminpanel',
+  'db_password' => 'NahrQ-3gFaBumSWr=jsKA!Bu',
+  'smtp_host' => 'smtp.invalid',
+  'smtp_port' => 587,
+  'smtp_email_from' => 'no-reply@admin-panel.invalid',
+  'smtp_password_from' => '*OSp=3WH5m5v#MVlTY*N',
+  'smtp_fullname_from' => 'Admin Panel System',
+  'smtp_secure' => false,
   'default_user_changed' => false,
 );?>
+
