@@ -12,6 +12,7 @@ This policy defines how configuration and secrets are handled after Phase 2 conf
 - `local/storage/admin-panel/runtime-settings.json` may persist mutable non-secret settings only.
 - Sensitive contract keys (`db_user`, `db_password`, `smtp_email_from`, `smtp_password_from`) are env-only and required.
 - `APP_KEY` must be provided via env and must not have a hardcoded fallback in code.
+- Historical secret exposure findings (if any) must be handled as formal security incidents (rotation/revocation and documented remediation), independent of current tracked-file cleanliness.
 
 ## Tracked/Untracked Expectations
 

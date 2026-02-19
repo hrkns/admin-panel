@@ -10,6 +10,43 @@ Use this document to track defects discovered during modernization phases that a
 
 ## Issues
 
+### ISSUE-2026-02-19-RUNTIME-TARGET-GAP
+- Date discovered: 2026-02-19
+- Phase: Phase 2
+- Status: open
+- Severity: high
+- Area: runtime / platform compatibility
+- Summary: Project remains on temporary PHP 7.4 compatibility runtime while modernization baseline target is PHP 8.2+.
+- Reproduction (observed):
+  1. Review runtime bootstrap artifacts and compose/docker definitions.
+  2. Verify active compatibility image/stack points to PHP 7.4 checkpoint.
+  3. Compare with Phase 0 target architecture baseline.
+- Expected behavior: Runtime should meet baseline target (PHP 8.2+) with reproducible startup.
+- Current behavior: Startup depends on compatibility fallback runtime.
+- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 3 migration.
+- Notes:
+  - This is a modernization gap, not a same-phase blocker for Phase 2 configuration overhaul.
+- Owner: pending assignment
+- Target phase: Phase 3
+
+### ISSUE-2026-02-19-SECRET-HISTORY-REMEDIATION
+- Date discovered: 2026-02-19
+- Phase: Phase 2
+- Status: open
+- Severity: high
+- Area: security / repository hygiene
+- Summary: Current tracked files are cleaner, but historical secret exposure reports indicate continuing remediation requirements (rotation/history review).
+- Reproduction (observed):
+  1. Review repository/PR security scan reports for historical incidents.
+  2. Confirm incidents reference prior committed content.
+- Expected behavior: No active secrets in tracked files and completed incident remediation workflow (rotation/revocation/history strategy as applicable).
+- Current behavior: Tracked-file hygiene is improved, but incident follow-up remains an explicit operational requirement.
+- Current workaround: Maintain strict no-secret policy in tracked files and continue security incident handling workflow.
+- Notes:
+  - Treat this as a security operations stream parallel to code modernization.
+- Owner: pending assignment
+- Target phase: Phase 3 (or dedicated security remediation patch)
+
 ### ISSUE-2026-02-19-LOCKSCREEN-UNLOCK
 - Date discovered: 2026-02-19
 - Phase: Phase 2

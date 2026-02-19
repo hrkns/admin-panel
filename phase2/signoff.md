@@ -18,3 +18,22 @@
 - Deferred / out-of-scope issues:
   - Lock-screen unlock does not consistently accept valid password in browser flow.
   - Tracked in `docs/known-issues.md` as `ISSUE-2026-02-19-LOCKSCREEN-UNLOCK`.
+
+## Post-Phase-2 Assessment (Expected Outcome vs Current State)
+
+- Overall status: **substantially achieved**.
+- Interpretation: the configuration overhaul objective is met in architecture direction, but the project is not yet at a fully stable modernization baseline.
+
+### Gaps / Caveats
+
+- Runtime target gap remains open: project still depends on temporary PHP 7.4 compatibility runtime while Phase 0 baseline target is PHP 8.2+.
+- Functional caveat remains open: lock-screen unlock flow is inconsistent in browser flow.
+- Security process caveat remains open: even with current tracked-file hygiene improvements, historical secret exposure in repository history/PR scan must continue to be treated as an active remediation concern.
+
+### Bottom Line
+
+- Phase 2 can be considered complete for configuration architecture.
+- Phase 3 priority should focus on:
+  1. Closing lock-screen unlock defect.
+  2. Moving runtime from PHP 7.4 compatibility to PHP 8.2+ target.
+  3. Completing secret-history remediation/rotation verification where applicable.
