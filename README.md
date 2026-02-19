@@ -2,6 +2,17 @@
 
 This is an admin panel template coded with Laravel and using a MySql database.
 
+## Modernization
+
+Phase 0 deliverable (target architecture + supported versions matrix):
+
+- [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
+
+Versioning policy used in modernization documents:
+
+- Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
+- During implementation phases, exact versions/tags are pinned for reproducible builds and controlled upgrades.
+
 **Instructions for use:**
 
 *   Clone the project through the command `git clone https://github.com/hrkns/admin-panel.git` or download it compressed
