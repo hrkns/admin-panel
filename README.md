@@ -2,34 +2,95 @@
 
 This is an admin panel template coded with Laravel and using a MySql database.
 
-## Legacy Project Notice
+## Project Status and Modernization
 
-This repository is currently maintained as a **legacy codebase**.
+This repository is currently treated as a **legacy transitional baseline**.
 
-Its present architecture reflects an early implementation stage and contains multiple patterns that are not aligned with modern software engineering and security standards. As a result, execution in contemporary environments can be difficult and unstable.
+The current codebase reflects early-stage architecture decisions (legacy runtime/framework coupling, mutable PHP-based configuration, and manual bootstrap assumptions), so execution on modern environments may be unstable until modernization phases are completed.
 
-The main technical reasons are:
+Modernization work is tracked in the [upgrade branch](https://github.com/hrkns/admin-panel/tree/upgrade).
 
-- tight coupling to a classic Apache + document-root deployment model;
-- direct dependency on legacy runtime and framework versions;
-- configuration and operational settings stored in mutable PHP files instead of environment-driven configuration;
-- historical bootstrap assumptions based on manual SQL import and manual server configuration;
-- limited reproducibility for local onboarding and platform portability.
+Phase 0 deliverable (target architecture + supported versions matrix):
 
-For these reasons, this repository should be treated as a transitional legacy baseline.
+- [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
 
-## Modernization and Stabilization Plan
+Phase 1A deliverable (bootstrap to first runnable baseline):
 
-A structured upgrade and stabilization process is being tracked in the **`upgrade`** branch:
+- [docs/phase-1a-bootstrap-first-run.md](docs/phase-1a-bootstrap-first-run.md)
 
-- Upgrade branch: https://github.com/hrkns/admin-panel/tree/upgrade
+Phase 1A caveat (current state):
 
-The objective of that branch is to progressively deliver:
+- First runnable checkpoint currently uses a temporary PHP 7.4 compatibility runtime.
+- Phase 0 runtime target (PHP 8.2+) remains an open modernization gap.
 
-- modernized configuration and secret handling;
-- improved portability across modern platforms;
-- safer execution defaults;
-- progressive refactoring toward a maintainable architecture.
+Phase 1 deliverable (stabilize + credential hygiene runbook):
+
+- [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
+
+Phase 2 deliverable (configuration overhaul sign-off):
+
+- [phase2/signoff.md](phase2/signoff.md)
+- [docs/phase-2-env-secrets-policy.md](docs/phase-2-env-secrets-policy.md)
+
+Phase 3 deliverable (runtime decoupling / dual web-server support):
+
+- [docs/phase-3-runtime-decoupling.md](docs/phase-3-runtime-decoupling.md)
+- [phase3/signoff.md](phase3/signoff.md)
+
+Phase 3B deliverable (targeted runtime + security closure):
+
+- [docs/phase-3b-runtime-and-security-closure.md](docs/phase-3b-runtime-and-security-closure.md)
+- [phase3b/signoff.md](phase3b/signoff.md)
+
+Known issues tracker:
+
+- [docs/known-issues.md](docs/known-issues.md)
+
+Execution order note:
+
+- If the app is not runnable yet, complete Phase 1A before Phase 1.
+
+Versioning policy for modernization documents:
+
+- Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
+- During implementation phases, exact versions/tags are pinned for reproducible builds and controlled upgrades.
+
+Current local Docker Compose port mapping (Phase 1A file):
+
+- Web container publishes on host port `8081` by default.
+- Override with `APP_PORT` when starting compose (example: `APP_PORT=8090`).
+- To persist the port without exporting each time, create root `.env` from root `.env.example` and set `APP_PORT` there.
+
+Phase 2 configuration baseline (implemented):
+
+- App settings now load through a compatibility adapter in `local/admin-panel-settings.php` with precedence: environment -> runtime JSON -> legacy snapshot -> defaults.
+- Runtime-mutated settings are persisted in `local/storage/admin-panel/runtime-settings.json` (JSON config service), not by rewriting PHP source files.
+- Environment contract is centralized in `local/config/admin-panel-config-contract.php` and includes app, DB, SMTP, paths, and feature flags.
+- Secret-bearing local files (`local/.env`, `local/storage/admin-panel/legacy-settings.snapshot.php`) must stay untracked and are ignored by git.
+- `local/.env.example` is template-only and must never contain active credentials, real APP_KEY values, or production secrets.
+- Phase 2 exit criteria includes passing a repo secret hygiene check with no tracked secrets.
+
+Current assessment (post-Phase 3B):
+
+- Runtime images for Phase 3 profiles are aligned to PHP 8.2+ and live startup smoke checks succeed on both profiles.
+- Historical secret-remediation closure evidence is documented in `phase3b/` artifacts and external security checks are green.
+- Deferred (non-blocking): lock-screen unlock browser flow remains scheduled for post-phase maintenance.
+
+Bottom line:
+
+- Runtime closure blocker tracked for Phase 3B is closed.
+- Security closure blocker tracked for Phase 3B is closed.
+- The roadmap can continue to remaining phases with lock-screen unlock retained in backlog.
+
+Phase 3 runtime checkpoint (implemented):
+
+- App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
+- Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
+
+Phase 3B checkpoint (completed):
+
+- Runtime target aligned to PHP 8.2+ baseline in phase3 compose profiles and validated with live smoke checks.
+- Historical secret-remediation closure evidence recorded in `phase3b/evidence/`.
 
 ## Historical Instructions (Deprecated)
 
