@@ -19,6 +19,7 @@ This folder stores execution artifacts for **Phase 1: Stabilize & Secure Current
 
 Prerequisite:
 - If the app is not currently runnable, complete `docs/phase-1a-bootstrap-first-run.md` before using this folder.
+- If Phase 1A was completed with temporary PHP 7.4 compatibility runtime, record that caveat in Phase 1 evidence and keep it visible until resolved.
 
 ### Start here
 1. Complete `evidence/00-runtime-fingerprint.md` Step 0 checklist.

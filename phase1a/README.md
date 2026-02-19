@@ -16,4 +16,7 @@ This folder stores execution artifacts for **Phase 1A: Bootstrap to First Runnab
 2. Capture runtime setup in `evidence/01-runtime-setup.md`.
 3. Track dependency/bootstrap progress through first startup.
 
+## Full Session Transcript
+- `evidence/99-startup-bootstrap-full-transcript.md`
+
 Follow `docs/phase-1a-bootstrap-first-run.md`.

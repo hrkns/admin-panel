@@ -11,6 +11,8 @@ This phase does **not** refactor the application. It only:
 If the app is not currently runnable, complete **Phase 1A** first:
 - `docs/phase-1a-bootstrap-first-run.md`
 
+If Phase 1A reached runnability using temporary PHP 7.4 compatibility runtime, carry that caveat forward explicitly in all Phase 1 evidence/sign-off documents.
+
 ## Scope
 ### In scope
 - Reproducible snapshot of database and app settings.
@@ -26,6 +28,7 @@ If the app is not currently runnable, complete **Phase 1A** first:
 
 ## Preconditions
 - Access to a currently runnable environment.
+- Known runtime caveats from Phase 1A are documented (if applicable).
 - Privileged access to DB server and SMTP account used by app.
 - Access to a secure storage location (vault/private artifact store).
 - Team agreement on a short freeze window during snapshot + rotation.

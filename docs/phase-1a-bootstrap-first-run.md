@@ -5,6 +5,10 @@ Bring the legacy application from **not runnable** to a **first successful start
 
 This phase exists because there is no current working environment to freeze yet.
 
+Runtime caveat for current execution:
+- First runnable checkpoint may require a temporary compatibility runtime (currently PHP 7.4 in this repository state).
+- This does not replace the Phase 0 runtime target (PHP 8.2+), which remains pending for subsequent modernization phases.
+
 ## Outcome of Phase 1A
 At the end of this phase, all of the following are true:
 1. Application starts and reaches at least the login screen.
@@ -45,7 +49,8 @@ Document what fails now before changing anything:
 
 ### Step 1 — Build Minimal Local Runtime
 Prepare a local runtime matching the modernization baseline as closely as possible without refactoring:
-- PHP 8.2+ runtime with required extensions.
+- Preferred target: PHP 8.2+ runtime with required extensions.
+- Temporary fallback allowed for first boot only: PHP 7.4 compatibility runtime when legacy framework/runtime incompatibilities block startup.
 - MySQL 8.0+ or MariaDB 10.11+ instance.
 - Web entrypoint through project root (`index.php`).
 
@@ -102,3 +107,6 @@ Phase 1A is complete when all are true:
 3. Bootstrap steps are documented and repeatable.
 4. First runnable checkpoint is signed off.
 5. Team can proceed to Phase 1 runbook.
+
+Documented caveat requirement:
+- If Phase 1A used PHP 7.4 fallback, this must be explicitly recorded in `phase1a/signoff.md` as an unresolved gap against the PHP 8.2+ target.

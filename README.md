@@ -18,6 +18,11 @@ Phase 1A deliverable (bootstrap to first runnable baseline):
 
 - [docs/phase-1a-bootstrap-first-run.md](docs/phase-1a-bootstrap-first-run.md)
 
+Phase 1A caveat (current state):
+
+- First runnable checkpoint currently uses a temporary PHP 7.4 compatibility runtime.
+- Phase 0 runtime target (PHP 8.2+) remains an open modernization gap.
+
 Phase 1 deliverable (stabilize + credential hygiene runbook):
 
 - [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
