@@ -30,5 +30,5 @@ Closure for historical findings is handled as a security operations track parall
 
 ## Phase 3B Closure Decision
 
-- Phase 3B security closure criterion remains in-progress: documented remediation workflow and tracked-file hygiene verification are complete, while external PR security-check clearance is still pending.
+- Phase 3B security closure criterion is met: documented remediation workflow, tracked-file hygiene verification, and external PR security-check clearance are complete.
 - Any newly discovered historical exposure after this checkpoint must open a new security incident item in `docs/known-issues.md`.
