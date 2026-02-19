@@ -23,11 +23,11 @@ Use this document to track defects discovered during modernization phases that a
   3. Compare with Phase 0 target architecture baseline.
 - Expected behavior: Runtime should meet baseline target (PHP 8.2+) with reproducible startup.
 - Current behavior: Startup depends on compatibility fallback runtime.
-- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 4B runtime alignment.
+- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 3B runtime alignment.
 - Notes:
   - This is a modernization gap, not a same-phase blocker for Phase 2 configuration overhaul.
 - Owner: pending assignment
-- Target phase: Phase 4B
+- Target phase: Phase 3B
 
 ### ISSUE-2026-02-19-SECRET-HISTORY-REMEDIATION
 - Date discovered: 2026-02-19
@@ -45,7 +45,7 @@ Use this document to track defects discovered during modernization phases that a
 - Notes:
   - Treat this as a security operations stream parallel to code modernization.
 - Owner: pending assignment
-- Target phase: Phase 4B (or dedicated security remediation patch)
+- Target phase: Phase 3B (or dedicated security remediation patch)
 
 ### ISSUE-2026-02-19-LOCKSCREEN-UNLOCK
 - Date discovered: 2026-02-19

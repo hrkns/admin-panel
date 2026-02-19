@@ -37,9 +37,9 @@ Phase 3 deliverable (runtime decoupling / dual web-server support):
 - [docs/phase-3-runtime-decoupling.md](docs/phase-3-runtime-decoupling.md)
 - [phase3/signoff.md](phase3/signoff.md)
 
-Phase 4B deliverable (targeted runtime + security closure):
+Phase 3B deliverable (targeted runtime + security closure):
 
-- [docs/phase-4b-runtime-and-security-closure.md](docs/phase-4b-runtime-and-security-closure.md)
+- [docs/phase-3b-runtime-and-security-closure.md](docs/phase-3b-runtime-and-security-closure.md)
 
 Known issues tracker:
 
@@ -79,14 +79,14 @@ Current assessment (post-Phase 2):
 Bottom line:
 
 - Configuration architecture is in place and ready for Phase 3.
-- Phase 4B should prioritize runtime target alignment (PHP 8.2+) and secret-history remediation verification.
+- Phase 3B should prioritize runtime target alignment (PHP 8.2+) and secret-history remediation verification.
 
 Phase 3 runtime checkpoint (implemented):
 
 - App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
 - Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
 
-Phase 4B focus (current transition):
+Phase 3B focus (current transition):
 
 - Runtime target alignment to PHP 8.2+ baseline.
 - Historical secret-remediation closure evidence.

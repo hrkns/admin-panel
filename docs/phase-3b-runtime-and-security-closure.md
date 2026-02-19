@@ -1,8 +1,8 @@
-# Phase 4B Runbook: Runtime Alignment and Security Remediation Closure
+# Phase 3B Runbook: Runtime Alignment and Security Remediation Closure
 
 ## Purpose
 
-Phase 4B is an intermediary stabilization phase focused exclusively on closing two cross-cutting modernization risks:
+Phase 3B is an intermediary stabilization phase focused exclusively on closing two cross-cutting modernization risks:
 
 1. Runtime target alignment to PHP 8.2+.
 2. Historical secret-exposure remediation closure.
@@ -25,21 +25,21 @@ This phase intentionally excludes minor functional defects that do not block pla
 
 ## Exit Criteria
 
-Phase 4B is complete when all are true:
+Phase 3B is complete when all are true:
 
 1. App runs on PHP 8.2+ in supported runtime profile(s).
 2. Known runtime-target issue is marked `resolved` with evidence.
 3. Secret-history remediation issue is marked `resolved` (or approved risk acceptance is documented).
-4. Phase 4B sign-off confirms readiness to continue the remaining roadmap phases.
+4. Phase 3B sign-off confirms readiness to continue the remaining roadmap phases.
 
 ## Deliverables
 
 - Runtime updates and validation evidence for PHP 8.2+.
 - Security remediation closure record for historical secret exposure.
-- Phase 4B sign-off document (recommended path: `phase4b/signoff.md`).
+- Phase 3B sign-off document (recommended path: `phase3b/signoff.md`).
 
 ## Position in Roadmap
 
 - Phase 3: runtime decoupling.
 - Phase 4: already defined (existing scope remains unchanged).
-- **Phase 4B**: targeted closure of runtime + security blockers.
+- **Phase 3B**: targeted closure of runtime + security blockers.
