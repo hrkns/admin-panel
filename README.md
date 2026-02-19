@@ -2,45 +2,22 @@
 
 This is an admin panel template coded with Laravel and using a MySql database.
 
-## Modernization
+## Project Status and Modernization
+
+This repository is currently treated as a **legacy transitional baseline**.
+
+The current codebase reflects early-stage architecture decisions (legacy runtime/framework coupling, mutable PHP-based configuration, and manual bootstrap assumptions), so execution on modern environments may be unstable until modernization phases are completed.
+
+Modernization work is tracked in the [upgrade branch](https://github.com/hrkns/admin-panel/tree/upgrade).
 
 Phase 0 deliverable (target architecture + supported versions matrix):
 
 - [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
 
-Versioning policy used in modernization documents:
+Versioning policy for modernization documents:
 
 - Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
 - During implementation phases, exact versions/tags are pinned for reproducible builds and controlled upgrades.
-
-## Legacy Project Notice
-
-This repository is currently maintained as a **legacy codebase**.
-
-Its present architecture reflects an early implementation stage and contains multiple patterns that are not aligned with modern software engineering and security standards. As a result, execution in contemporary environments can be difficult and unstable.
-
-The main technical reasons are:
-
-- tight coupling to a classic Apache + document-root deployment model;
-- direct dependency on legacy runtime and framework versions;
-- configuration and operational settings stored in mutable PHP files instead of environment-driven configuration;
-- historical bootstrap assumptions based on manual SQL import and manual server configuration;
-- limited reproducibility for local onboarding and platform portability.
-
-For these reasons, this repository should be treated as a transitional legacy baseline.
-
-## Modernization and Stabilization Plan
-
-A structured upgrade and stabilization process is being tracked in the **`upgrade`** branch:
-
-- Upgrade branch: https://github.com/hrkns/admin-panel/tree/upgrade
-
-The objective of that branch is to progressively deliver:
-
-- modernized configuration and secret handling;
-- improved portability across modern platforms;
-- safer execution defaults;
-- progressive refactoring toward a maintainable architecture.
 
 ## Historical Instructions (Deprecated)
 
