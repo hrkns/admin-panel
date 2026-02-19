@@ -2,6 +2,42 @@
 
 This is an admin panel template coded with Laravel and using a MySql database.
 
+## Legacy Project Notice
+
+This repository is currently maintained as a **legacy codebase**.
+
+Its present architecture reflects an early implementation stage and contains multiple patterns that are not aligned with modern software engineering and security standards. As a result, execution in contemporary environments can be difficult and unstable.
+
+The main technical reasons are:
+
+- tight coupling to a classic Apache + document-root deployment model;
+- direct dependency on legacy runtime and framework versions;
+- configuration and operational settings stored in mutable PHP files instead of environment-driven configuration;
+- historical bootstrap assumptions based on manual SQL import and manual server configuration;
+- limited reproducibility for local onboarding and platform portability.
+
+For these reasons, this repository should be treated as a transitional legacy baseline.
+
+## Modernization and Stabilization Plan
+
+A structured upgrade and stabilization process is being tracked in the **`upgrade`** branch:
+
+- Upgrade branch: https://github.com/hrkns/admin-panel/tree/upgrade
+
+The objective of that branch is to progressively deliver:
+
+- modernized configuration and secret handling;
+- improved portability across modern platforms;
+- safer execution defaults;
+- progressive refactoring toward a maintainable architecture.
+
+## Historical Instructions (Deprecated)
+
+> [!WARNING]
+> The following instructions are preserved for historical/reference purposes only.
+> They are **deprecated** and should generally be ignored for new setups.
+> Prefer following the modernization guidance and updates from the `upgrade` branch.
+
 **Instructions for use:**
 
 *   Clone the project through the command `git clone https://github.com/hrkns/admin-panel.git` or download it compressed
