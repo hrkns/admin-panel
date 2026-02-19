@@ -17,6 +17,9 @@ This folder stores execution artifacts for **Phase 1: Stabilize & Secure Current
 - Branch: upgrade
 - Git SHA: 76c9062
 
+Prerequisite:
+- If the app is not currently runnable, complete `docs/phase-1a-bootstrap-first-run.md` before using this folder.
+
 ### Start here
 1. Complete `evidence/00-runtime-fingerprint.md` Step 0 checklist.
 2. Run smoke-before checks and fill `evidence/03-smoke-before.md`.

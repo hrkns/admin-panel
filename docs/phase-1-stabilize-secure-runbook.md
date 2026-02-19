@@ -8,6 +8,9 @@ This phase does **not** refactor the application. It only:
 - Removes exposed credentials from active use.
 - Verifies no behavior drift with smoke checks.
 
+If the app is not currently runnable, complete **Phase 1A** first:
+- `docs/phase-1a-bootstrap-first-run.md`
+
 ## Scope
 ### In scope
 - Reproducible snapshot of database and app settings.
@@ -22,10 +25,12 @@ This phase does **not** refactor the application. It only:
 - Cloud/IaC migration.
 
 ## Preconditions
-- Access to current environment where app behavior is known to work.
+- Access to a currently runnable environment.
 - Privileged access to DB server and SMTP account used by app.
 - Access to a secure storage location (vault/private artifact store).
 - Team agreement on a short freeze window during snapshot + rotation.
+
+If no runnable environment exists, this runbook is blocked by design until Phase 1A is completed.
 
 ## Repository Scaffolding
 This repository includes a pre-created Phase 1 workspace:

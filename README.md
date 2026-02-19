@@ -14,9 +14,17 @@ Phase 0 deliverable (target architecture + supported versions matrix):
 
 - [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
 
+Phase 1A deliverable (bootstrap to first runnable baseline):
+
+- [docs/phase-1a-bootstrap-first-run.md](docs/phase-1a-bootstrap-first-run.md)
+
 Phase 1 deliverable (stabilize + credential hygiene runbook):
 
 - [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
+
+Execution order note:
+
+- If the app is not runnable yet, complete Phase 1A before Phase 1.
 
 Versioning policy for modernization documents:
 
