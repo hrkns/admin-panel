@@ -27,6 +27,15 @@ This phase does **not** refactor the application. It only:
 - Access to a secure storage location (vault/private artifact store).
 - Team agreement on a short freeze window during snapshot + rotation.
 
+## Repository Scaffolding
+This repository includes a pre-created Phase 1 workspace:
+- `phase1/README.md`
+- `phase1/evidence/*.md`
+- `phase1/manifest/sha256.txt`
+- `phase1/signoff.md`
+
+Use these files as living execution records while running this runbook.
+
 ---
 
 ## Phase 1 Execution Plan

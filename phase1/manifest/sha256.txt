@@ -1,0 +1,7 @@
+# SHA-256 Manifest
+# Format:
+# <sha256>  <artifact-name>
+#
+# Example:
+# abcdef...  admin-panel-phase1-baseline.sql
+# 123456...  admin-panel-settings.phase1.snapshot.php
