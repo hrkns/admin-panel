@@ -36,6 +36,12 @@ Versioning policy for modernization documents:
 - Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
 - During implementation phases, exact versions/tags are pinned for reproducible builds and controlled upgrades.
 
+Current local Docker Compose port mapping (Phase 1A file):
+
+- Web container publishes on host port `8081` by default.
+- Override with `APP_PORT` when starting compose (example: `APP_PORT=8090`).
+- To persist the port without exporting each time, create root `.env` from root `.env.example` and set `APP_PORT` there.
+
 ## Historical Instructions (Deprecated)
 
 > [!WARNING]

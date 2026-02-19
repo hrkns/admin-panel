@@ -1,4 +1,5 @@
 __project__
+/\.env
 local/vendor
 phase1/artifacts/
 phase1/.secret-rotation.local.txt
