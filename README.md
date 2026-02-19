@@ -14,6 +14,10 @@ Phase 0 deliverable (target architecture + supported versions matrix):
 
 - [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
 
+Phase 1 deliverable (stabilize + credential hygiene runbook):
+
+- [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
+
 Versioning policy for modernization documents:
 
 - Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
