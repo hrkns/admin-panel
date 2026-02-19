@@ -23,11 +23,11 @@ Use this document to track defects discovered during modernization phases that a
   3. Compare with Phase 0 target architecture baseline.
 - Expected behavior: Runtime should meet baseline target (PHP 8.2+) with reproducible startup.
 - Current behavior: Startup depends on compatibility fallback runtime.
-- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 3 migration.
+- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 4B runtime alignment.
 - Notes:
   - This is a modernization gap, not a same-phase blocker for Phase 2 configuration overhaul.
 - Owner: pending assignment
-- Target phase: Phase 3
+- Target phase: Phase 4B
 
 ### ISSUE-2026-02-19-SECRET-HISTORY-REMEDIATION
 - Date discovered: 2026-02-19
@@ -45,7 +45,7 @@ Use this document to track defects discovered during modernization phases that a
 - Notes:
   - Treat this as a security operations stream parallel to code modernization.
 - Owner: pending assignment
-- Target phase: Phase 3 (or dedicated security remediation patch)
+- Target phase: Phase 4B (or dedicated security remediation patch)
 
 ### ISSUE-2026-02-19-LOCKSCREEN-UNLOCK
 - Date discovered: 2026-02-19
@@ -64,8 +64,9 @@ Use this document to track defects discovered during modernization phases that a
 - Notes:
   - Redirect loop (`lock-screen` <-> `logout`) was fixed.
   - Remaining issue appears specific to unlock validation/request flow.
+  - Explicitly classified as non-blocking for modernization phases; defer until post-phase maintenance.
 - Owner: pending assignment
-- Target phase: Phase 3 (or dedicated bugfix patch)
+- Target phase: Post-phase maintenance backlog (non-blocking)
 
 ## Issue Template
 

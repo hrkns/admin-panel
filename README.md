@@ -37,6 +37,10 @@ Phase 3 deliverable (runtime decoupling / dual web-server support):
 - [docs/phase-3-runtime-decoupling.md](docs/phase-3-runtime-decoupling.md)
 - [phase3/signoff.md](phase3/signoff.md)
 
+Phase 4B deliverable (targeted runtime + security closure):
+
+- [docs/phase-4b-runtime-and-security-closure.md](docs/phase-4b-runtime-and-security-closure.md)
+
 Known issues tracker:
 
 - [docs/known-issues.md](docs/known-issues.md)
@@ -69,18 +73,23 @@ Current assessment (post-Phase 2):
 
 - Phase 2 objective is **substantially achieved**.
 - Remaining caveat: runtime target from Phase 0 (PHP 8.2+) is still open; current runnable checkpoint uses temporary PHP 7.4 compatibility runtime.
-- Remaining caveat: lock-screen unlock browser flow is still inconsistent.
+- Deferred (non-blocking): lock-screen unlock browser flow is still inconsistent and scheduled for post-phase maintenance.
 - Remaining caveat: historical secret exposure risk in repository history remains a separate security remediation stream even when current tracked files are clean.
 
 Bottom line:
 
 - Configuration architecture is in place and ready for Phase 3.
-- Phase 3 should prioritize runtime target alignment (PHP 8.2+), lock-screen unlock correction, and secret-history remediation verification.
+- Phase 4B should prioritize runtime target alignment (PHP 8.2+) and secret-history remediation verification.
 
 Phase 3 runtime checkpoint (implemented):
 
 - App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
 - Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
+
+Phase 4B focus (current transition):
+
+- Runtime target alignment to PHP 8.2+ baseline.
+- Historical secret-remediation closure evidence.
 
 ## Historical Instructions (Deprecated)
 
