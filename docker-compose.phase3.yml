@@ -23,7 +23,7 @@ services:
   web_apache:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile.phase1a
+      dockerfile: docker/php/Dockerfile.phase3-apache
     container_name: adminpanel-phase3-apache
     depends_on:
       db:

@@ -13,26 +13,28 @@ Use this document to track defects discovered during modernization phases that a
 ### ISSUE-2026-02-19-RUNTIME-TARGET-GAP
 - Date discovered: 2026-02-19
 - Phase: Phase 2
-- Status: open
+- Status: resolved
 - Severity: high
 - Area: runtime / platform compatibility
-- Summary: Project remains on temporary PHP 7.4 compatibility runtime while modernization baseline target is PHP 8.2+.
+- Summary: Runtime moved from PHP 7.4 compatibility baseline to PHP 8.2+ and validated via live startup smoke checks on both Phase 3 profiles.
 - Reproduction (observed):
   1. Review runtime bootstrap artifacts and compose/docker definitions.
   2. Verify active compatibility image/stack points to PHP 7.4 checkpoint.
   3. Compare with Phase 0 target architecture baseline.
 - Expected behavior: Runtime should meet baseline target (PHP 8.2+) with reproducible startup.
-- Current behavior: Startup depends on compatibility fallback runtime.
-- Current workaround: Continue running with temporary PHP 7.4 compatibility runtime until Phase 3B runtime alignment.
+- Current behavior: App responds successfully on both Phase 3 startup profiles under PHP 8.2.
+- Current workaround: none required.
 - Notes:
-  - This is a modernization gap, not a same-phase blocker for Phase 2 configuration overhaul.
+  - Phase 3B completed runtime image alignment (`docker/php/Dockerfile.phase3-apache`, `docker/php/Dockerfile.phase3-fpm`) and live startup validation.
+  - Compatibility hotfix applied in `local/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php` to prevent PHP 8.2 deprecation notices from being escalated into blocking exceptions.
+  - Live smoke evidence: HTTP `200` on Apache (`:8081`) and Nginx (`:8082`) with PHP `8.2.30`.
 - Owner: pending assignment
 - Target phase: Phase 3B
 
 ### ISSUE-2026-02-19-SECRET-HISTORY-REMEDIATION
 - Date discovered: 2026-02-19
 - Phase: Phase 2
-- Status: open
+- Status: resolved
 - Severity: high
 - Area: security / repository hygiene
 - Summary: Current tracked files are cleaner, but historical secret exposure reports indicate continuing remediation requirements (rotation/history review).
@@ -40,10 +42,11 @@ Use this document to track defects discovered during modernization phases that a
   1. Review repository/PR security scan reports for historical incidents.
   2. Confirm incidents reference prior committed content.
 - Expected behavior: No active secrets in tracked files and completed incident remediation workflow (rotation/revocation/history strategy as applicable).
-- Current behavior: Tracked-file hygiene is improved, but incident follow-up remains an explicit operational requirement.
-- Current workaround: Maintain strict no-secret policy in tracked files and continue security incident handling workflow.
+- Current behavior: Tracked-file hygiene is enforced and closure workflow is documented at Phase 3B.
+- Current workaround: none required; continue standard incident workflow for any newly discovered historical exposure.
 - Notes:
-  - Treat this as a security operations stream parallel to code modernization.
+  - Treated as a security operations stream parallel to code modernization.
+  - Closure record captured in `phase3b/evidence/01-secret-history-remediation-closure.md` and referenced by `phase3b/signoff.md`.
 - Owner: pending assignment
 - Target phase: Phase 3B (or dedicated security remediation patch)
 

@@ -40,6 +40,7 @@ Phase 3 deliverable (runtime decoupling / dual web-server support):
 Phase 3B deliverable (targeted runtime + security closure):
 
 - [docs/phase-3b-runtime-and-security-closure.md](docs/phase-3b-runtime-and-security-closure.md)
+- [phase3b/signoff.md](phase3b/signoff.md)
 
 Known issues tracker:
 
@@ -69,27 +70,26 @@ Phase 2 configuration baseline (implemented):
 - `local/.env.example` is template-only and must never contain active credentials, real APP_KEY values, or production secrets.
 - Phase 2 exit criteria includes passing a repo secret hygiene check with no tracked secrets.
 
-Current assessment (post-Phase 2):
+Current assessment (post-Phase 3B):
 
-- Phase 2 objective is **substantially achieved**.
-- Remaining caveat: runtime target from Phase 0 (PHP 8.2+) is still open; current runnable checkpoint uses temporary PHP 7.4 compatibility runtime.
-- Deferred (non-blocking): lock-screen unlock browser flow is still inconsistent and scheduled for post-phase maintenance.
-- Remaining caveat: historical secret exposure risk in repository history remains a separate security remediation stream even when current tracked files are clean.
+- Runtime images for Phase 3 profiles are aligned to PHP 8.2+ and live startup smoke checks succeed on both profiles.
+- Historical secret-remediation closure evidence is documented in `phase3b/` artifacts.
+- Deferred (non-blocking): lock-screen unlock browser flow remains scheduled for post-phase maintenance.
 
 Bottom line:
 
-- Configuration architecture is in place and ready for Phase 3.
-- Phase 3B should prioritize runtime target alignment (PHP 8.2+) and secret-history remediation verification.
+- Runtime and security closure blockers tracked for Phase 3B are closed.
+- The roadmap can continue to remaining phases with lock-screen unlock retained in backlog.
 
 Phase 3 runtime checkpoint (implemented):
 
 - App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
 - Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
 
-Phase 3B focus (current transition):
+Phase 3B checkpoint (completed):
 
-- Runtime target alignment to PHP 8.2+ baseline.
-- Historical secret-remediation closure evidence.
+- Runtime target aligned to PHP 8.2+ baseline in phase3 compose profiles and validated with live smoke checks.
+- Historical secret-remediation closure evidence recorded in `phase3b/evidence/`.
 
 ## Historical Instructions (Deprecated)
 

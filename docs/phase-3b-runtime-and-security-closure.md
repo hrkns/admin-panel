@@ -38,6 +38,23 @@ Phase 3B is complete when all are true:
 - Security remediation closure record for historical secret exposure.
 - Phase 3B sign-off document (recommended path: `phase3b/signoff.md`).
 
+## Implementation Checkpoint (Current)
+
+- Runtime images aligned to PHP 8.2+ for both Phase 3 profiles:
+	- `docker/php/Dockerfile.phase3-apache`
+	- `docker/php/Dockerfile.phase3-fpm`
+- Phase 3 compose Apache profile now builds from `docker/php/Dockerfile.phase3-apache`.
+- Validation evidence captured in `phase3b/signoff.md` (compose profile resolution + image build verification + live smoke checks).
+- Legacy Laravel compatibility hotfix applied in `local/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php` to prevent PHP 8.2 deprecation notices from becoming blocking exceptions.
+- Live smoke evidence in `phase3b/signoff.md` shows HTTP 200 on both profiles under PHP 8.2.
+- Security remediation closure record captured in:
+	- `phase3b/evidence/01-secret-history-remediation-closure.md`
+
+## Sign-Off Artifacts
+
+- `phase3b/signoff.md`
+- `phase3b/evidence/01-secret-history-remediation-closure.md`
+
 ## Position in Roadmap
 
 - Phase 3: runtime decoupling.

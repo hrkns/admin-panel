@@ -1,8 +1,9 @@
-FROM php:8.2-fpm
+FROM php:8.2-apache
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libonig-dev libzip-dev unzip \
     && docker-php-ext-install pdo_mysql mbstring \
+    && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
 COPY docker/php/phase1a.ini /usr/local/etc/php/conf.d/zz-phase3.ini
