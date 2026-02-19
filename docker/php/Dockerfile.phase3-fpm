@@ -1,0 +1,10 @@
+FROM php:7.4-fpm
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libonig-dev libzip-dev unzip \
+    && docker-php-ext-install pdo_mysql mbstring \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY docker/php/phase1a.ini /usr/local/etc/php/conf.d/zz-phase3.ini
+
+WORKDIR /var/www/html

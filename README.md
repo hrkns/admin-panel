@@ -32,6 +32,11 @@ Phase 2 deliverable (configuration overhaul sign-off):
 - [phase2/signoff.md](phase2/signoff.md)
 - [docs/phase-2-env-secrets-policy.md](docs/phase-2-env-secrets-policy.md)
 
+Phase 3 deliverable (runtime decoupling / dual web-server support):
+
+- [docs/phase-3-runtime-decoupling.md](docs/phase-3-runtime-decoupling.md)
+- [phase3/signoff.md](phase3/signoff.md)
+
 Known issues tracker:
 
 - [docs/known-issues.md](docs/known-issues.md)
@@ -71,6 +76,11 @@ Bottom line:
 
 - Configuration architecture is in place and ready for Phase 3.
 - Phase 3 should prioritize runtime target alignment (PHP 8.2+), lock-screen unlock correction, and secret-history remediation verification.
+
+Phase 3 runtime checkpoint (implemented):
+
+- App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
+- Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
 
 ## Historical Instructions (Deprecated)
 

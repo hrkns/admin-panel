@@ -30,7 +30,7 @@
 					</div>
 					<div class = "col-sm-12">
 						<br>
-						<p>{!! term("str_db_credentials_explanation_part_1", true)." <strong>".FILE_ADMIN_PANEL_SETTINGS."</strong> ".term("str_db_credentials_explanation_part_2", true)." <strong>".$_SERVER["DOCUMENT_ROOT"].PROJECT_FOLDER."/local/config/database.php" !!}</strong></p>
+						<p>{!! term("str_db_credentials_explanation_part_1", true)." <strong>".FILE_ADMIN_PANEL_SETTINGS."</strong> ".term("str_db_credentials_explanation_part_2", true)." <strong>".PROJECT_SYSTEM_ROOT."/config/database.php" !!}</strong></p>
 					</div>
 				</div>
 
@@ -72,7 +72,7 @@
 					</div>
 					<div class = "col-sm-12">
 						<br>
-						<p>{!! term("str_smtp_config_explanation_part_1", true)." <strong>".FILE_ADMIN_PANEL_SETTINGS."</strong> ".term("str_smtp_config_explanation_part_2", true)." <strong>".$_SERVER["DOCUMENT_ROOT"].PROJECT_FOLDER."/local/app/helpers.php" !!}</strong></p>
+						<p>{!! term("str_smtp_config_explanation_part_1", true)." <strong>".FILE_ADMIN_PANEL_SETTINGS."</strong> ".term("str_smtp_config_explanation_part_2", true)." <strong>".PROJECT_SYSTEM_ROOT."/app/helpers.php" !!}</strong></p>
 					</div>
 				</div>
 
