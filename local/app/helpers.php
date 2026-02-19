@@ -5,6 +5,8 @@ use App\Models\PanelAdminSection;
 use App\Models\UserSession;
 use App\Models\UserPreferences;
 
+require_once __DIR__.'/config_runtime.php';
+
 /*
         echo "<pre>";
         print_r($_SERVER);
@@ -584,6 +586,15 @@ use App\Models\UserPreferences;
 
     function saveGlobalSettings($arr)
     {
-        file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalSettings = ' . var_export($arr, true) . ';?>');
+        $runtimeSettings = ap_load_runtime_settings();
+        $mutableKeys = ap_runtime_mutable_keys();
+
+        foreach ($mutableKeys as $key) {
+            if (array_key_exists($key, $arr)) {
+                $runtimeSettings[$key] = $arr[$key];
+            }
+        }
+
+        ap_write_runtime_settings($runtimeSettings);
     }
 ?>

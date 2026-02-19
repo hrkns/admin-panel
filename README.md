@@ -27,6 +27,14 @@ Phase 1 deliverable (stabilize + credential hygiene runbook):
 
 - [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
 
+Phase 2 deliverable (configuration overhaul sign-off):
+
+- [phase2/signoff.md](phase2/signoff.md)
+
+Known issues tracker:
+
+- [docs/known-issues.md](docs/known-issues.md)
+
 Execution order note:
 
 - If the app is not runnable yet, complete Phase 1A before Phase 1.
@@ -41,6 +49,12 @@ Current local Docker Compose port mapping (Phase 1A file):
 - Web container publishes on host port `8081` by default.
 - Override with `APP_PORT` when starting compose (example: `APP_PORT=8090`).
 - To persist the port without exporting each time, create root `.env` from root `.env.example` and set `APP_PORT` there.
+
+Phase 2 configuration baseline (implemented):
+
+- App settings now load through a compatibility adapter in `local/admin-panel-settings.php` with precedence: environment -> runtime JSON -> legacy snapshot -> defaults.
+- Runtime-mutated settings are persisted in `local/storage/admin-panel/runtime-settings.json` (JSON config service), not by rewriting PHP source files.
+- Environment contract is centralized in `local/config/admin-panel-config-contract.php` and includes app, DB, SMTP, paths, and feature flags.
 
 ## Historical Instructions (Deprecated)
 
