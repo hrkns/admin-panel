@@ -42,6 +42,10 @@ Phase 3B deliverable (targeted runtime + security closure):
 - [docs/phase-3b-runtime-and-security-closure.md](docs/phase-3b-runtime-and-security-closure.md)
 - [phase3b/signoff.md](phase3b/signoff.md)
 
+Phase 4 deliverable (database portability + data layer hardening):
+
+- [docs/phase-4-database-portability-and-data-layer-hardening.md](docs/phase-4-database-portability-and-data-layer-hardening.md)
+
 Known issues tracker:
 
 - [docs/known-issues.md](docs/known-issues.md)
@@ -81,6 +85,12 @@ Bottom line:
 - Runtime closure blocker tracked for Phase 3B is closed.
 - Security closure blocker tracked for Phase 3B is closed.
 - The roadmap can continue to remaining phases with lock-screen unlock retained in backlog.
+
+Phase 4 checkpoint (implemented baseline):
+
+- Schema bootstrap ownership moved to Laravel migration layer (`local/database/migrations/2026_02_19_000000_phase4_schema_bootstrap.php`).
+- Deterministic default data provisioning added through `php artisan migrate --seed` (`Phase4CoreDefaultsSeeder`).
+- Dedicated runtime profile for migration-driven bootstrap added (`docker-compose.phase4.yml`) with no SQL auto-import mount.
 
 Phase 3 runtime checkpoint (implemented):
 

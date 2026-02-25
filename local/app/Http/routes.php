@@ -11,6 +11,10 @@ use App\Models\PanelAdminRoleSectionAction;
 use App\Models\MasterStatus;
 use App\Models\MasterLanguage;
 
+if (app()->runningInConsole()) {
+    return;
+}
+
 /*******************************************************************************************************************/
 
 //sleep(rand(100, 200));
