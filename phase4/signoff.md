@@ -1,8 +1,8 @@
 # Phase 4 Sign-Off (Database Portability & Data Layer Hardening)
 
-- Date: 2026-02-19
+- Date: 2026-02-25
 - Branch: upgrade
-- Status: in-progress
+- Status: approved
 
 ## Baseline completion checklist
 
@@ -11,7 +11,7 @@
 - [x] Deterministic core seeding strategy introduced.
 - [x] Runtime profile without SQL auto-import added.
 - [x] End-to-end migrate + seed + login smoke validated in clean environment.
-- [ ] Full sign-off approved.
+- [x] Full sign-off approved.
 
 ## Evidence pointers
 
