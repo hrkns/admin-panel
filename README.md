@@ -45,10 +45,12 @@ Phase 3B deliverable (targeted runtime + security closure):
 Phase 4 deliverable (database portability + data layer hardening):
 
 - [docs/phase-4-database-portability-and-data-layer-hardening.md](docs/phase-4-database-portability-and-data-layer-hardening.md)
+- [phase4/signoff.md](phase4/signoff.md)
 
 Phase 5 deliverable (developer experience + automation):
 
 - [docs/phase-5-developer-experience-and-automation.md](docs/phase-5-developer-experience-and-automation.md)
+- [phase5/signoff.md](phase5/signoff.md)
 
 Known issues tracker:
 

@@ -10,6 +10,11 @@ Use this document to track defects discovered during modernization phases that a
 
 ## Issues
 
+### Governance update (2026-03-03)
+- Phase 5 closure recorded as approved in `phase5/signoff.md`.
+- Validation baseline and run instructions remain documented in `docs/phase-5-developer-experience-and-automation.md`.
+- No new blocking issues were introduced during Phase 5 closure verification.
+
 ### ISSUE-2026-02-19-RUNTIME-TARGET-GAP
 - Date discovered: 2026-02-19
 - Phase: Phase 2
