@@ -46,6 +46,10 @@ Phase 4 deliverable (database portability + data layer hardening):
 
 - [docs/phase-4-database-portability-and-data-layer-hardening.md](docs/phase-4-database-portability-and-data-layer-hardening.md)
 
+Phase 5 deliverable (developer experience + automation):
+
+- [docs/phase-5-developer-experience-and-automation.md](docs/phase-5-developer-experience-and-automation.md)
+
 Known issues tracker:
 
 - [docs/known-issues.md](docs/known-issues.md)
@@ -91,6 +95,18 @@ Phase 4 checkpoint (implemented baseline):
 - Schema bootstrap ownership moved to Laravel migration layer (`local/database/migrations/2026_02_19_000000_phase4_schema_bootstrap.php`).
 - Deterministic default data provisioning added through `php artisan migrate --seed` (`Phase4CoreDefaultsSeeder`).
 - Dedicated runtime profile for migration-driven bootstrap added (`docker-compose.phase4.yml`) with no SQL auto-import mount.
+
+Phase 5 checkpoint (implemented baseline):
+
+- Developer stack compose added with app + database + local mail service (`docker-compose.phase5.yml`).
+- One-command developer setup automation added (`scripts/setup-phase5.ps1`) to bootstrap dependencies, env, migrate, seed, and run startup checks.
+- Health endpoints added for local orchestration checks (`/health/live`, `/health/ready`).
+
+Phase 5 quick start (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-phase5.ps1
+```
 
 Phase 3 runtime checkpoint (implemented):
 
