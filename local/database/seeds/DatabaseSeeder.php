@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/Phase4CoreDefaultsSeeder.php';
+
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+        $this->call(Phase4CoreDefaultsSeeder::class);
 
         Model::reguard();
     }

@@ -11,6 +11,57 @@ use App\Models\PanelAdminRoleSectionAction;
 use App\Models\MasterStatus;
 use App\Models\MasterLanguage;
 
+if (app()->runningInConsole()) {
+    return;
+}
+
+if (!function_exists('phase5_health_response')) {
+    function phase5_health_response($payload, $status = 200)
+    {
+        return \Response::json($payload, $status, array(
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0'
+        ));
+    }
+}
+
+Route::get('/health/live', function () {
+    return phase5_health_response(array(
+        'status' => 'ok',
+        'service' => 'admin-panel',
+        'timestamp' => date('c')
+    ));
+});
+
+Route::get('/health/ready', function () {
+    $checks = array(
+        'database' => false,
+        'storage_writable' => is_writable(storage_path())
+    );
+
+    try {
+        \DB::connection()->getPdo();
+        \DB::select('SELECT 1');
+        $checks['database'] = true;
+    } catch (\Exception $exception) {
+        $checks['database'] = false;
+    }
+
+    $ready = $checks['database'] && $checks['storage_writable'];
+
+    return phase5_health_response(array(
+        'status' => $ready ? 'ok' : 'degraded',
+        'service' => 'admin-panel',
+        'checks' => $checks,
+        'timestamp' => date('c')
+    ), $ready ? 200 : 503);
+});
+
+$phase5RequestedPath = ltrim(Request::path(), '/');
+
+if ($phase5RequestedPath === 'health/live' || $phase5RequestedPath === 'health/ready') {
+    return;
+}
+
 /*******************************************************************************************************************/
 
 //sleep(rand(100, 200));

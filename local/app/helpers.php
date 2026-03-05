@@ -5,6 +5,8 @@ use App\Models\PanelAdminSection;
 use App\Models\UserSession;
 use App\Models\UserPreferences;
 
+require_once __DIR__.'/config_runtime.php';
+
 /*
         echo "<pre>";
         print_r($_SERVER);
@@ -59,26 +61,64 @@ use App\Models\UserPreferences;
         || ( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
     }
 
-    $SERVER_NAME = isset($_SERVER["SERVER_NAME"])?$_SERVER["SERVER_NAME"]:"";
-    $current_directory = str_replace("\\", "/", __DIR__);
-
-    while (!in_array("root.ap", scandir($current_directory))) {
-        $current_directory = substr($current_directory, 0, strrpos($current_directory, "/"));
+    if (!function_exists('ap_normalize_path')) {
+        function ap_normalize_path($path)
+        {
+            return rtrim(str_replace('\\', '/', $path), '/');
+        }
     }
 
+    if (!function_exists('ap_normalize_web_root')) {
+        function ap_normalize_web_root($path)
+        {
+            $normalized = trim(str_replace('\\', '/', strval($path)));
+
+            if ($normalized === '' || $normalized === '/' || $normalized === '.') {
+                return '';
+            }
+
+            return '/'.trim($normalized, '/');
+        }
+    }
+
+    if (!function_exists('ap_detect_web_root')) {
+        function ap_detect_web_root()
+        {
+            $configured = ap_env_value('APP_WEB_ROOT');
+
+            if ($configured !== null && trim(strval($configured)) !== '') {
+                return ap_normalize_web_root($configured);
+            }
+
+            $scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+            return ap_normalize_web_root(dirname(str_replace('\\', '/', $scriptName)));
+        }
+    }
+
+    $serverName = isset($_SERVER['HTTP_HOST']) && trim($_SERVER['HTTP_HOST']) !== ''
+        ? trim($_SERVER['HTTP_HOST'])
+        : (isset($_SERVER['SERVER_NAME']) ? trim($_SERVER['SERVER_NAME']) : 'localhost');
+
+    $frameworkBasePath = ap_normalize_path(dirname(__DIR__));
+    $projectRootPath = ap_normalize_path(dirname($frameworkBasePath));
+    $assetsPath = ap_normalize_path($projectRootPath.'/assets');
+    $storageRootPath = ap_normalize_path($frameworkBasePath.'/storage');
+    $viewsRootPath = ap_normalize_path($frameworkBasePath.'/resources/views');
+    $webRoot = ap_detect_web_root();
+
     //principales constantes
-    define("WEB_URL", (overSecureHTTP()?"https://":"http://").$SERVER_NAME);
-    define("PROJECT_FOLDER", substr($current_directory, strlen($_SERVER["DOCUMENT_ROOT"])));
+    define("WEB_URL", (overSecureHTTP()?"https://":"http://").$serverName);
+    define("PROJECT_FOLDER", $webRoot);
     define("WEB_ROOT", PROJECT_FOLDER);            //check if there could be problems with this constant and .htaccess rwrite url rules
     define("PROGRESSIVE_REQUEST_TOKENS", "PROGRESSIVE_REQUEST_TOKENS");
-    define("PROJECT_WEB_ROOT", $_SERVER["DOCUMENT_ROOT"].PROJECT_FOLDER."/assets");
-    define("PROJECT_SYSTEM_ROOT", $_SERVER["DOCUMENT_ROOT"].PROJECT_FOLDER."/local");
-    define("CLOUD_ROUTE", PROJECT_SYSTEM_ROOT."/storage/admin-panel/cloud/");
-    define("TMP_FILES", PROJECT_SYSTEM_ROOT."/storage/admin-panel/tmp/");
+    define("PROJECT_WEB_ROOT", $assetsPath);
+    define("PROJECT_SYSTEM_ROOT", $frameworkBasePath);
+    define("CLOUD_ROUTE", $storageRootPath."/admin-panel/cloud/");
+    define("TMP_FILES", $storageRootPath."/admin-panel/tmp/");
     define("JS_SECTIONS_FOLDER", PROJECT_WEB_ROOT."/js/sections/");
     define("SYSTEM_TERMS_FOLDER", PROJECT_WEB_ROOT."/js/__languages__/");
     define("SYSTEM_AUDIO_NOTIFICATIONS_FOLDER", PROJECT_WEB_ROOT."/audio/notifications/");
-    define("PROJECT_VIEWS_ROOT", PROJECT_SYSTEM_ROOT."/resources/views/");
+    define("PROJECT_VIEWS_ROOT", $viewsRootPath."/");
     define("MODALS_ROUTE", PROJECT_VIEWS_ROOT."app/modals/");
     define("SYSTEM_DIR_PROFILE_IMGS", PROJECT_WEB_ROOT."/images/profile/");
     define("SYSTEM_DIR_CLIENT_IMGS", PROJECT_WEB_ROOT."/images/client/");
@@ -90,16 +130,16 @@ use App\Models\UserPreferences;
     define("SYSTEM_DIR_ORGANIZATION_IMGS", PROJECT_WEB_ROOT."/images/organization/");
     define("FILE_ADMIN_PANEL_SETTINGS", PROJECT_SYSTEM_ROOT."/admin-panel-settings.php");
     define("LOADING_ICON", WEB_ROOT."/assets/img/loading.gif");
-    define("FORBIDDEN_ACCESS_VIEW", PROJECT_SYSTEM_ROOT."/resources/views/app/sections/include/forbidden-access.blade.php");
-    define("SEARCH_CONTROLS_VIEW", PROJECT_SYSTEM_ROOT."/resources/views/app/sections/include/search-controls.blade.php");
-    define("MESSAGE_ITEMS_VIEW", PROJECT_SYSTEM_ROOT."/resources/views/app/sections/include/message_items.blade.php");
-    define("FILES_EXPORT_DICTIONARY_FOLDER", PROJECT_SYSTEM_ROOT."/storage/admin-panel/auxiliar/export-dictionary/");
+    define("FORBIDDEN_ACCESS_VIEW", PROJECT_VIEWS_ROOT."app/sections/include/forbidden-access.blade.php");
+    define("SEARCH_CONTROLS_VIEW", PROJECT_VIEWS_ROOT."app/sections/include/search-controls.blade.php");
+    define("MESSAGE_ITEMS_VIEW", PROJECT_VIEWS_ROOT."app/sections/include/message_items.blade.php");
+    define("FILES_EXPORT_DICTIONARY_FOLDER", $storageRootPath."/admin-panel/auxiliar/export-dictionary/");
     define("DEFAULT_PROFILE_IMG", WEB_ROOT . "/assets/images/profile/default.jpg");
     include FILE_ADMIN_PANEL_SETTINGS;
     define("DEFAULT_LANGUAGE", $globalSettings["default_language_system"]);
     define("FILE_URL_ROUTES", PROJECT_SYSTEM_ROOT."/app/Http/routes_sections_url.php");
     define("DEFAULT_CLIENT_IMAGE", WEB_ROOT . "/assets/images/client/default.jpg");
-    define("CODE_TO_ID_FOLDER", PROJECT_SYSTEM_ROOT."/storage/admin-panel/code-to-id/");
+    define("CODE_TO_ID_FOLDER", $storageRootPath."/admin-panel/code-to-id/");
 
     function sanitize($s)
     {
@@ -584,6 +624,15 @@ use App\Models\UserPreferences;
 
     function saveGlobalSettings($arr)
     {
-        file_put_contents(FILE_ADMIN_PANEL_SETTINGS, '<?php $globalSettings = ' . var_export($arr, true) . ';?>');
+        $runtimeSettings = ap_load_runtime_settings();
+        $mutableKeys = ap_runtime_mutable_keys();
+
+        foreach ($mutableKeys as $key) {
+            if (array_key_exists($key, $arr)) {
+                $runtimeSettings[$key] = $arr[$key];
+            }
+        }
+
+        ap_write_runtime_settings($runtimeSettings);
     }
 ?>

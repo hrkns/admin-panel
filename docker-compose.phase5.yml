@@ -1,0 +1,68 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: adminpanel-phase5-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-adminpanel}
+      MYSQL_DATABASE: ${DB_DATABASE:-admin_panel}
+      MYSQL_USER: ${DB_USERNAME:-app_adminpanel}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-adminpanel}
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    ports:
+      - "${DB_PORT:-33061}:3306"
+    volumes:
+      - phase5_mysql_data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.phase3-apache
+    container_name: adminpanel-phase5-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_DATABASE: ${DB_DATABASE:-admin_panel}
+      DB_USERNAME: ${DB_USERNAME:-app_adminpanel}
+      DB_PASSWORD: ${DB_PASSWORD:-adminpanel}
+      MAIL_HOST: ${MAIL_HOST:-maildev}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_DRIVER: ${MAIL_DRIVER:-smtp}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION:-}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-no-reply@admin-panel.local}
+      MAIL_FROM_NAME: "${MAIL_FROM_NAME:-Admin Panel}"
+    ports:
+      - "${APP_PORT:-8081}:80"
+    volumes:
+      - ./:/var/www/html
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(@file_get_contents('http://127.0.0.1/health/live')===false?1:0);\""]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  composer:
+    image: composer:2
+    container_name: adminpanel-phase5-composer
+    working_dir: /app
+    volumes:
+      - ./local:/app
+    profiles: ["tools"]
+
+  maildev:
+    image: axllent/mailpit:v1.21
+    container_name: adminpanel-phase5-maildev
+    ports:
+      - "${MAIL_SMTP_PORT:-1025}:1025"
+      - "${MAIL_UI_PORT:-8025}:8025"
+
+volumes:
+  phase5_mysql_data:

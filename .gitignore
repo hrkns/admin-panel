@@ -1,2 +1,12 @@
 __project__
+/\.env
+local/.env
 local/vendor
+local/storage/admin-panel/runtime-settings.json
+local/storage/admin-panel/legacy-settings.snapshot.php
+phase1/artifacts/
+phase1/.secret-rotation.local.txt
+phase1/.cookies*.txt
+phase1/login-after.html
+phase1/login500.html
+local/storage/logs/*.log
