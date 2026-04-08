@@ -1,49 +1,44 @@
 # Admin-Panel
 
-This is an admin panel template coded with Laravel and using a MySql database.
+Admin-Panel is a legacy administrative back-office application built on Laravel and MySQL. This repository now provides a stable local startup path, a consolidated modernization history, and a clear roadmap for the next branch of work.
 
-## Legacy Project Notice
+## Current Status
 
-This repository is currently maintained as a **legacy codebase**.
+- The Docker-based local baseline is working through the Phase 5 modernization checkpoint.
+- The supported local entrypoint is `scripts/startup.ps1`.
+- Modernization history, sign-offs, roadmap, and related runbooks are grouped under `modernization/`.
 
-Its present architecture reflects an early implementation stage and contains multiple patterns that are not aligned with modern software engineering and security standards. As a result, execution in contemporary environments can be difficult and unstable.
+More information:
 
-The main technical reasons are:
+- Modernization overview: [modernization/docs/overview.md](modernization/docs/overview.md)
+- Roadmap and future phases: [modernization/roadmap.md](modernization/roadmap.md)
+- Known issues: [modernization/docs/known-issues.md](modernization/docs/known-issues.md)
 
-- tight coupling to a classic Apache + document-root deployment model;
-- direct dependency on legacy runtime and framework versions;
-- configuration and operational settings stored in mutable PHP files instead of environment-driven configuration;
-- historical bootstrap assumptions based on manual SQL import and manual server configuration;
-- limited reproducibility for local onboarding and platform portability.
+## Startup
 
-For these reasons, this repository should be treated as a transitional legacy baseline.
+Prerequisites:
 
-## Modernization and Stabilization Plan
+- Docker Desktop or another Docker Engine + Compose v2 compatible runtime
+- PowerShell
 
-A structured upgrade and stabilization process is being tracked in the **`upgrade`** branch:
+From the repository root:
 
-- Upgrade branch: https://github.com/hrkns/admin-panel/tree/upgrade
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1
+```
 
-The objective of that branch is to progressively deliver:
+Optional flags:
 
-- modernized configuration and secret handling;
-- improved portability across modern platforms;
-- safer execution defaults;
-- progressive refactoring toward a maintainable architecture.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -Rebuild
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -ResetDb
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -KeepExistingSmtp
+```
 
-## Historical Instructions (Deprecated)
+Default local endpoints:
 
-> [!WARNING]
-> The following instructions are preserved for historical/reference purposes only.
-> They are **deprecated** and should generally be ignored for new setups.
-> Prefer following the modernization guidance and updates from the `upgrade` branch.
+- App: `http://localhost:8081`
+- Health: `http://localhost:8081/health/live`
+- Mail UI: `http://localhost:8025`
 
-**Instructions for use:**
-
-*   Clone the project through the command `git clone https://github.com/hrkns/admin-panel.git` or download it compressed
-*   Put it inside `htdocs`, `www` or some equivalent folder in your server, in order to be reachable through a web browser.
-*   Load the database (tables, relations and data in the `admin_panel.sql` file) in some MySQL server.
-*   In the file `FOLDER_PROJECT/local/admin-panel-settings.php`, edit the values of the fields with the `db_` prefix (`db_address` for the address of the MySQL server, `db_name` for the name of the database, `db_user` and `db_password` for the access credentials to the database).
-*   Inside the folder `FOLDER_PROJECT/local` execute the command `composer install`.
-*   Run the web app in the browser, you will be redirected to `URL_PROJECT/installer` in order to fill some final data.
-*   After last step, you will be redirected to the _sign-in_ screen. The default user is **developer** and the password is **123456**.
+To change the default app port, set `APP_PORT` in the root `.env` file. Use `.env.example` as the template.

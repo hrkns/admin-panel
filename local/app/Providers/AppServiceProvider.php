@@ -13,7 +13,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $phase4SeederPath = base_path('database/seeds/Phase4CoreDefaultsSeeder.php');
+
+            if (file_exists($phase4SeederPath)) {
+                require_once $phase4SeederPath;
+            }
+        }
     }
 
     /**
