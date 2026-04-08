@@ -1,138 +1,44 @@
 # Admin-Panel
 
-This is an admin panel template coded with Laravel and using a MySql database.
+Admin-Panel is a legacy administrative back-office application built on Laravel and MySQL. This repository now provides a stable local startup path, a consolidated modernization history, and a clear roadmap for the next branch of work.
 
-## Project Status and Modernization
+## Current Status
 
-This repository is currently treated as a **legacy transitional baseline**.
+- The Docker-based local baseline is working through the Phase 5 modernization checkpoint.
+- The supported local entrypoint is `scripts/startup.ps1`.
+- Modernization history, sign-offs, roadmap, and related runbooks are grouped under `modernization/`.
 
-The current codebase reflects early-stage architecture decisions (legacy runtime/framework coupling, mutable PHP-based configuration, and manual bootstrap assumptions), so execution on modern environments may be unstable until modernization phases are completed.
+More information:
 
-Modernization work is tracked in the [upgrade branch](https://github.com/hrkns/admin-panel/tree/upgrade).
+- Modernization overview: [modernization/docs/overview.md](modernization/docs/overview.md)
+- Roadmap and future phases: [modernization/roadmap.md](modernization/roadmap.md)
+- Known issues: [modernization/docs/known-issues.md](modernization/docs/known-issues.md)
 
-Phase 0 deliverable (target architecture + supported versions matrix):
+## Startup
 
-- [docs/phase-0-target-architecture.md](docs/phase-0-target-architecture.md)
+Prerequisites:
 
-Phase 1A deliverable (bootstrap to first runnable baseline):
+- Docker Desktop or another Docker Engine + Compose v2 compatible runtime
+- PowerShell
 
-- [docs/phase-1a-bootstrap-first-run.md](docs/phase-1a-bootstrap-first-run.md)
-
-Phase 1A caveat (current state):
-
-- First runnable checkpoint currently uses a temporary PHP 7.4 compatibility runtime.
-- Phase 0 runtime target (PHP 8.2+) remains an open modernization gap.
-
-Phase 1 deliverable (stabilize + credential hygiene runbook):
-
-- [docs/phase-1-stabilize-secure-runbook.md](docs/phase-1-stabilize-secure-runbook.md)
-
-Phase 2 deliverable (configuration overhaul sign-off):
-
-- [phase2/signoff.md](phase2/signoff.md)
-- [docs/phase-2-env-secrets-policy.md](docs/phase-2-env-secrets-policy.md)
-
-Phase 3 deliverable (runtime decoupling / dual web-server support):
-
-- [docs/phase-3-runtime-decoupling.md](docs/phase-3-runtime-decoupling.md)
-- [phase3/signoff.md](phase3/signoff.md)
-
-Phase 3B deliverable (targeted runtime + security closure):
-
-- [docs/phase-3b-runtime-and-security-closure.md](docs/phase-3b-runtime-and-security-closure.md)
-- [phase3b/signoff.md](phase3b/signoff.md)
-
-Phase 4 deliverable (database portability + data layer hardening):
-
-- [docs/phase-4-database-portability-and-data-layer-hardening.md](docs/phase-4-database-portability-and-data-layer-hardening.md)
-- [phase4/signoff.md](phase4/signoff.md)
-
-Phase 5 deliverable (developer experience + automation):
-
-- [docs/phase-5-developer-experience-and-automation.md](docs/phase-5-developer-experience-and-automation.md)
-- [phase5/signoff.md](phase5/signoff.md)
-
-Known issues tracker:
-
-- [docs/known-issues.md](docs/known-issues.md)
-
-Execution order note:
-
-- If the app is not runnable yet, complete Phase 1A before Phase 1.
-
-Versioning policy for modernization documents:
-
-- Values with `+` (for example, PHP 8.2+, MySQL 8.0+, MariaDB 10.11+) define a minimum supported baseline in Phase 0.
-- During implementation phases, exact versions/tags are pinned for reproducible builds and controlled upgrades.
-
-Current local Docker Compose port mapping (Phase 1A file):
-
-- Web container publishes on host port `8081` by default.
-- Override with `APP_PORT` when starting compose (example: `APP_PORT=8090`).
-- To persist the port without exporting each time, create root `.env` from root `.env.example` and set `APP_PORT` there.
-
-Phase 2 configuration baseline (implemented):
-
-- App settings now load through a compatibility adapter in `local/admin-panel-settings.php` with precedence: environment -> runtime JSON -> legacy snapshot -> defaults.
-- Runtime-mutated settings are persisted in `local/storage/admin-panel/runtime-settings.json` (JSON config service), not by rewriting PHP source files.
-- Environment contract is centralized in `local/config/admin-panel-config-contract.php` and includes app, DB, SMTP, paths, and feature flags.
-- Secret-bearing local files (`local/.env`, `local/storage/admin-panel/legacy-settings.snapshot.php`) must stay untracked and are ignored by git.
-- `local/.env.example` is template-only and must never contain active credentials, real APP_KEY values, or production secrets.
-- Phase 2 exit criteria includes passing a repo secret hygiene check with no tracked secrets.
-
-Current assessment (post-Phase 3B):
-
-- Runtime images for Phase 3 profiles are aligned to PHP 8.2+ and live startup smoke checks succeed on both profiles.
-- Historical secret-remediation closure evidence is documented in `phase3b/` artifacts and external security checks are green.
-- Deferred (non-blocking): lock-screen unlock browser flow remains scheduled for post-phase maintenance.
-
-Bottom line:
-
-- Runtime closure blocker tracked for Phase 3B is closed.
-- Security closure blocker tracked for Phase 3B is closed.
-- The roadmap can continue to remaining phases with lock-screen unlock retained in backlog.
-
-Phase 4 checkpoint (implemented baseline):
-
-- Schema bootstrap ownership moved to Laravel migration layer (`local/database/migrations/2026_02_19_000000_phase4_schema_bootstrap.php`).
-- Deterministic default data provisioning added through `php artisan migrate --seed` (`Phase4CoreDefaultsSeeder`).
-- Dedicated runtime profile for migration-driven bootstrap added (`docker-compose.phase4.yml`) with no SQL auto-import mount.
-
-Phase 5 checkpoint (implemented baseline):
-
-- Developer stack compose added with app + database + local mail service (`docker-compose.phase5.yml`).
-- One-command developer setup automation added (`scripts/setup-phase5.ps1`) to bootstrap dependencies, env, migrate, seed, and run startup checks.
-- Health endpoints added for local orchestration checks (`/health/live`, `/health/ready`).
-
-Phase 5 quick start (PowerShell):
+From the repository root:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\setup-phase5.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1
 ```
 
-Phase 3 runtime checkpoint (implemented):
+Optional flags:
 
-- App filesystem/bootstrap paths no longer depend on `$_SERVER["DOCUMENT_ROOT"]` in application helpers.
-- Runtime can be launched with Apache or Nginx + PHP-FPM using `docker-compose.phase3.yml` profiles.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -Rebuild
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -ResetDb
+powershell -ExecutionPolicy Bypass -File .\scripts\startup.ps1 -KeepExistingSmtp
+```
 
-Phase 3B checkpoint (completed):
+Default local endpoints:
 
-- Runtime target aligned to PHP 8.2+ baseline in phase3 compose profiles and validated with live smoke checks.
-- Historical secret-remediation closure evidence recorded in `phase3b/evidence/`.
+- App: `http://localhost:8081`
+- Health: `http://localhost:8081/health/live`
+- Mail UI: `http://localhost:8025`
 
-## Historical Instructions (Deprecated)
-
-> [!WARNING]
-> The following instructions are preserved for historical/reference purposes only.
-> They are **deprecated** and should generally be ignored for new setups.
-> Prefer following the modernization guidance and updates from the `upgrade` branch.
-
-**Instructions for use:**
-
-*   Clone the project through the command `git clone https://github.com/hrkns/admin-panel.git` or download it compressed
-*   Put it inside `htdocs`, `www` or some equivalent folder in your server, in order to be reachable through a web browser.
-*   Load the database (tables, relations and data in the `admin_panel.sql` file) in some MySQL server.
-*   In the file `FOLDER_PROJECT/local/admin-panel-settings.php`, edit the values of the fields with the `db_` prefix (`db_address` for the address of the MySQL server, `db_name` for the name of the database, `db_user` and `db_password` for the access credentials to the database).
-*   Inside the folder `FOLDER_PROJECT/local` execute the command `composer install`.
-*   Run the web app in the browser, you will be redirected to `URL_PROJECT/installer` in order to fill some final data.
-*   After last step, you will be redirected to the _sign-in_ screen. The default user is **developer** and the password is **123456**.
+To change the default app port, set `APP_PORT` in the root `.env` file. Use `.env.example` as the template.
