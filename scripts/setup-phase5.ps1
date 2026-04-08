@@ -144,6 +144,8 @@ if ($KeepExistingSmtp) {
 
 Push-Location $root
 try {
+    $artisanBase = "cd /var/www/html/local && php -d error_reporting=8191 artisan"
+
     if ($ResetDb) {
         Write-Host "[phase5] Resetting Phase 5 volumes..."
         Invoke-Checked -Action { docker compose -f $composeFile down -v --remove-orphans } -ErrorMessage "Failed to reset Phase 5 containers/volumes."
@@ -152,8 +154,8 @@ try {
     Write-Host "[phase5] Starting database and maildev services..."
     Invoke-Checked -Action { docker compose -f $composeFile up -d db maildev } -ErrorMessage "Failed to start db/maildev services."
 
-    Write-Host "[phase5] Installing PHP dependencies with Composer (runtime deps only)..."
-    Invoke-Checked -Action { docker compose -f $composeFile run --rm composer install --no-interaction --prefer-dist --no-dev } -ErrorMessage "Composer install failed."
+    Write-Host "[phase5] Installing PHP dependencies with Composer (runtime deps only, no legacy scripts)..."
+    Invoke-Checked -Action { docker compose -f $composeFile run --rm composer install --no-interaction --prefer-dist --no-dev --no-scripts } -ErrorMessage "Composer install failed."
 
     $appUpArgs = @("compose", "-f", $composeFile, "up", "-d", "app")
     if ($Rebuild) {
@@ -167,8 +169,8 @@ try {
     Wait-ContainerHealthy -Container "adminpanel-phase5-db" -TimeoutSeconds 180
 
     Write-Host "[phase5] Generating APP_KEY if needed and running migrations..."
-    Invoke-Checked -Action { docker compose -f $composeFile exec -T app bash -lc "cd /var/www/html/local && php artisan key:generate" } -ErrorMessage "APP_KEY generation failed."
-    Invoke-Checked -Action { docker compose -f $composeFile exec -T app bash -lc "cd /var/www/html/local && php artisan migrate --seed --force" } -ErrorMessage "Database migration/seed failed."
+    Invoke-Checked -Action { docker compose -f $composeFile exec -T app bash -lc "$artisanBase key:generate" } -ErrorMessage "APP_KEY generation failed."
+    Invoke-Checked -Action { docker compose -f $composeFile exec -T app bash -lc "$artisanBase migrate --seed --force" } -ErrorMessage "Database migration/seed failed."
 
     Write-Host "[phase5] Running startup checks..."
     Wait-Http -Url "http://localhost:$appPort/health/live" -ExpectedStatus 200 -TimeoutSeconds 180

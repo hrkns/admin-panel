@@ -19,10 +19,15 @@ Improve local onboarding speed and consistency so a new developer can run the pr
   - local-safe env defaults for DB and mail routing,
   - optional SMTP mode selection (`Mailpit defaults` vs `keep existing SMTP`),
   - compose startup for db/mail/app,
-  - composer dependency installation (`--no-dev` for legacy lock compatibility),
+  - composer dependency installation (`--no-dev --no-scripts` for legacy lock/runtime compatibility),
   - `php artisan key:generate`,
   - `php artisan migrate --seed --force`,
   - startup checks against health endpoints.
+
+Note about stability:
+- Setup intentionally skips Composer post-install scripts because legacy Laravel 5.1 script hooks (`clear-compiled`, `optimize`) can fail under newer Composer container PHP runtimes due framework deprecations.
+- Equivalent runtime bootstrap is handled explicitly by setup script via Artisan commands after dependency installation.
+- Setup executes its own Artisan bootstrap commands with deprecation reporting reduced, so PHP 8.x compatibility deprecations do not abort local initialization.
 
 ### 3) Health endpoints and startup checks
 - Added two lightweight health routes:
